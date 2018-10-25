@@ -28,6 +28,9 @@ gem 'puma', '~> 3.0'
 # Use Figaro to set environment variables/secrets
 gem 'figaro'
 
+# Use Foreman to manage processes for the Rails and React servers
+gem 'foreman', '~> 0.82.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

@@ -45,6 +45,8 @@ GEM
     erubis (2.7.0)
     figaro (1.1.1)
       thor (~> 0.14)
+    foreman (0.82.0)
+      thor (~> 0.19.1)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     i18n (1.1.1)
@@ -97,7 +99,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    thor (0.20.0)
+    thor (0.19.4)
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
@@ -113,6 +115,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   figaro
+  foreman (~> 0.82.0)
   pg (>= 0.18, < 2.0)
   puma (~> 3.0)
   rails (~> 5.0.7)
