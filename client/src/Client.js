@@ -7,6 +7,24 @@ function search(query, cb) {
 	.then(cb);
 }
 
+function index(callback) {
+	return fetch('chunks', {
+		accept: "application/json"
+	})
+	.then(checkStatus)
+	.then(parseJSON)
+	.then(callback);
+}
+
+function testChunk(callback) {
+	return fetch('chunks/1', {
+		accept: "application/json"
+	})
+	.then(checkStatus)
+	.then(parseJSON)
+	.then(callback);
+}
+
 function checkStatus(response) {
 	if (response.status >= 200 && response.status < 300) {
 		return response;
@@ -22,5 +40,5 @@ function parseJSON(response) {
 	return response.json();
 }
 
-const Client = { search };
+const Client = { index, testChunk };
 export default Client;

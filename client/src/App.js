@@ -4,6 +4,16 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chunks: [],
+      testChunk: null,
+      testChunkName: "",
+    };
+    Client.index(chunks => this.setState({ chunks: chunks }))
+    Client.testChunk(testChunk => this.setState({ testChunk: testChunk, testChunkName: testChunk.name }));
+  }
   render() {
     return (
       <div className="App">
@@ -21,6 +31,7 @@ class App extends Component {
             Learn React
           </a>
         </header>
+        <div>Test chunk name: <strong>{this.state.testChunkName}</strong></div>
       </div>
     );
   }
