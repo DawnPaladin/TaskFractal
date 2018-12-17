@@ -208,6 +208,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   duktape
   jbuilder (~> 2.5)
+  mini_racer
   pg
   puma (~> 3.11)
   rails (~> 5.2.2)
