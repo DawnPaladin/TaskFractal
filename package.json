@@ -11,5 +11,8 @@
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"
+  },
+  "scripts": {
+    "dev": "foreman start -f Procfile.dev"
   }
 }
