@@ -22,10 +22,8 @@ export default class HelloWorld extends React.Component {
     this.setState({ name });
   };
   
-  complete = () => {
-    this.props.task.completed = true;
-
-    let body = JSON.stringify({task: this.props.task});
+  sendTask = () => {
+    let body = JSON.stringify({task: this.state.task});
 
     let headers = ReactOnRails.authenticityHeaders();
     headers["Content-Type"] = "application/json";
@@ -35,6 +33,11 @@ export default class HelloWorld extends React.Component {
       body: body,
       headers: headers
     });
+  }
+  
+  completeTask = () => {
+    this.state.task.completed = true;
+    this.sendTask();
   }
 
   render() {
@@ -56,7 +59,7 @@ export default class HelloWorld extends React.Component {
           />
         </form>
         <p>Task name: {this.state.task.name}</p>
-        <button onClick={(e) => this.complete()}>Complete</button>
+        <button onClick={(e) => this.completeTask()}>Complete</button>
       </div>
     );
   }
