@@ -23,15 +23,17 @@ export default class HelloWorld extends React.Component {
   };
   
   complete = () => {
+    this.props.task.completed = true;
+
+    let body = JSON.stringify({task: this.props.task});
+
+    let headers = ReactOnRails.authenticityHeaders();
+    headers["Content-Type"] = "application/json";
+
     fetch('/tasks/1.json', {
-      method: 'PUT',
-      body: {
-        "task": {
-          "id": 1,
-          "completed": true
-        }
-      },
-      headers: ReactOnRails.authenticityHeaders()
+      method: "PUT",
+      body: body,
+      headers: headers
     });
   }
 
