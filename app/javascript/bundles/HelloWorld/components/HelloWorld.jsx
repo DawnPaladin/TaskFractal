@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import ReactOnRails from 'react-on-rails';
 
 export default class HelloWorld extends React.Component {
   static propTypes = {
@@ -20,6 +21,19 @@ export default class HelloWorld extends React.Component {
   updateName = (name) => {
     this.setState({ name });
   };
+  
+  complete = () => {
+    fetch('/tasks/1.json', {
+      method: 'PUT',
+      body: {
+        "task": {
+          "id": 1,
+          "completed": true
+        }
+      },
+      headers: ReactOnRails.authenticityHeaders()
+    });
+  }
 
   render() {
     return (
@@ -39,7 +53,8 @@ export default class HelloWorld extends React.Component {
             onChange={(e) => this.updateName(e.target.value)}
           />
         </form>
-        Task name: {this.state.task.name}
+        <p>Task name: {this.state.task.name}</p>
+        <button onClick={(e) => this.complete()}>Complete</button>
       </div>
     );
   }
