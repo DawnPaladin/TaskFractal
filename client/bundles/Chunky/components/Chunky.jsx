@@ -41,11 +41,19 @@ export default class Chunky extends React.Component {
   }
 
   render() {
+    console.log(this.state.task);
+    const checkbox = this.state.task.completed ? <input type="checkbox" checked /> : <input type="checkbox" />;
     return (
       <div>
-        <h3>
-          Hello, {this.state.name}!
-        </h3>
+        <h1>
+          <label>
+            { checkbox } { this.state.task.name }
+          </label>
+        </h1>
+        <div className="field">
+          
+          { this.state.task.due_date ? "Due: " + this.state.task.due_date : <em>Add due date</em> }
+        </div>
         <hr />
         <form >
           <label htmlFor="name">
@@ -58,7 +66,6 @@ export default class Chunky extends React.Component {
             onChange={(e) => this.updateName(e.target.value)}
           />
         </form>
-        <p>Task name: {this.state.task.name}</p>
         <button onClick={(e) => this.completeTask()}>Complete</button>
       </div>
     );
