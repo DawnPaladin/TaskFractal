@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
+import * as Icon from 'react-feather';
 
 export default class Chunky extends React.Component {
   static propTypes = {
@@ -43,6 +44,7 @@ export default class Chunky extends React.Component {
   render() {
     console.log(this.state.task);
     const checkbox = this.state.task.completed ? <input type="checkbox" checked /> : <input type="checkbox" />;
+    const FrontSideTask = props => (<div>{ checkbox } { props.name }</div>);
     return (
       <div>
         <h1>
@@ -51,9 +53,25 @@ export default class Chunky extends React.Component {
           </label>
         </h1>
         <div className="field">
-          
-          { this.state.task.due_date ? "Due: " + this.state.task.due_date : <em>Add due date</em> }
+          <Icon.Calendar size="16" />
+          { this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
         </div>
+        <div className="row">
+          <div>
+            <div className="smallcaps"><Icon.PauseCircle size="16" /> blocked by</div>
+            <div className="field">
+              <FrontSideTask name="Get boxes" />
+            </div>
+          </div>
+          <div>
+            <div className="smallcaps"><Icon.AlertCircle size="16" /> blocking</div>
+            <div className="field">
+              <FrontSideTask name="Put boxes in moving van" />
+            </div>
+          </div>
+        </div>
+
+
         <hr />
         <form >
           <label htmlFor="name">

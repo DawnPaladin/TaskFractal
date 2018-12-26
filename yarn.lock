@@ -4676,6 +4676,10 @@ react-dom@^16.6.3:
     prop-types "^15.6.2"
     scheduler "^0.11.2"
 
+react-feather@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.5.tgz#f7f9384c17d2d061b5b8298f46efc0e497f48469"
+
 react-on-rails@11.2.1:
   version "11.2.1"
   resolved "https://registry.yarnpkg.com/react-on-rails/-/react-on-rails-11.2.1.tgz#b25637bb3d5c6cebd89f4697eb021ede332a3000"
