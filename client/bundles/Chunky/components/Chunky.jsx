@@ -3,6 +3,19 @@ import React from 'react';
 import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 
+const Checkbox = props => (props.completed ? <input type="checkbox" defaultChecked /> : <input type="checkbox" />);
+
+class FrontSideTask extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <label className="checkbox-label"> <Checkbox completed={this.props.completed} /> { this.props.name }</label>
+    )
+  }
+}
+
 export default class Chunky extends React.Component {
   static propTypes = {
     name: PropTypes.string.isRequired, // this is passed from the Rails view
@@ -53,13 +66,12 @@ export default class Chunky extends React.Component {
 
   render() {
     console.log(this.state.task);
-    const checkbox = this.state.task.completed ? <input type="checkbox" defaultChecked /> : <input type="checkbox" />;
-    const FrontSideTask = props => (<label className="checkbox-label">{ checkbox } { props.name }</label>);
     return (
       <div className="task-card-back">
         <h1>
           <label>
-            { checkbox } { this.state.task.name }
+            <Checkbox completed={this.state.task.completed} />
+            { this.state.task.name }
           </label>
         </h1>
         
@@ -80,7 +92,7 @@ export default class Chunky extends React.Component {
             <Icon.AlertCircle size="16" />
             <span className="field-name"> blocking</span>
             <div className="field">
-              <FrontSideTask name="Put boxes in moving van" />
+              <FrontSideTask name="Put boxes in moving van" dueDate="May 15"/>
             </div>
           </div>
         </div>
