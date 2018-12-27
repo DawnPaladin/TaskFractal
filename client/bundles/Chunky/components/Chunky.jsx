@@ -11,7 +11,14 @@ class FrontSideTask extends React.Component {
   }
   render() {
     return (
-      <label className="checkbox-label"> <Checkbox completed={this.props.completed} /> { this.props.name }</label>
+      <div className="frontSideTask">
+        <label className="checkbox-label"> <Checkbox completed={this.props.completed} /> { this.props.name }</label>
+        <div className="details">
+          { this.props.dueDate ?
+            <div><Icon.Calendar size="16" /> {this.props.dueDate}</div> : ""
+          }
+        </div>
+      </div>
     )
   }
 }
