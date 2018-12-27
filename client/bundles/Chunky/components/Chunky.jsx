@@ -17,6 +17,12 @@ class FrontSideTask extends React.Component {
           { this.props.dueDate ?
             <div><Icon.Calendar size="16" /> {this.props.dueDate}</div> : ""
           }
+          { this.props.desc ?
+            <Icon.AlignLeft size="16" /> : ""
+          }
+          { this.props.attachments ?
+            <div><Icon.Paperclip size="16" /> {this.props.attachments}</div> : ""
+          }
         </div>
       </div>
     )
@@ -78,7 +84,8 @@ export default class Chunky extends React.Component {
         <h1>
           <label>
             <Checkbox completed={this.state.task.completed} />
-            { this.state.task.name }
+            {/* { this.state.task.name } */}
+            Pack boxes
           </label>
         </h1>
         
@@ -117,7 +124,7 @@ export default class Chunky extends React.Component {
         
         <div className="field-name">chunks</div>
         <div className="chunks">
-          <FrontSideTask name="Pack kitchen" />
+          <FrontSideTask name="Pack kitchen" desc="true" attachments="1" completedChunks="1" totalChunks="1" />
           <div className="add-chunk">Add chunk</div>
         </div>
 

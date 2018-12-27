@@ -68,6 +68,9 @@ h1 input[type=checkbox] {
 	@extend .deemphasize;
 	margin-top: 5px;
 	margin-left: 24px;
+	& > * {
+		display: inline-block;
+	}
 }
 
 h1 input[type=checkbox] {
