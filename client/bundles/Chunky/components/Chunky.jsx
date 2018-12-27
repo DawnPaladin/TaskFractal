@@ -98,19 +98,6 @@ export default class Chunky extends React.Component {
         <FrontSideTask name="Pack kitchen" />
         Add chunk
 
-        <hr />
-        <form >
-          <label htmlFor="name">
-            Say hello to:
-          </label>
-          <input
-            id="name"
-            type="text"
-            value={this.state.name}
-            onChange={(e) => this.updateName(e.target.value)}
-          />
-        </form>
-        <button onClick={(e) => this.completeTask()}>Complete</button>
       </div>
     );
   }
