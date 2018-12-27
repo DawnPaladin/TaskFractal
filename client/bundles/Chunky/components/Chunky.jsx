@@ -16,7 +16,13 @@ export default class Chunky extends React.Component {
 
     // How to set initial state in ES6 class syntax
     // https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class
-    this.state = { name: this.props.name, task: this.props.task };
+    this.state = { 
+      name: this.props.name,
+      task: this.props.task,
+      notes: ""
+    };
+    
+    this.handleNotesChange = this.handleNotesChange.bind(this);
   }
 
   updateName = (name) => {
@@ -40,11 +46,15 @@ export default class Chunky extends React.Component {
     this.state.task.completed = true;
     this.sendTask();
   }
+  
+  handleNotesChange = (event) => {
+    this.setState({ notes: event.target.value });
+  }
 
   render() {
     console.log(this.state.task);
-    const checkbox = this.state.task.completed ? <input type="checkbox" checked /> : <input type="checkbox" />;
-    const FrontSideTask = props => (<div>{ checkbox } { props.name }</div>);
+    const checkbox = this.state.task.completed ? <input type="checkbox" defaultChecked /> : <input type="checkbox" />;
+    const FrontSideTask = props => (<label>{ checkbox } { props.name }</label>);
     return (
       <div>
         <h1>
@@ -52,10 +62,12 @@ export default class Chunky extends React.Component {
             { checkbox } { this.state.task.name }
           </label>
         </h1>
+        
         <div className="field">
           <Icon.Calendar size="16" />
           { this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
         </div>
+        
         <div className="row">
           <div>
             <div className="smallcaps"><Icon.PauseCircle size="16" /> blocked by</div>
@@ -70,7 +82,21 @@ export default class Chunky extends React.Component {
             </div>
           </div>
         </div>
-
+        
+        <Icon.AlignLeft size="16" />
+        <span className="smallcaps">notes</span>
+        <div className="field">
+          <textarea value={this.state.notes} onChange={this.handleNotesChange} />
+        </div>
+        
+        <div className="field">
+          <Icon.Paperclip size="16" />
+          <i className="deemphasize">Attach file</i>
+        </div>
+        
+        <div className="smallcaps">chunks</div>
+        <FrontSideTask name="Pack kitchen" />
+        Add chunk
 
         <hr />
         <form >
