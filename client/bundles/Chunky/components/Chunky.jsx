@@ -54,9 +54,9 @@ export default class Chunky extends React.Component {
   render() {
     console.log(this.state.task);
     const checkbox = this.state.task.completed ? <input type="checkbox" defaultChecked /> : <input type="checkbox" />;
-    const FrontSideTask = props => (<label>{ checkbox } { props.name }</label>);
+    const FrontSideTask = props => (<label className="checkbox-label">{ checkbox } { props.name }</label>);
     return (
-      <div>
+      <div className="task-card-back">
         <h1>
           <label>
             { checkbox } { this.state.task.name }
@@ -70,13 +70,15 @@ export default class Chunky extends React.Component {
         
         <div className="row">
           <div>
-            <div className="smallcaps"><Icon.PauseCircle size="16" /> blocked by</div>
+            <Icon.PauseCircle size="16" />
+            <span className="field-name"> blocked by</span>
             <div className="field">
               <FrontSideTask name="Get boxes" />
             </div>
           </div>
           <div>
-            <div className="smallcaps"><Icon.AlertCircle size="16" /> blocking</div>
+            <Icon.AlertCircle size="16" />
+            <span className="field-name"> blocking</span>
             <div className="field">
               <FrontSideTask name="Put boxes in moving van" />
             </div>
@@ -84,7 +86,7 @@ export default class Chunky extends React.Component {
         </div>
         
         <Icon.AlignLeft size="16" />
-        <span className="smallcaps">notes</span>
+        <span className="field-name"> notes</span>
         <div className="field">
           <textarea value={this.state.notes} onChange={this.handleNotesChange} />
         </div>
@@ -94,9 +96,11 @@ export default class Chunky extends React.Component {
           <i className="deemphasize">Attach file</i>
         </div>
         
-        <div className="smallcaps">chunks</div>
-        <FrontSideTask name="Pack kitchen" />
-        Add chunk
+        <div className="field-name">chunks</div>
+        <div className="chunks">
+          <FrontSideTask name="Pack kitchen" />
+          <div className="add-chunk">Add chunk</div>
+        </div>
 
       </div>
     );

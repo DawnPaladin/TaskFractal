@@ -1,3 +1,65 @@
+.task-card-back {
+	max-width: 350px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-size: 16px;
+	textarea {
+		width: 99%;
+		border: none;
+		resize: none;
+	}
+}
+
 .field {
 	border: 1px solid silver;
+	padding: 5px;
+}
+h1 {
+	font-weight: 400;
+	font-size: 1.75em;
+}
+
+h1 input[type=checkbox] {
+	transform: scale(1.75) translateY(-2.5px);
+}
+
+.field-name {
+	font-variant: small-caps;
+	vertical-align: 3px;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	& > * {
+		margin-left: 1em;
+		flex-basis: 50%;
+	}
+	& > *:first-child {
+		margin-left: 0;
+	}
+}
+
+.row .field {
+	min-height: 100px;
+}
+
+.checkbox-label {
+	padding-left: 23px;
+	text-indent: -24px;
+	input[type=checkbox] {
+		transform: scale(1.25) translateY(0px);
+	}
+}
+
+.deemphasize {
+	color: hsl(0, 0%, 50%);
+}
+
+.chunks {
+	padding-top: 5px;
+	.add-chunk {
+		margin-top: 5px;
+		margin-left: 24px;
+		color: hsl(0, 0%, 50%);
+	}
 }
