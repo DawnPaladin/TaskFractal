@@ -1,0 +1,6 @@
+Create child tasks in `rails c` with:
+
+```
+packBathroom = Task.where(name: "Pack bathroom").first
+packBathroom.children.create(name: "Pack medicine chest")
+```
