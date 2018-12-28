@@ -18,10 +18,13 @@ class FrontSideTask extends React.Component {
             <div><Icon.Calendar size="16" /> {this.props.dueDate}</div> : ""
           }
           { this.props.desc ?
-            <Icon.AlignLeft size="16" /> : ""
+            <div><Icon.AlignLeft size="16" /></div> : ""
           }
           { this.props.attachments ?
             <div><Icon.Paperclip size="16" /> {this.props.attachments}</div> : ""
+          }
+          { parseInt(this.props.totalChunks) > 0 ? 
+            <div><Icon.CheckSquare size="16" /> {this.props.completedChunks}/{this.props.totalChunks}</div> : ""
           }
         </div>
       </div>
@@ -97,7 +100,7 @@ export default class Chunky extends React.Component {
         <div className="row">
           <div>
             <Icon.PauseCircle size="16" />
-            <span className="field-name"> blocked by</span>
+            <span className="field-name"> waiting on</span>
             <div className="field">
               <FrontSideTask name="Get boxes" />
             </div>
@@ -122,7 +125,7 @@ export default class Chunky extends React.Component {
           <i className="deemphasize">Attach file</i>
         </div>
         
-        <div className="field-name">chunks</div>
+        <div className="field-name">subtasks</div>
         <div className="chunks">
           <FrontSideTask name="Pack kitchen" desc="true" attachments="1" completedChunks="1" totalChunks="1" />
           <div className="add-chunk">Add chunk</div>
