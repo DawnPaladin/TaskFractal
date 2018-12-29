@@ -10,4 +10,25 @@ class Task < ApplicationRecord
 	
 	has_many :blocker_blocks, foreign_key: :blocked_id, class_name: "BlockingTask"
 	has_many :blocking, through: :blocker_blocks, source: :blocker, dependent: :destroy
+	
+	after_create :increment_descendants_in_parents
+	before_destroy :decrement_descendants_in_parents
+	
+	def increment_descendants_in_parents
+		if self.parent
+			theParent = self.parent
+			theParent.descendants += 1
+			theParent.save!
+			theParent.increment_descendants_in_parents
+		end
+	end
+	def decrement_descendants_in_parents
+		if self.parent
+			theParent = self.parent
+			theParent.descendants -= 1
+			theParent.save!
+			theParent.decrement_descendants_in_parents
+		end
+	end
+		
 end
