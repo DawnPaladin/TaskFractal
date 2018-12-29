@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_29_012246) do
+ActiveRecord::Schema.define(version: 2018_12_29_020519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2018_12_29_012246) do
     t.datetime "updated_at", null: false
     t.integer "parent_id"
     t.integer "descendants", default: 0
+    t.integer "completed_descendants", default: 0
   end
 
 end

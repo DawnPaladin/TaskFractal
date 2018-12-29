@@ -12,8 +12,11 @@ class Task < ApplicationRecord
 	has_many :blocking, through: :blocker_blocks, source: :blocker, dependent: :destroy
 	
 	after_create :increment_descendants_in_parents
-	before_destroy :decrement_descendants_in_parents
-	
+	before_destroy do
+		self.decrement_completed_descendants_in_parents if self.completed
+		self.decrement_descendants_in_parents
+	end
+
 	def increment_descendants_in_parents
 		if self.parent
 			theParent = self.parent
@@ -29,6 +32,34 @@ class Task < ApplicationRecord
 			theParent.save!
 			theParent.decrement_descendants_in_parents
 		end
+	end
+	
+	def increment_completed_descendants_in_parents
+		if self.parent
+			theParent = self.parent
+			theParent.completed_descendants += 1
+			theParent.save!
+			theParent.increment_completed_descendants_in_parents
+		end
+	end
+	def decrement_completed_descendants_in_parents
+		if self.parent
+			theParent = self.parent
+			theParent.completed_descendants -= 1
+			theParent.save!
+			theParent.decrement_completed_descendants_in_parents
+		end
+	end
+	
+	def complete
+		self.completed = true
+		self.save
+		self.increment_completed_descendants_in_parents
+	end
+	def uncomplete
+		self.completed = false
+		self.save
+		self.decrement_completed_descendants_in_parents
 	end
 		
 end
