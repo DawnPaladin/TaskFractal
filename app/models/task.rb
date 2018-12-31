@@ -16,6 +16,15 @@ class Task < ApplicationRecord
 		self.decrement_completed_descendants_in_parents if self.completed
 		self.decrement_descendants_in_parents
 	end
+	before_save :check_completed_state, if: :will_save_change_to_completed?
+	
+	def check_completed_state
+		if self.completed == true
+			self.increment_completed_descendants_in_parents
+		else
+			self.decrement_completed_descendants_in_parents
+		end
+	end
 
 	def increment_descendants_in_parents
 		if self.parent
@@ -50,16 +59,5 @@ class Task < ApplicationRecord
 			theParent.decrement_completed_descendants_in_parents
 		end
 	end
-	
-	def complete
-		self.completed = true
-		self.save
-		self.increment_completed_descendants_in_parents
-	end
-	def uncomplete
-		self.completed = false
-		self.save
-		self.decrement_completed_descendants_in_parents
-	end
-		
+					
 end
