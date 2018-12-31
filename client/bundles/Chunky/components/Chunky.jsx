@@ -10,21 +10,22 @@ class FrontSideTask extends React.Component {
     super(props);
   }
   render() {
+    console.log(this.props.task);
     return (
       <div className="frontSideTask">
-        <label className="checkbox-label"> <Checkbox completed={this.props.completed} /> { this.props.name }</label>
+        <label className="checkbox-label"> <Checkbox completed={this.props.task.completed} /> { this.props.task.name }</label>
         <div className="details">
-          { this.props.dueDate ?
-            <div><Icon.Calendar size="16" /> {this.props.dueDate}</div> : ""
+          { this.props.task.dueDate ?
+            <div><Icon.Calendar size="16" /> {this.props.task.dueDate}</div> : ""
           }
-          { this.props.desc ?
+          { this.props.task.description ?
             <div><Icon.AlignLeft size="16" /></div> : ""
           }
-          { this.props.attachments ?
-            <div><Icon.Paperclip size="16" /> {this.props.attachments}</div> : ""
+          { this.props.task.attachments ?
+            <div><Icon.Paperclip size="16" /> {this.props.task.attachments}</div> : ""
           }
-          { parseInt(this.props.totalChunks) > 0 ? 
-            <div><Icon.CheckSquare size="16" /> {this.props.completedChunks}/{this.props.totalChunks}</div> : ""
+          { parseInt(this.props.task.descendants) > 0 ? 
+            <div><Icon.CheckSquare size="16" /> {this.props.task.completed_descendants}/{this.props.task.descendants}</div> : ""
           }
         </div>
       </div>
@@ -48,7 +49,11 @@ export default class Chunky extends React.Component {
     this.state = { 
       name: this.props.name,
       task: this.props.task,
-      notes: ""
+      notes: "",
+      child: this.props.children[0],
+      children: this.props.children,
+      blockedBy: this.props.blocked_by[0],
+      blocking: this.props.blocking[0]
     };
     
     this.handleNotesChange = this.handleNotesChange.bind(this);
@@ -81,14 +86,15 @@ export default class Chunky extends React.Component {
   }
 
   render() {
-    console.log(this.state.task);
+    let children = this.state.children.map(child => 
+      <FrontSideTask task={child} key={child.id} />
+    );
     return (
       <div className="task-card-back">
         <h1>
           <label>
             <Checkbox completed={this.state.task.completed} />
-            {/* { this.state.task.name } */}
-            Pack boxes
+            { this.state.task.name }
           </label>
         </h1>
         
@@ -102,14 +108,14 @@ export default class Chunky extends React.Component {
             <Icon.PauseCircle size="16" />
             <span className="field-name"> waiting on</span>
             <div className="field">
-              <FrontSideTask name="Get boxes" />
+              <FrontSideTask task={this.state.blockedBy} />
             </div>
           </div>
           <div>
             <Icon.AlertCircle size="16" />
             <span className="field-name"> blocking</span>
             <div className="field">
-              <FrontSideTask name="Put boxes in moving van" dueDate="May 15"/>
+              <FrontSideTask task={this.state.blocking} />
             </div>
           </div>
         </div>
@@ -127,7 +133,7 @@ export default class Chunky extends React.Component {
         
         <div className="field-name">subtasks</div>
         <div className="chunks">
-          <FrontSideTask name="Pack kitchen" desc="true" attachments="1" completedChunks="1" totalChunks="1" />
+          {children}
           <div className="add-chunk">Add chunk</div>
         </div>
 

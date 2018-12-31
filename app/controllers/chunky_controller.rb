@@ -4,6 +4,7 @@ class ChunkyController < ApplicationController
   layout "chunky"
 
   def index
-    @chunky_props = { name: "Stranger", task: Task.first }
+    task = Task.second
+    @chunky_props = { name: "Stranger", task: task, children: task.children, blocked_by: task.blocked_by, blocking: task.blocking }
   end
 end
