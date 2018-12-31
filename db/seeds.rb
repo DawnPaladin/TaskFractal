@@ -7,3 +7,21 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Task.create({ name: 'Test task' })
+pb = Task.create(name: "Pack boxes")
+pk = pb.children.create(name: "Pack kitchen")
+plr = pb.children.create(name: "Pack living room")
+bedroom = pb.children.create(name: "Pack bedroom")
+bathroom = pb.children.create(name: "Pack bathroom")
+
+pk.complete
+fridge = pk.children.create(name: "Empty fridge")
+fridge.complete
+
+pjc = bedroom.children.create(name: "Pack James' closet")
+pjc.complete
+bedroom.children.create(name: "Pack Holly's closet")
+
+bathroom.children.create(name: "Pack toiletries")
+
+pb.blocked_by.create(name: "Get boxes")
+pb.blocking.create(name: "Put boxes in moving van")

@@ -50,10 +50,9 @@ export default class Chunky extends React.Component {
       name: this.props.name,
       task: this.props.task,
       notes: "",
-      child: this.props.children[0],
       children: this.props.children,
-      blockedBy: this.props.blocked_by[0],
-      blocking: this.props.blocking[0]
+      blockedBy: this.props.blocked_by,
+      blocking: this.props.blocking
     };
     
     this.handleNotesChange = this.handleNotesChange.bind(this);
@@ -89,6 +88,12 @@ export default class Chunky extends React.Component {
     let children = this.state.children.map(child => 
       <FrontSideTask task={child} key={child.id} />
     );
+    let blockedBy = this.state.blockedBy.map(blockedBy =>
+      <FrontSideTask task={blockedBy} key={blockedBy.id} />
+    );
+    let blocking = this.state.blocking.map(blocking =>
+      <FrontSideTask task={blocking} key={blocking.id} />
+    );
     return (
       <div className="task-card-back">
         <h1>
@@ -108,14 +113,14 @@ export default class Chunky extends React.Component {
             <Icon.PauseCircle size="16" />
             <span className="field-name"> waiting on</span>
             <div className="field">
-              <FrontSideTask task={this.state.blockedBy} />
+              {blockedBy}
             </div>
           </div>
           <div>
             <Icon.AlertCircle size="16" />
             <span className="field-name"> blocking</span>
             <div className="field">
-              <FrontSideTask task={this.state.blocking} />
+              {blocking}
             </div>
           </div>
         </div>
