@@ -2,10 +2,21 @@
 	max-width: 350px;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	font-size: 16px;
+	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
+	border-radius: 3px;
+	padding: 10px 20px 0 20px;
 	textarea {
 		width: 99%;
 		border: none;
 		resize: none;
+	}
+	.completion-bar {
+		margin-top: 20px;
+		width: 100%;
+		border-collapse: collapse;
+		td:not(:last-child) {
+			border-right: 1px solid hsla(0, 0%, 20%, 50%);
+		}
 	}
 }
 

@@ -1,9 +1,12 @@
 // TODO: Add Save button to Notes field
+// FIXME: handleCheckboxChange() needs to update completed_descendants
 
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
+const interpolate = require('color-interpolate');
+const palette = interpolate(['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']);
 
 function send() {
   let body = JSON.stringify({task: this});
@@ -33,7 +36,7 @@ class Checkbox extends React.Component {
   }
   render() {
     let box;
-    if (this.state.completed) {
+    if (this.state.task.completed) {
       box = <input type="checkbox" onChange={this.handleCheckboxChange} defaultChecked />
     } else {
       box = <input type="checkbox" onChange={this.handleCheckboxChange} />
@@ -118,6 +121,27 @@ export default class Chunky extends React.Component {
     let blocking = this.state.blocking.map(blocking =>
       <FrontSideTask task={blocking} key={blocking.id} />
     );
+    
+    let cells = [], barColor;
+    const completedDescendants = this.state.task.completed_descendants;
+    const totalDescendants = this.state.task.descendants;
+    for (var i = 0; i < completedDescendants; i++) {
+      barColor = palette(i/totalDescendants);
+      cells.push(<td key={i} style={{background: barColor}}></td>);
+    }
+    for (var i = completedDescendants; i < totalDescendants; i++) {
+      cells.push(<td key={i}></td>);
+    }
+    let completionBar = (
+      <table className="completion-bar">
+        <tbody>
+          <tr>
+            {cells}
+          </tr>
+        </tbody>
+      </table>
+    )
+    
     return (
       <div className="task-card-back">
         <h1>
@@ -165,7 +189,9 @@ export default class Chunky extends React.Component {
           {children}
           <div className="add-chunk">Add chunk</div>
         </div>
-
+        
+        {completionBar}
+        
       </div>
     );
   }
