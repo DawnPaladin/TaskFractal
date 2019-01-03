@@ -6,6 +6,20 @@ import React from 'react';
 import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 
+function send() {
+  let body = JSON.stringify({task: this});
+  let id = this.id;
+  
+  let headers = ReactOnRails.authenticityHeaders();
+  headers["Content-Type"] = "application/json";
+  
+  fetch(`/tasks/${id}.json`, {
+    method: "PUT",
+    body: body,
+    headers: headers
+  });
+}
+
 class Checkbox extends React.Component {
   constructor(props) {
     super(props);
@@ -31,23 +45,11 @@ class FrontSideTask extends React.Component {
     this.state = {
       task: this.props.task
     }
+    this.state.task.send = send;
   }
   handleCheckboxChange(event) {
     this.state.task.completed = event.target.checked;
-    this.sendTask();
-  }
-  sendTask = () => {
-    let body = JSON.stringify({task: this.state.task});
-    let id = this.state.task.id;
-
-    let headers = ReactOnRails.authenticityHeaders();
-    headers["Content-Type"] = "application/json";
-
-    fetch(`/tasks/${id}.json`, {
-      method: "PUT",
-      body: body,
-      headers: headers
-    });
+    this.state.task.send();
   }
   render() {
     return (
@@ -82,7 +84,7 @@ export default class Chunky extends React.Component {
    */
   constructor(props) {
     super(props);
-
+    
     // How to set initial state in ES6 class syntax
     // https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class
     this.state = { 
@@ -95,8 +97,10 @@ export default class Chunky extends React.Component {
     };
     
     this.handleNotesChange = this.handleNotesChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.state.task.send = send;
   }
-
+  
   updateName = (name) => {
     this.setState({ name });
   };  
@@ -104,7 +108,11 @@ export default class Chunky extends React.Component {
   handleNotesChange = (event) => {
     this.setState({ notes: event.target.value });
   }
-
+  handleCheckboxChange(event) {
+    this.state.task.completed = event.target.checked;
+    this.state.task.send();
+  }
+  
   render() {
     {/* TODO: Consistent sorting (probably done on backend) */}
     let children = this.state.children.map(child => 
@@ -120,7 +128,7 @@ export default class Chunky extends React.Component {
       <div className="task-card-back">
         <h1>
           <label>
-            <Checkbox completed={this.state.task.completed} /*onCheckboxChange=*/ />
+            <Checkbox completed={this.state.task.completed} handleCheckboxChange={this.handleCheckboxChange} />
             { this.state.task.name }
           </label>
         </h1>
