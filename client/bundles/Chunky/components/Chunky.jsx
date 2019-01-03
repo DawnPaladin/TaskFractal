@@ -1,31 +1,70 @@
+// TODO: Generic method to update backed on any data change
+// Start with Notes and checkbox in Chunky class, and checkboxes in FrontSideTask
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 
-const Checkbox = props => (props.completed ? <input type="checkbox" defaultChecked /> : <input type="checkbox" />);
+class Checkbox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      completed: props.completed
+    }
+  }
+  render() {
+    let box;
+    if (this.state.completed) {
+      box = <input type="checkbox" onChange={this.props.handleCheckboxChange} defaultChecked />
+    } else {
+      box = <input type="checkbox" onChange={this.props.handleCheckboxChange} />
+    }
+    return box;
+  }
+}
 
 class FrontSideTask extends React.Component {
   constructor(props) {
     super(props);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.state = {
+      task: this.props.task
+    }
+  }
+  handleCheckboxChange(event) {
+    this.state.task.completed = event.target.checked;
+    this.sendTask();
+  }
+  sendTask = () => {
+    let body = JSON.stringify({task: this.state.task});
+    let id = this.state.task.id;
+
+    let headers = ReactOnRails.authenticityHeaders();
+    headers["Content-Type"] = "application/json";
+
+    fetch(`/tasks/${id}.json`, {
+      method: "PUT",
+      body: body,
+      headers: headers
+    });
   }
   render() {
-    console.log(this.props.task);
     return (
       <div className="frontSideTask">
-        <label className="checkbox-label"> <Checkbox completed={this.props.task.completed} /> { this.props.task.name }</label>
+        <label className="checkbox-label"> <Checkbox completed={this.state.task.completed} handleCheckboxChange={this.handleCheckboxChange} /> { this.state.task.name }</label>
         <div className="details">
-          { this.props.task.dueDate ?
-            <div><Icon.Calendar size="16" /> {this.props.task.dueDate}</div> : ""
+          { this.state.task.dueDate ?
+            <div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
           }
-          { this.props.task.description ?
+          { this.state.task.description ?
             <div><Icon.AlignLeft size="16" /></div> : ""
           }
-          { this.props.task.attachments ?
-            <div><Icon.Paperclip size="16" /> {this.props.task.attachments}</div> : ""
+          { this.state.task.attachments ?
+            <div><Icon.Paperclip size="16" /> {this.state.task.attachments}</div> : ""
           }
-          { parseInt(this.props.task.descendants) > 0 ? 
-            <div><Icon.CheckSquare size="16" /> {this.props.task.completed_descendants}/{this.props.task.descendants}</div> : ""
+          { parseInt(this.state.task.descendants) > 0 ? 
+            <div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants}/{this.props.task.descendants}</div> : ""
           }
         </div>
       </div>
@@ -60,31 +99,14 @@ export default class Chunky extends React.Component {
 
   updateName = (name) => {
     this.setState({ name });
-  };
-  
-  sendTask = () => {
-    let body = JSON.stringify({task: this.state.task});
-
-    let headers = ReactOnRails.authenticityHeaders();
-    headers["Content-Type"] = "application/json";
-
-    fetch('/tasks/1.json', {
-      method: "PUT",
-      body: body,
-      headers: headers
-    });
-  }
-  
-  completeTask = () => {
-    this.state.task.completed = true;
-    this.sendTask();
-  }
+  };  
   
   handleNotesChange = (event) => {
     this.setState({ notes: event.target.value });
   }
 
   render() {
+    {/* TODO: Consistent sorting (probably done on backend) */}
     let children = this.state.children.map(child => 
       <FrontSideTask task={child} key={child.id} />
     );
@@ -98,7 +120,7 @@ export default class Chunky extends React.Component {
       <div className="task-card-back">
         <h1>
           <label>
-            <Checkbox completed={this.state.task.completed} />
+            <Checkbox completed={this.state.task.completed} /*onCheckboxChange=*/ />
             { this.state.task.name }
           </label>
         </h1>

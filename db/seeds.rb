@@ -13,12 +13,15 @@ plr = pb.children.create(name: "Pack living room")
 bedroom = pb.children.create(name: "Pack bedroom")
 bathroom = pb.children.create(name: "Pack bathroom")
 
-pk.complete
+pk.completed = true
+pk.save
 fridge = pk.children.create(name: "Empty fridge")
-fridge.complete
+fridge.completed = true
+fridge.save
 
 pjc = bedroom.children.create(name: "Pack James' closet")
-pjc.complete
+pjc.completed = true
+pjc.save
 bedroom.children.create(name: "Pack Holly's closet")
 
 bathroom.children.create(name: "Pack toiletries")
