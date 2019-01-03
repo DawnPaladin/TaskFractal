@@ -1,5 +1,4 @@
-// TODO: Generic method to update backed on any data change
-// Start with Notes and checkbox in Chunky class, and checkboxes in FrontSideTask
+// TODO: Add Save button to Notes field
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -24,15 +23,20 @@ class Checkbox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      completed: props.completed
+      task: props.task
     }
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+  }
+  handleCheckboxChange(event) {
+    this.state.task.completed = event.target.checked;
+    this.state.task.send();
   }
   render() {
     let box;
     if (this.state.completed) {
-      box = <input type="checkbox" onChange={this.props.handleCheckboxChange} defaultChecked />
+      box = <input type="checkbox" onChange={this.handleCheckboxChange} defaultChecked />
     } else {
-      box = <input type="checkbox" onChange={this.props.handleCheckboxChange} />
+      box = <input type="checkbox" onChange={this.handleCheckboxChange} />
     }
     return box;
   }
@@ -41,20 +45,15 @@ class Checkbox extends React.Component {
 class FrontSideTask extends React.Component {
   constructor(props) {
     super(props);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.state = {
       task: this.props.task
     }
     this.state.task.send = send;
   }
-  handleCheckboxChange(event) {
-    this.state.task.completed = event.target.checked;
-    this.state.task.send();
-  }
   render() {
     return (
       <div className="frontSideTask">
-        <label className="checkbox-label"> <Checkbox completed={this.state.task.completed} handleCheckboxChange={this.handleCheckboxChange} /> { this.state.task.name }</label>
+        <label className="checkbox-label"> <Checkbox task={this.state.task} /> { this.state.task.name }</label>
         <div className="details">
           { this.state.task.dueDate ?
             <div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
@@ -97,7 +96,6 @@ export default class Chunky extends React.Component {
     };
     
     this.handleNotesChange = this.handleNotesChange.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.state.task.send = send;
   }
   
@@ -107,10 +105,6 @@ export default class Chunky extends React.Component {
   
   handleNotesChange = (event) => {
     this.setState({ notes: event.target.value });
-  }
-  handleCheckboxChange(event) {
-    this.state.task.completed = event.target.checked;
-    this.state.task.send();
   }
   
   render() {
@@ -128,7 +122,7 @@ export default class Chunky extends React.Component {
       <div className="task-card-back">
         <h1>
           <label>
-            <Checkbox completed={this.state.task.completed} handleCheckboxChange={this.handleCheckboxChange} />
+            <Checkbox task={this.state.task} />
             { this.state.task.name }
           </label>
         </h1>
