@@ -1,5 +1,6 @@
 // TODO: Add Save button to Notes field
-// FIXME: handleCheckboxChange() needs to update completed_descendants
+// FIXME: Make Chunky the one true source for state
+// FIXME: Make Chunky pass event handlers to all child components, as taught in https://reactjs.org/docs/thinking-in-react.html
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -8,40 +9,9 @@ import * as Icon from 'react-feather';
 const interpolate = require('color-interpolate');
 const palette = interpolate(['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']);
 
-function send() {
-  let body = JSON.stringify({task: this});
-  let id = this.id;
-  
-  let headers = ReactOnRails.authenticityHeaders();
-  headers["Content-Type"] = "application/json";
-  
-  fetch(`/tasks/${id}.json`, {
-    method: "PUT",
-    body: body,
-    headers: headers
-  });
-}
-
 class Checkbox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      task: props.task
-    }
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-  }
-  handleCheckboxChange(event) {
-    this.state.task.completed = event.target.checked;
-    this.state.task.send();
-  }
   render() {
-    let box;
-    if (this.state.task.completed) {
-      box = <input type="checkbox" onChange={this.handleCheckboxChange} defaultChecked />
-    } else {
-      box = <input type="checkbox" onChange={this.handleCheckboxChange} />
-    }
-    return box;
+    return <input type="checkbox" onChange={this.props.handleChange} defaultChecked={this.props.checked} />
   }
 }
 
@@ -51,12 +21,11 @@ class FrontSideTask extends React.Component {
     this.state = {
       task: this.props.task
     }
-    this.state.task.send = send;
   }
   render() {
     return (
       <div className="frontSideTask">
-        <label className="checkbox-label"> <Checkbox task={this.state.task} /> { this.state.task.name }</label>
+        <label className="checkbox-label"> <Checkbox checked={this.state.task.completed} handleChange={this.props.handleCheckboxChange} /> { this.state.task.name }</label>
         <div className="details">
           { this.state.task.dueDate ?
             <div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
@@ -94,12 +63,12 @@ export default class Chunky extends React.Component {
       task: this.props.task,
       notes: "",
       children: this.props.children,
-      blockedBy: this.props.blocked_by,
+      blocked_by: this.props.blocked_by,
       blocking: this.props.blocking
     };
     
     this.handleNotesChange = this.handleNotesChange.bind(this);
-    this.state.task.send = send;
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
   
   updateName = (name) => {
@@ -109,14 +78,60 @@ export default class Chunky extends React.Component {
   handleNotesChange = (event) => {
     this.setState({ notes: event.target.value });
   }
+  handleCheckboxChange(event) {
+    const completed = event.target.checked;
+    this.setState(
+      (prevState, props) => ({
+        task: {
+          ...prevState.task, // https://stackoverflow.com/a/41391598/1805453
+          completed: completed
+        }
+      }),
+      // { task: { completed: event.target.checked } },
+      () => { console.log(this.state.task); this.send(this.state.task); } // FIXME: This is sending the wrong task
+    );
+  }
+  
+  refresh = () => {
+    let id = this.state.task.id;
+  
+    let headers = ReactOnRails.authenticityHeaders();
+    headers["Content-Type"] = "application/json";
+    
+    fetch(`/tasks/${id}.json`, {
+      method: "GET",
+      headers: headers
+    })
+    .then(response => response.json())
+    .then(json => this.setState({ task: json }));
+    
+  }
+  
+  componentDidUpdate(prevProps) {
+    // this.refresh();
+  }
+  
+  send(task) {
+    let body = JSON.stringify({task});
+    let id = task.id;
+    
+    let headers = ReactOnRails.authenticityHeaders();
+    headers["Content-Type"] = "application/json";
+    
+    fetch(`/tasks/${id}.json`, {
+      method: "PUT",
+      body: body,
+      headers: headers
+    });
+  }
   
   render() {
     {/* TODO: Consistent sorting (probably done on backend) */}
     let children = this.state.children.map(child => 
-      <FrontSideTask task={child} key={child.id} />
+      <FrontSideTask task={child} key={child.id} send={this.send} handleCheckboxChange={this.handleCheckboxChange} />
     );
-    let blockedBy = this.state.blockedBy.map(blockedBy =>
-      <FrontSideTask task={blockedBy} key={blockedBy.id} />
+    let blocked_by = this.state.blocked_by.map(blocked_by =>
+      <FrontSideTask task={blocked_by} key={blocked_by.id} />
     );
     let blocking = this.state.blocking.map(blocking =>
       <FrontSideTask task={blocking} key={blocking.id} />
@@ -161,7 +176,7 @@ export default class Chunky extends React.Component {
             <Icon.PauseCircle size="16" />
             <span className="field-name"> waiting on</span>
             <div className="field">
-              {blockedBy}
+              {blocked_by}
             </div>
           </div>
           <div>
