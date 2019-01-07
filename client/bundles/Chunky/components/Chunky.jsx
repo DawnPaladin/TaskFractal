@@ -77,6 +77,7 @@ export default class Chunky extends React.Component {
     
     this.handleNotesChange = this.handleNotesChange.bind(this);
     this.checkboxChange = this.checkboxChange.bind(this);
+    this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
   }
   
   updateName = (name) => {
@@ -86,9 +87,21 @@ export default class Chunky extends React.Component {
   handleNotesChange = (event) => {
     this.setState({ notes: event.target.value });
   }
+  changeCompletedDescendants(amount) {
+    let new_cd = this.state.task.completed_descendants + amount;
+    this.setState(
+      (prevState, props) => ({
+        task: {
+          ...prevState.task,
+          completed_descendants: new_cd
+        }
+      })
+    );
+  }
   checkboxChange(event, component) {
     if (!component) component = this;
     const completed = event.target.checked;
+    completed ? this.changeCompletedDescendants(1) : this.changeCompletedDescendants(-1);
     component.setState(
       (prevState, props) => ({
         task: {
