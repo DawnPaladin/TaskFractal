@@ -13,14 +13,36 @@
 	.completion-bar {
 		height: 20px;
 		position: relative;
+		margin: 0 -20px;
 		table {
 			position: absolute;
 			bottom: 0;
 			width: 100%;
 			border-collapse: collapse;
-			background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet); 
-			td:not(:last-child) {
-				border-right: 1px solid hsla(0, 0%, 20%, 50%);
+			background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet);
+			td {
+				height: 6px;
+				position: relative;
+			}
+			td:not(:last-child)::after {
+				content: '';
+				width: 0;
+				height: 0;
+				border-top: 6px solid white;
+				border-left: 4px solid transparent;
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
+			td:not(:first-child)::before {
+				content: '';
+				width: 0;
+				height: 0;
+				border-top: 6px solid white;
+				border-right: 4px solid transparent;
+				position: absolute;
+				top: 0;
+				left: 0;
 			}
 		}
 		.completion-bar-cover {

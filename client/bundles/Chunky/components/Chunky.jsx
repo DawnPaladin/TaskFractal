@@ -1,5 +1,4 @@
 // TODO: Add Save button to Notes field
-// FIXME: Make Chunky the one true source for state
 
 import PropTypes from 'prop-types';
 import React from 'react';
