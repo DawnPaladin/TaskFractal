@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
-const interpolate = require('color-interpolate');
-const palette = interpolate(['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']);
 
 class Checkbox extends React.Component {
   render() {
@@ -154,24 +152,25 @@ export default class Chunky extends React.Component {
       <FrontSideTask task={blocking} key={blocking.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
     );
     
-    let cells = [], barColor;
+    let cells = [];
     const completedDescendants = this.state.task.completed_descendants;
     const totalDescendants = this.state.task.descendants;
-    for (var i = 0; i < completedDescendants; i++) {
-      barColor = palette(i/totalDescendants);
-      cells.push(<td key={i} style={{background: barColor}}></td>);
-    }
-    for (var i = completedDescendants; i < totalDescendants; i++) {
+    const coverPercentage = (1-(completedDescendants/totalDescendants))*100 + "%";
+    const coverCompletionBar = <div style={{width: coverPercentage}} className="completion-bar-cover"></div>
+    for (var i = 0; i < totalDescendants; i++) {
       cells.push(<td key={i}></td>);
     }
     let completionBar = (
-      <table className="completion-bar">
-        <tbody>
-          <tr>
-            {cells}
-          </tr>
-        </tbody>
-      </table>
+      <div className="completion-bar">
+        <table>
+          <tbody>
+            <tr>
+              {cells}
+            </tr>
+          </tbody>
+        </table>
+        {coverCompletionBar}
+      </div>
     )
     
     return (

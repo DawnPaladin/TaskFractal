@@ -11,11 +11,25 @@
 		resize: none;
 	}
 	.completion-bar {
-		margin-top: 20px;
-		width: 100%;
-		border-collapse: collapse;
-		td:not(:last-child) {
-			border-right: 1px solid hsla(0, 0%, 20%, 50%);
+		height: 20px;
+		position: relative;
+		table {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			border-collapse: collapse;
+			background-image: linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet); 
+			td:not(:last-child) {
+				border-right: 1px solid hsla(0, 0%, 20%, 50%);
+			}
+		}
+		.completion-bar-cover {
+			position: absolute;
+			bottom: 0;
+			height: 8px;
+			right: 0;
+			background: white;
+			transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1); // https://easings.net/#easeOutQuint
 		}
 	}
 }
