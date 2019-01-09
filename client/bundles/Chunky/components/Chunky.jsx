@@ -1,5 +1,3 @@
-// TODO: Add Save button to Notes field
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
@@ -66,24 +64,21 @@ export default class Chunky extends React.Component {
     this.state = { 
       name: this.props.name,
       task: this.props.task,
-      notes: "",
       children: this.props.children,
       blocked_by: this.props.blocked_by,
       blocking: this.props.blocking
     };
     
-    this.handleNotesChange = this.handleNotesChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.checkboxChange = this.checkboxChange.bind(this);
     this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
+    this.saveTask = this.saveTask.bind(this);
   }
   
   updateName = (name) => {
     this.setState({ name });
   };
   
-  handleNotesChange = (event) => {
-    this.setState({ notes: event.target.value });
-  }
   changeCompletedDescendants(amount) {
     let new_cd = this.state.task.completed_descendants + amount;
     this.setState(
@@ -108,6 +103,21 @@ export default class Chunky extends React.Component {
       }),
       () => { component.send(component.state.task); }
     );
+  }
+  
+  handleDescriptionChange = (event) => {
+    let description = event.target.value;
+    this.setState(
+      (prevState, props) => ({
+        task: {
+          ...prevState.task,
+          description: description
+        }
+      })
+    );
+  }
+  saveTask() {
+    this.send(this.state.task);
   }
   
   refresh = () => {
@@ -206,8 +216,9 @@ export default class Chunky extends React.Component {
         <Icon.AlignLeft size="16" />
         <span className="field-name"> notes</span>
         <div className="field">
-          <textarea value={this.state.notes} onChange={this.handleNotesChange} />
+          <textarea value={this.state.task.description} onChange={this.handleDescriptionChange} />
         </div>
+        <button className="save-notes" onClick={this.saveTask}>Save</button>
         
         <div className="field">
           <Icon.Paperclip size="16" />
