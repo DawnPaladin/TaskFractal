@@ -11,6 +11,8 @@ class Task < ApplicationRecord
 	has_many :blocker_blocks, foreign_key: :blocked_id, class_name: "BlockingTask"
 	has_many :blocking, through: :blocker_blocks, source: :blocker, dependent: :destroy
 	
+	has_many_attached :attachments
+	
 	after_create :increment_descendants_in_parents
 	before_destroy do
 		self.decrement_completed_descendants_in_parents if self.completed
