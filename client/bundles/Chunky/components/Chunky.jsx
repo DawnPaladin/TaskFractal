@@ -1,8 +1,7 @@
 // FIXME: Uploaded files only visible on reload
-// TODO: Click an attachment to open in new tab
 // TODO: Attachment count on subtasks
 // TODO: Drag-and-drop upload
-// FIXME: CSS for attachment thumbnails. Display filename. Allow for rename.
+// TODO: Rename attachments
 // TODO: Use setTaskDetail() more widely
 
 import PropTypes from 'prop-types';
@@ -14,6 +13,32 @@ import * as Icon from 'react-feather';
 class Checkbox extends React.Component {
   render() {
     return <input type="checkbox" onChange={this.props.handleChange} defaultChecked={this.props.checked} />
+  }
+}
+
+class Attachment extends React.Component {
+  constructor(props) {
+    super(props);
+    let fileExtension = this.props.attachment.name.split('.').pop();
+    const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'apng', 'svg', 'bmp', 'ico'];
+    const isImage = imageExtensions.indexOf(fileExtension) > -1;
+    this.state = {
+      isImage: isImage
+    }
+  }
+  render() {
+    let previewImage = <img src={this.props.attachment.url} />
+    let icon = <Icon.File size="16" />
+    return (
+      <div className="attachment">
+        <a href={this.props.attachment.url} target="_blank" rel="noopener noreferrer">
+          <div className="file-graphic">
+            { this.state.isImage ? previewImage : icon }
+          </div>
+        </a>
+        <div className="file-name">{ this.props.attachment.name }</div>
+      </div>
+    )
   }
 }
 
@@ -175,7 +200,7 @@ export default class Chunky extends React.Component {
     );
     
     let attachments = this.state.attachments.map(attachment =>
-      <img src={attachment.url} width="50" height="50" key={attachment.id} />
+      <Attachment attachment={attachment} key={attachment.id} />
     );
     
     let cells = [];
@@ -279,15 +304,15 @@ export default class Chunky extends React.Component {
           <Icon.Paperclip size="16" />
           <span className="field-name"> attachments</span>
           <div className="box">
-            {attachments}
-            <div>
+            <div className="attachments">{attachments}</div>
+            <div className="attach-file">
               <i className="deemphasize">Attach file: </i>
               {fileUpload}
             </div>
           </div>
         </div>
         
-        <div class="field">
+        <div className="field">
           <div className="field-name">subtasks</div>
           <div className="chunks">
             {children}

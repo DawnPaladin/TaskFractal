@@ -114,6 +114,35 @@
 	.due-date {
 		margin-bottom: 15px;
 	}
+	
+	.attachments {
+		display: flex;
+		flex-direction: column;
+		.attachment {
+			display: flex;
+			align-items: center;
+			margin: 5px;
+			.file-graphic {
+				width: 75px;
+				height: 75px;
+				border: 1px dotted silver;
+				border-radius: 5px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background: hsl(0, 0, 85%);
+				img {
+					max-width: 100%;
+				}
+			}
+			.file-name {
+				margin-left: 10px;
+			}
+		}
+	}
+	.attach-file {
+		margin-left: 5px;
+	}
 
 }
 
