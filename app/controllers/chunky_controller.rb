@@ -5,6 +5,12 @@ class ChunkyController < ApplicationController
 
   def index
     task = Task.second
-    @chunky_props = { name: "Stranger", task: task, children: task.children, blocked_by: task.blocked_by, blocking: task.blocking }
+    @chunky_props = { task: task, children: task.children, blocked_by: task.blocked_by, blocking: task.blocking, attachments: attachments(task) }
   end
+  
+  private
+    def attachments(task)
+      task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
+    end
+  
 end

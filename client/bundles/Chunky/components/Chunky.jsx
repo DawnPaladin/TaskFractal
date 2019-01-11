@@ -1,6 +1,14 @@
+// FIXME: Uploaded files only visible on reload
+// TODO: Click an attachment to open in new tab
+// TODO: Attachment count on subtasks
+// TODO: Drag-and-drop upload
+// FIXME: CSS for attachment thumbnails. Display filename. Allow for rename.
+// TODO: Use setTaskDetail() more widely
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
+import ActiveStorageProvider from 'react-activestorage-provider';
 import * as Icon from 'react-feather';
 
 class Checkbox extends React.Component {
@@ -50,7 +58,7 @@ class FrontSideTask extends React.Component {
 
 export default class Chunky extends React.Component {
   static propTypes = {
-    name: PropTypes.string.isRequired, // this is passed from the Rails view
+    // name: PropTypes.string.isRequired, // this is passed from the Rails view
   };
 
   /**
@@ -66,13 +74,19 @@ export default class Chunky extends React.Component {
       task: this.props.task,
       children: this.props.children,
       blocked_by: this.props.blocked_by,
-      blocking: this.props.blocking
+      blocking: this.props.blocking,
+      attachments: this.props.attachments
     };
     
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
     this.checkboxChange = this.checkboxChange.bind(this);
     this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
     this.saveTask = this.saveTask.bind(this);
+    this.setTaskDetail = this.setTaskDetail.bind(this);
+    this.test = this.test.bind(this);
+  }
+  
+  test(value) {
+    console.log(value);
   }
   
   updateName = (name) => {
@@ -105,17 +119,18 @@ export default class Chunky extends React.Component {
     );
   }
   
-  handleDescriptionChange = (event) => {
-    let description = event.target.value;
+  setTaskDetail(detailName, value) {
+    console.log(value);
     this.setState(
-      (prevState, props) => ({
-        task: {
-          ...prevState.task,
-          description: description
-        }
-      })
-    );
+      (prevState, props) => {
+        let newTaskObj = { ...prevState.task };
+        newTaskObj[detailName] = value;
+        console.log(newTaskObj);
+        return { task: newTaskObj }
+      }
+    )
   }
+  
   saveTask() {
     this.send(this.state.task);
   }
@@ -161,6 +176,10 @@ export default class Chunky extends React.Component {
       <FrontSideTask task={blocking} key={blocking.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
     );
     
+    let attachments = this.state.attachments.map(attachment =>
+      <img src={attachment.url} width="50" height="50" key={attachment.id} />
+    );
+    
     let cells = [];
     const completedDescendants = this.state.task.completed_descendants;
     const totalDescendants = this.state.task.descendants;
@@ -181,6 +200,42 @@ export default class Chunky extends React.Component {
         {coverCompletionBar}
       </div>
     )
+    
+    let fileUpload = <ActiveStorageProvider
+      endpoint={{
+        path: '/tasks/' + this.state.task.id + '.json',
+        model: 'Task',
+        attribute: 'attachments',
+        method: 'PUT',
+      }}
+      onSubmit={task => this.setTaskDetail('attachments', task.attachments)}
+      render={({ handleUpload, uploads, ready }) => (
+        <span>
+          <input 
+            type="file"
+            disabled={!ready}
+            onChange={e => handleUpload(e.currentTarget.files)}
+          />
+          
+          {uploads.map(upload => {
+            switch (upload.state) {
+              case 'waiting':
+                return <p key={upload.id}>Waiting to upload {upload.file.name}</p>
+              case 'uploading':
+                return (
+                  <p key={upload.id}>Uploading {upload.file.name}: {upload.progress}%</p>
+                )
+              case 'error':
+                return (
+                  <p key={upload.id}>Error uploading {upload.file.name}: {upload.error}</p>
+                )
+              case 'finished':
+                return <p key={upload.id}>Finished uploading {upload.file.name}</p>
+            }
+          })}
+        </span>
+      )}
+    />
     
     return (
       <div className="task-card-back">
@@ -216,13 +271,18 @@ export default class Chunky extends React.Component {
         <Icon.AlignLeft size="16" />
         <span className="field-name"> notes</span>
         <div className="field">
-          <textarea value={this.state.task.description} onChange={this.handleDescriptionChange} />
+          <textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
         </div>
         <button className="save-notes" onClick={this.saveTask}>Save</button>
         
-        <div className="field">
+        <div>
           <Icon.Paperclip size="16" />
-          <i className="deemphasize">Attach file</i>
+          <span className="field-name"> attachments</span>
+          <div className="field">
+            {attachments}
+            <br/><i className="deemphasize">Attach file: </i>
+            {fileUpload}
+          </div>
         </div>
         
         <div className="field-name">subtasks</div>
