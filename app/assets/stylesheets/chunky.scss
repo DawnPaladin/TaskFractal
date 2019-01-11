@@ -54,77 +54,83 @@
 			transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1); // https://easings.net/#easeOutQuint
 		}
 	}
-}
-
-.field {
-	border: 1px solid silver;
-	padding: 5px;
-}
-h1 {
-	font-weight: 400;
-	font-size: 1.75em;
-}
-
-h1 input[type=checkbox] {
-	transform: scale(1.75) translateY(-2.5px);
-}
-
-.field-name {
-	font-variant: small-caps;
-	vertical-align: 3px;
-}
-
-.row {
-	display: flex;
-	flex-direction: row;
-	& > * {
-		margin-left: 1em;
-		flex-basis: 50%;
+	
+	.field {
+		margin-bottom: 0px;
 	}
-	& > *:first-child {
-		margin-left: 0;
+
+	.box {
+		border: 1px solid silver;
+		padding: 5px;
 	}
-}
 
-.row .field {
-	min-height: 100px;
-}
-
-.checkbox-label {
-	padding-left: 23px;
-	text-indent: -24px;
-	input[type=checkbox] {
-		transform: scale(1.25) translateY(0px);
+	.field-name {
+		font-variant: small-caps;
+		vertical-align: 3px;
 	}
-}
 
-.deemphasize {
-	color: hsl(0, 0%, 50%);
-}
+	h1 {
+		font-weight: 400;
+		font-size: 1.75em;
+	}
 
-.chunks {
-	padding-top: 5px;
-	.add-chunk {
-		margin-top: 5px;
-		margin-left: 24px;
+	h1 input[type=checkbox] {
+		transform: scale(1.75) translateY(-2.5px);
+	}
+
+	.row {
+		display: flex;
+		flex-direction: row;
+		& > * {
+			margin-left: 1em;
+			flex-basis: 50%;
+		}
+		& > *:first-child {
+			margin-left: 0;
+		}
+	}
+
+	.row .field {
+		min-height: 100px;
+	}
+
+	.checkbox-label {
+		padding-left: 23px;
+		text-indent: -24px;
+		input[type=checkbox] {
+			transform: scale(1.25) translateY(0px);
+		}
+	}
+
+	.deemphasize {
 		color: hsl(0, 0%, 50%);
 	}
-}
 
-.details {
-	@extend .deemphasize;
-	margin-top: 5px;
-	margin-left: 24px;
-	& > * {
-		display: inline-block;
+	.chunks {
+		padding-top: 5px;
+		.add-chunk {
+			margin-top: 5px;
+			margin-left: 24px;
+			color: hsl(0, 0%, 50%);
+		}
+	}
+
+	.details {
+		@extend .deemphasize;
+		margin-top: 5px;
+		margin-left: 24px;
+		& > * {
+			display: inline-block;
+			margin-right: 10px;
+		}
+	}
+
+	h1 input[type=checkbox] {
 		margin-right: 10px;
 	}
-}
 
-h1 input[type=checkbox] {
-	margin-right: 10px;
-}
+	.save-notes {
+		margin-bottom: 15px;
+	}
 
-.save-notes {
-	margin-bottom: 15px;
 }

@@ -246,49 +246,55 @@ export default class Chunky extends React.Component {
           </label>
         </h1>
         
-        <div className="field">
+        <div className="field box">
           <Icon.Calendar size="16" />
           { this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
         </div>
         
         <div className="row">
-          <div>
+          <div className="field">
             <Icon.PauseCircle size="16" />
             <span className="field-name"> waiting on</span>
-            <div className="field">
+            <div className="box">
               {blocked_by}
             </div>
           </div>
-          <div>
+          <div className="field">
             <Icon.AlertCircle size="16" />
             <span className="field-name"> blocking</span>
-            <div className="field">
+            <div className="box">
               {blocking}
             </div>
           </div>
         </div>
         
-        <Icon.AlignLeft size="16" />
-        <span className="field-name"> notes</span>
         <div className="field">
-          <textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
+          <Icon.AlignLeft size="16" />
+          <span className="field-name"> notes</span>
+          <div className="box">
+            <textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
+          </div>
+          <button className="save-notes" onClick={this.saveTask}>Save</button>
         </div>
-        <button className="save-notes" onClick={this.saveTask}>Save</button>
         
-        <div>
+        <div className="field">
           <Icon.Paperclip size="16" />
           <span className="field-name"> attachments</span>
-          <div className="field">
+          <div className="box">
             {attachments}
-            <br/><i className="deemphasize">Attach file: </i>
-            {fileUpload}
+            <div>
+              <i className="deemphasize">Attach file: </i>
+              {fileUpload}
+            </div>
           </div>
         </div>
         
-        <div className="field-name">subtasks</div>
-        <div className="chunks">
-          {children}
-          <div className="add-chunk">Add chunk</div>
+        <div class="field">
+          <div className="field-name">subtasks</div>
+          <div className="chunks">
+            {children}
+            <div className="add-chunk">Add chunk</div>
+          </div>
         </div>
         
         {completionBar}
