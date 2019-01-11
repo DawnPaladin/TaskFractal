@@ -32,11 +32,9 @@ class FrontSideTask extends React.Component {
   }
   render() {
     return (
-      <div className="frontSideTask">
-        <label className="checkbox-label">
-          <Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} /><span> </span>
-          { this.state.task.name }
-        </label>
+      <div className="task-card-front">
+        <Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
+        <div className="checkbox-label">{ this.state.task.name }</div>
         <div className="details">
           { this.state.task.dueDate ?
             <div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
@@ -246,7 +244,7 @@ export default class Chunky extends React.Component {
           </label>
         </h1>
         
-        <div className="field box">
+        <div className="field box due-date">
           <Icon.Calendar size="16" />
           { this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
         </div>
