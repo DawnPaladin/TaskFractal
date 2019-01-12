@@ -10,6 +10,7 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
+    @chunky_props = { task: @task, children: @task.children, blocked_by: @task.blocked_by, blocking: @task.blocking, attachments: attachments(@task) }
   end
 
   # GET /tasks/new
@@ -62,6 +63,10 @@ class TasksController < ApplicationController
   end
 
   private
+    def attachments(task)
+      task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = Task.find(params[:id])
