@@ -5,8 +5,8 @@ class TasksController < ApplicationController
   # GET /tasks.json
   def index
     @tasks = Task.all
-    @task = Task.second
-    @chunky_props = { task: @task, children: @task.children, blocked_by: @task.blocked_by, blocking: @task.blocking, attachments: attachments(@task) }
+    @top_level_tasks = Task.where(parent: nil)
+    @chunky_props = { tasks: @tasks, top_level_tasks: @top_level_tasks }
   end
 
   # GET /tasks/1

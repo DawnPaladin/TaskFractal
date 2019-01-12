@@ -9,8 +9,8 @@ import Checkbox from './Checkbox';
 export default class FrontSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
-		send: PropTypes.func.isRequired,
-		handleCheckboxChange: PropTypes.func.isRequired,
+		send: PropTypes.func,
+		handleCheckboxChange: PropTypes.func,
 	}
 	constructor(props) {
 		super(props);
@@ -18,8 +18,8 @@ export default class FrontSideTask extends React.Component {
 		this.state = {
 			task: this.props.task
 		}
-		this.send = this.props.send.bind(this);
-		this.handleCheckbox = this.handleCheckbox.bind(this);
+		if (this.send) this.send = this.props.send.bind(this);
+		if (this.handleCheckbox) this.handleCheckbox = this.handleCheckbox.bind(this);
 	}
 	handleCheckbox(event) {
 		this.props.handleCheckboxChange(event, this);
