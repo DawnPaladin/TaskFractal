@@ -11,12 +11,19 @@ import ActiveStorageProvider from 'react-activestorage-provider';
 import * as Icon from 'react-feather';
 
 class Checkbox extends React.Component {
+  static propTypes = {
+    handleChange: PropTypes.func.isRequired,
+    checked: PropTypes.bool.isRequired,
+  };
   render() {
     return <input type="checkbox" onChange={this.props.handleChange} defaultChecked={this.props.checked} />
   }
 }
 
 class Attachment extends React.Component {
+  static propTypes = {
+    attachment: PropTypes.object.isRequired,
+  };
   constructor(props) {
     super(props);
     let fileExtension = this.props.attachment.name.split('.').pop();
@@ -43,6 +50,11 @@ class Attachment extends React.Component {
 }
 
 class FrontSideTask extends React.Component {
+  static propTypes = {
+    task: PropTypes.object.isRequired,
+    send: PropTypes.func.isRequired,
+    handleCheckboxChange: PropTypes.func.isRequired,
+  }
   constructor(props) {
     super(props);
     this.name = this.props.task.name; // for ease of debugging
@@ -81,7 +93,7 @@ class FrontSideTask extends React.Component {
 
 export default class Chunky extends React.Component {
   static propTypes = {
-    // name: PropTypes.string.isRequired, // this is passed from the Rails view
+    task: PropTypes.object.isRequired,
   };
 
   /**
@@ -93,8 +105,8 @@ export default class Chunky extends React.Component {
     // How to set initial state in ES6 class syntax
     // https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class
     this.state = { 
-      name: this.props.name,
       task: this.props.task,
+      name: this.props.task.name,
       children: this.props.children,
       blocked_by: this.props.blocked_by,
       blocking: this.props.blocking,
