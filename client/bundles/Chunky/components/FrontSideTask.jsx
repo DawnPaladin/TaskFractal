@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactOnRails from 'react-on-rails';
-import ActiveStorageProvider from 'react-activestorage-provider';
 import * as Icon from 'react-feather';
 
 import Checkbox from './Checkbox';
@@ -27,22 +25,22 @@ export default class FrontSideTask extends React.Component {
 	render() {
 		return (
 			<div className="task-card-front">
-			<Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
-			<div className="checkbox-label">{ this.state.task.name }</div>
-			<div className="details">
-			{ this.state.task.dueDate ?
-				<div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
-			}
-			{ this.state.task.description ?
-				<div><Icon.AlignLeft size="16" /></div> : ""
-			}
-			{ this.state.task.attachments ?
-				<div><Icon.Paperclip size="16" /> {this.state.task.attachments}</div> : ""
-			}
-			{ parseInt(this.state.task.descendants) > 0 ? 
-				<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants}/{this.props.task.descendants}</div> : ""
-			}
-			</div>
+				<Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
+				<div className="checkbox-label">{ this.state.task.name }</div>
+				<div className="details">
+					{ this.state.task.dueDate ?
+						<div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
+					}
+					{ this.state.task.description ?
+						<div><Icon.AlignLeft size="16" /></div> : ""
+					}
+					{ this.state.task.attachments ?
+						<div><Icon.Paperclip size="16" /> {this.state.task.attachments}</div> : ""
+					}
+					{ parseInt(this.state.task.descendants) > 0 ? 
+						<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants}/{this.props.task.descendants}</div> : ""
+					}
+				</div>
 			</div>
 		)
 	}
