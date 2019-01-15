@@ -37,8 +37,8 @@ export default class FrontSideTask extends React.Component {
 					{ this.state.task.attachments ?
 						<div><Icon.Paperclip size="16" /> {this.state.task.attachments}</div> : ""
 					}
-					{ parseInt(this.state.task.descendants) > 0 ? 
-						<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants}/{this.props.task.descendants}</div> : ""
+					{ parseInt(this.state.task.descendants.length) > 0 ? 
+						<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants.length}/{this.state.task.descendants.length}</div> : ""
 					}
 				</div>
 			</div>
