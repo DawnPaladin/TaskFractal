@@ -4,11 +4,13 @@
   "dependencies": {
     "@rails/webpacker": "3.5",
     "babel-preset-react": "^6.24.1",
+    "classnames": "^2.2.6",
     "color-interpolate": "^1.0.4",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-activestorage-provider": "^0.7.0",
     "react-dom": "^16.6.3",
+    "react-dropzone": "^8.0.3",
     "react-feather": "^1.1.5",
     "react-on-rails": "11.2.1"
   },

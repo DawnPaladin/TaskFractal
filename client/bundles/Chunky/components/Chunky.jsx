@@ -9,6 +9,8 @@ import React from 'react';
 import ReactOnRails from 'react-on-rails';
 import ActiveStorageProvider from 'react-activestorage-provider';
 import * as Icon from 'react-feather';
+import classNames from 'classnames';
+import Dropzone from 'react-dropzone';
 
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
@@ -38,6 +40,35 @@ class Attachment extends React.Component {
 				</a>
 				<div className="file-name">{ this.props.attachment.name }</div>
 			</div>
+		)
+	}
+}
+
+class FileUpload extends React.Component {
+	onDrop = (acceptedFiles, rejectedFiles) => {
+		// Do something with files
+		console.log(acceptedFiles);
+	}
+	
+	render() {
+		return (
+			<Dropzone onDrop={this.onDrop}>
+				{({ getRootProps, getInputProps, isDragActive}) => {
+					return (
+						<div
+							{...getRootProps()}
+							className={classNames('dropzone', {'dropzone--isActive': isDragActive})}
+						>
+							<input {...getInputProps()} />
+							{
+								isDragActive ?
+									<p>Drop files here...</p> :
+									<p>Try dropping some files here, or click to select files to upload.</p>
+							}
+						</div>
+					)
+				}}
+			</Dropzone>
 		)
 	}
 }
@@ -270,7 +301,7 @@ export default class Chunky extends React.Component {
 						<div className="attachments">{attachments}</div>
 						<div className="attach-file">
 							<i className="deemphasize">Attach file: </i>
-							{fileUpload}
+							<FileUpload></FileUpload>
 						</div>
 					</div>
 				</div>
