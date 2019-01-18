@@ -11,6 +11,7 @@ import ActiveStorageProvider from 'react-activestorage-provider';
 import * as Icon from 'react-feather';
 import classNames from 'classnames';
 import Dropzone from 'react-dropzone';
+import { DirectUpload } from "activestorage";
 
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
@@ -45,9 +46,51 @@ class Attachment extends React.Component {
 }
 
 class FileUpload extends React.Component {
-	onDrop = (acceptedFiles, rejectedFiles) => {
-		// Do something with files
-		console.log(acceptedFiles);
+	static PropTypes = {
+		task: PropTypes.object.isRequired,
+	}
+	constructor(props) {
+		super(props);
+		this.uploadFile = this.uploadFile.bind(this);
+		this.onDrop = this.onDrop.bind(this);
+		this.attachToModel = this.attachToModel.bind(this);
+	}
+	
+	onDrop(acceptedFiles, rejectedFiles) {
+		Array.from(acceptedFiles).forEach(file => this.uploadFile(file));
+	}
+	
+	uploadFile(file) {
+		const url = '/rails/active_storage/direct_uploads';
+		const upload = new DirectUpload(file, url, this);
+		
+		upload.create((error, blob) => {
+			if (error) {
+				console.warn(error);
+			} else {
+				this.attachToModel(blob);
+			}
+		});
+	}
+	
+	attachToModel(blob) {
+		const id = this.props.task.id;
+		const headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		const body = JSON.stringify({
+			task: {
+				attachments: blob.signed_id
+			}
+		})
+		
+		fetch(`/tasks/${id}.json`, {
+			method: "PUT",
+			headers: headers,
+			body: body
+		})
+		.then(response => console.log(response));
+		// .then(response => response.json())
+		// .then(json => this.setState({ task: json }));
 	}
 	
 	render() {
