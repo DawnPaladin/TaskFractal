@@ -7,7 +7,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
-import ActiveStorageProvider from 'react-activestorage-provider';
 import * as Icon from 'react-feather';
 import classNames from 'classnames';
 import Dropzone from 'react-dropzone';
@@ -260,42 +259,6 @@ export default class Chunky extends React.Component {
 				{coverCompletionBar}
 			</div>
 		)
-		
-		let fileUpload = <ActiveStorageProvider
-			endpoint={{
-				path: '/tasks/' + this.state.task.id + '.json',
-				model: 'Task',
-				attribute: 'attachments',
-				method: 'PUT',
-			}}
-			onSubmit={task => this.setTaskDetail('attachments', task.attachments)}
-			render={({ handleUpload, uploads, ready }) => (
-				<span>
-					<input 
-						type="file"
-						disabled={!ready}
-						onChange={e => handleUpload(e.currentTarget.files)}
-					/>
-					
-					{uploads.map(upload => {
-						switch (upload.state) {
-							case 'waiting':
-								return <p key={upload.id}>Waiting to upload {upload.file.name}</p>
-							case 'uploading':
-								return (
-									<p key={upload.id}>Uploading {upload.file.name}: {upload.progress}%</p>
-								)
-							case 'error':
-								return (
-									<p key={upload.id}>Error uploading {upload.file.name}: {upload.error}</p>
-								)
-							case 'finished':
-								return <p key={upload.id}>Finished uploading {upload.file.name}</p>
-						}
-					})}
-				</span>
-			)}
-		/>
 		
 		return (
 			<div className="task-card-back">
