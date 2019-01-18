@@ -45,7 +45,7 @@ class Attachment extends React.Component {
 }
 
 class FileUpload extends React.Component {
-	static PropTypes = {
+	static propTypes = {
 		task: PropTypes.object.isRequired,
 	}
 	constructor(props) {
@@ -307,7 +307,7 @@ export default class Chunky extends React.Component {
 						<div className="attachments">{attachments}</div>
 						<div className="attach-file">
 							<i className="deemphasize">Attach file: </i>
-							<FileUpload></FileUpload>
+							<FileUpload task={this.state.task}></FileUpload>
 						</div>
 					</div>
 				</div>
