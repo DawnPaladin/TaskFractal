@@ -48,6 +48,7 @@ class FileUpload extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
 		afterUpload: PropTypes.func,
+		attachments: PropTypes.array
 	}
 	constructor(props) {
 		super(props);
@@ -92,6 +93,9 @@ class FileUpload extends React.Component {
 	}
 	
 	render() {
+		let attachments = this.props.attachments.map(attachment =>
+			<Attachment attachment={attachment} key={attachment.id} />
+		);
 		return (
 			<Dropzone onDrop={this.onDrop} disableClick={true} ref={ref => this.dropzoneRef = ref}>
 				{({ getRootProps, getInputProps, isDragActive}) => {
@@ -110,7 +114,17 @@ class FileUpload extends React.Component {
 									// <p>Click or drag files here to upload</p>
 							}
 							{this.props.children}
-							<button onClick={this.dropzoneRef ? this.dropzoneRef.open : null}>Dropzone</button>
+							<div className="field">
+								<Icon.Paperclip size="16" />
+								<span className="field-name"> attachments</span>
+								<div className="box">
+									<div className="attachments">{attachments}</div>
+									<div className="attach-file">
+										<button onClick={this.dropzoneRef ? this.dropzoneRef.open : null}>Attach files</button>
+										{/* <i className="deemphasize">Attach file: </i> */}
+									</div>
+								</div>
+							</div>
 						</div>
 					)
 				}}
@@ -257,10 +271,6 @@ export default class Chunky extends React.Component {
 			<FrontSideTask task={blocking} key={blocking.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
 		);
 		
-		let attachments = this.state.attachments.map(attachment =>
-			<Attachment attachment={attachment} key={attachment.id} />
-		);
-		
 		let cells = [];
 		const completedDescendants = this.state.task.completed_descendants;
 		const totalDescendants = this.state.task.descendants;
@@ -281,12 +291,10 @@ export default class Chunky extends React.Component {
 				{coverCompletionBar}
 			</div>
 		)
-		// const openFileUpload = getRootProps(open);
-		let openFileUpload;
 		
 		return (
 			<div className="task-card-back">
-				<FileUpload task={this.state.task} afterUpload={this.refreshAttachments}>
+				<FileUpload task={this.state.task} afterUpload={this.refreshAttachments} attachments={this.state.attachments}>
 					<h1>
 						<label>
 							<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
@@ -323,18 +331,6 @@ export default class Chunky extends React.Component {
 							<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
 						</div>
 						<button className="save-notes" onClick={this.saveTask}>Save</button>
-					</div>
-					
-					<div className="field">
-						<Icon.Paperclip size="16" />
-						<span className="field-name"> attachments</span>
-						<div className="box">
-							<div className="attachments">{attachments}</div>
-							<div className="attach-file">
-								<button onClick={openFileUpload}>Attach files</button>
-								{/* <i className="deemphasize">Attach file: </i> */}
-							</div>
-						</div>
 					</div>
 					
 					<div className="field">
