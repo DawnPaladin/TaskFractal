@@ -135,6 +135,12 @@ class FileUpload extends React.Component {
 export default class Chunky extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
+		children: PropTypes.array.isRequired,
+		blocked_by: PropTypes.array.isRequired,
+		blocking: PropTypes.array.isRequired,
+		attachments: PropTypes.array.isRequired,
+		count_descendants: PropTypes.number.isRequired,
+		count_completed_descendants: PropTypes.number.isRequired,
 	};
 
 	/**
@@ -151,7 +157,9 @@ export default class Chunky extends React.Component {
 			children: this.props.children,
 			blocked_by: this.props.blocked_by,
 			blocking: this.props.blocking,
-			attachments: this.props.attachments
+			attachments: this.props.attachments,
+			count_descendants: this.props.count_descendants,
+			count_completed_descendants: this.props.count_completed_descendants,
 		};
 		
 		this.checkboxChange = this.checkboxChange.bind(this);
@@ -171,15 +179,8 @@ export default class Chunky extends React.Component {
 	};
 	
 	changeCompletedDescendants(amount) {
-		let new_cd = this.state.task.completed_descendants + amount;
-		this.setState(
-			(prevState, props) => ({
-				task: {
-					...prevState.task,
-					completed_descendants: new_cd
-				}
-			})
-		);
+		let new_ccd = this.state.count_completed_descendants + amount;
+		this.setState({ count_completedDescendants: new_ccd });
 	}
 	checkboxChange(event, component) {
 		if (!component) component = this;
@@ -271,8 +272,8 @@ export default class Chunky extends React.Component {
 		);
 		
 		let cells = [];
-		const completedDescendants = this.state.task.completed_descendants;
-		const totalDescendants = this.state.task.descendants;
+		const completedDescendants = this.state.count_completed_descendants;
+		const totalDescendants = this.state.count_descendants;
 		const coverPercentage = (1-(completedDescendants/totalDescendants))*100 + "%";
 		const coverCompletionBar = <div style={{width: coverPercentage}} className="completion-bar-cover"></div>
 		for (var i = 0; i < totalDescendants; i++) {
@@ -339,10 +340,10 @@ export default class Chunky extends React.Component {
 							<div className="add-chunk">Add chunk</div>
 						</div>
 					</div>
-					
-					{completionBar}
 				
 				</FileUpload>
+				
+				{completionBar}
 				
 			</div>
 		);
