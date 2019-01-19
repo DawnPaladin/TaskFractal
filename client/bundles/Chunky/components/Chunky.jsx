@@ -120,8 +120,7 @@ class FileUpload extends React.Component {
 								<div className="box">
 									<div className="attachments">{attachments}</div>
 									<div className="attach-file">
-										<button onClick={this.dropzoneRef ? this.dropzoneRef.open : null}>Attach files</button>
-										{/* <i className="deemphasize">Attach file: </i> */}
+										<button onClick={this.dropzoneRef ? this.dropzoneRef.open : null}>Attach files</button> <i className="deemphasize">or drag them here</i>
 									</div>
 								</div>
 							</div>
