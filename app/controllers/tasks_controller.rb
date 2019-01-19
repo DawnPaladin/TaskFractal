@@ -12,9 +12,14 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @chunky_props = { task: @task, children: @task.children, blocked_by: @task.blocked_by, blocking: @task.blocking, attachments: attachments(@task) }
+    @chunky_props = { task: @task, children: @task.children, blocked_by: @task.blocked_by, blocking: @task.blocking, attachments: list_attachments(@task) }
   end
-
+  
+  def attachments
+    task = Task.find(params[:id])
+    render json: list_attachments(task)
+  end
+  
   # GET /tasks/new
   def new
     @task = Task.new
@@ -43,7 +48,6 @@ class TasksController < ApplicationController
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
-    @task.attachments.attach(task_params[:attachments])
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to @task, notice: 'Task was successfully updated.' }
@@ -66,7 +70,7 @@ class TasksController < ApplicationController
   end
 
   private
-    def attachments(task)
+    def list_attachments(task)
       task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
     end
 

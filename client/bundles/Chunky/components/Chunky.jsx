@@ -1,7 +1,6 @@
-// FIXME: Uploaded files only visible on reload
 // TODO: Attachment count on subtasks
-// TODO: Drag-and-drop upload
 // TODO: Rename attachments
+// TODO: Bigger drop zone for attachments
 // TODO: Use setTaskDetail() more widely
 
 import PropTypes from 'prop-types';
@@ -47,6 +46,7 @@ class Attachment extends React.Component {
 class FileUpload extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
+		afterUpload: PropTypes.func,
 	}
 	constructor(props) {
 		super(props);
@@ -67,12 +67,12 @@ class FileUpload extends React.Component {
 			if (error) {
 				console.warn(error);
 			} else {
-				this.attachToModel(blob);
+				this.attachToModel(blob, this.props.afterUpload ? this.props.afterUpload : null);
 			}
 		});
 	}
 	
-	attachToModel(blob) {
+	attachToModel(blob, callback) {
 		const id = this.props.task.id;
 		const headers = ReactOnRails.authenticityHeaders();
 		headers["Content-Type"] = "application/json";
@@ -87,9 +87,7 @@ class FileUpload extends React.Component {
 			headers: headers,
 			body: body
 		})
-		.then(response => console.log(response));
-		// .then(response => response.json())
-		// .then(json => this.setState({ task: json }));
+		.then(callback);
 	}
 	
 	render() {
@@ -142,6 +140,7 @@ export default class Chunky extends React.Component {
 		this.saveTask = this.saveTask.bind(this);
 		this.setTaskDetail = this.setTaskDetail.bind(this);
 		this.test = this.test.bind(this);
+		this.refreshAttachments = this.refreshAttachments.bind(this);
 	}
 	
 	test(value) {
@@ -207,6 +206,23 @@ export default class Chunky extends React.Component {
 		.then(response => response.json())
 		.then(json => this.setState({ task: json }));
 		
+	}
+	
+	refreshAttachments() {
+		let id = this.state.task.id;
+	
+		let headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		
+		fetch(`/tasks/${id}/attachments.json`, {
+			method: "GET",
+			headers: headers
+		})
+		.then(response => response.json())
+		.then(json => {
+			console.log(json);
+			this.setState({ attachments: json })
+		})
 	}
 	
 	send(task) {
@@ -307,7 +323,7 @@ export default class Chunky extends React.Component {
 						<div className="attachments">{attachments}</div>
 						<div className="attach-file">
 							<i className="deemphasize">Attach file: </i>
-							<FileUpload task={this.state.task}></FileUpload>
+							<FileUpload task={this.state.task} afterUpload={this.refreshAttachments}></FileUpload>
 						</div>
 					</div>
 				</div>

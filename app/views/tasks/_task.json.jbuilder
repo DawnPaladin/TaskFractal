@@ -2,7 +2,7 @@ json.extract! task, :id, :name, :description, :completed, :due_date, :completed_
 # json.count_descendants task.descendants.count
 # json.count_completed_descendants task.descendants.where(completed: true).count
 json.attachments task.attachments do |attachment|
-	json.filename attachment.filename
+	json.name attachment.name
 	json.url url_for(attachment)
 	json.id attachment.id
 end
