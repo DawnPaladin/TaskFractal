@@ -116,6 +116,7 @@
 	}
 	
 	.attachments {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		.attachment {
@@ -142,6 +143,11 @@
 	}
 	.attach-file {
 		margin-left: 5px;
+	}
+	.dropzone {
+		border: 10px dashed gray;
+		border-radius: 10px;
+		background: hsla(0, 0%, 0, 20%);
 	}
 
 }

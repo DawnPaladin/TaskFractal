@@ -26,6 +26,7 @@ class Attachment extends React.Component {
 		this.state = {
 			isImage: isImage
 		}
+		this.dropzoneRef = null;
 	}
 	render() {
 		let previewImage = <img src={this.props.attachment.url} />
@@ -92,7 +93,7 @@ class FileUpload extends React.Component {
 	
 	render() {
 		return (
-			<Dropzone onDrop={this.onDrop}>
+			<Dropzone onDrop={this.onDrop} disableClick={true} ref={ref => this.dropzoneRef = ref}>
 				{({ getRootProps, getInputProps, isDragActive}) => {
 					return (
 						<div
@@ -101,10 +102,15 @@ class FileUpload extends React.Component {
 						>
 							<input {...getInputProps()} />
 							{
-								isDragActive ?
-									<p>Drop files here...</p> :
-									<p>Try dropping some files here, or click to select files to upload.</p>
+								// isDragActive ?
+									<div className="drop-files-here">
+										Drop files here
+									</div> 
+									// :
+									// <p>Click or drag files here to upload</p>
 							}
+							{this.props.children}
+							<button onClick={this.dropzoneRef ? this.dropzoneRef.open : null}>Dropzone</button>
 						</div>
 					)
 				}}
@@ -275,68 +281,73 @@ export default class Chunky extends React.Component {
 				{coverCompletionBar}
 			</div>
 		)
+		// const openFileUpload = getRootProps(open);
+		let openFileUpload;
 		
 		return (
 			<div className="task-card-back">
-				<h1>
-					<label>
-						<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
-						{ this.state.task.name }
-					</label>
-				</h1>
-				
-				<div className="field box due-date">
-					<Icon.Calendar size="16" />
-					{ this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
-				</div>
-				
-				<div className="row">
+				<FileUpload task={this.state.task} afterUpload={this.refreshAttachments}>
+					<h1>
+						<label>
+							<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
+							{ this.state.task.name }
+						</label>
+					</h1>
+					
+					<div className="field box due-date">
+						<Icon.Calendar size="16" />
+						{ this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
+					</div>
+					
+					<div className="row">
+						<div className="field">
+							<Icon.PauseCircle size="16" />
+							<span className="field-name"> waiting on</span>
+							<div className="box">
+								{blocked_by}
+							</div>
+						</div>
+						<div className="field">
+							<Icon.AlertCircle size="16" />
+							<span className="field-name"> blocking</span>
+							<div className="box">
+								{blocking}
+							</div>
+						</div>
+					</div>
+					
 					<div className="field">
-						<Icon.PauseCircle size="16" />
-						<span className="field-name"> waiting on</span>
+						<Icon.AlignLeft size="16" />
+						<span className="field-name"> notes</span>
 						<div className="box">
-							{blocked_by}
+							<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
 						</div>
+						<button className="save-notes" onClick={this.saveTask}>Save</button>
 					</div>
+					
 					<div className="field">
-						<Icon.AlertCircle size="16" />
-						<span className="field-name"> blocking</span>
+						<Icon.Paperclip size="16" />
+						<span className="field-name"> attachments</span>
 						<div className="box">
-							{blocking}
+							<div className="attachments">{attachments}</div>
+							<div className="attach-file">
+								<button onClick={openFileUpload}>Attach files</button>
+								{/* <i className="deemphasize">Attach file: </i> */}
+							</div>
 						</div>
 					</div>
-				</div>
-				
-				<div className="field">
-					<Icon.AlignLeft size="16" />
-					<span className="field-name"> notes</span>
-					<div className="box">
-						<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
-					</div>
-					<button className="save-notes" onClick={this.saveTask}>Save</button>
-				</div>
-				
-				<div className="field">
-					<Icon.Paperclip size="16" />
-					<span className="field-name"> attachments</span>
-					<div className="box">
-						<div className="attachments">{attachments}</div>
-						<div className="attach-file">
-							<i className="deemphasize">Attach file: </i>
-							<FileUpload task={this.state.task} afterUpload={this.refreshAttachments}></FileUpload>
+					
+					<div className="field">
+						<div className="field-name">subtasks</div>
+						<div className="chunks">
+							{children}
+							<div className="add-chunk">Add chunk</div>
 						</div>
 					</div>
-				</div>
+					
+					{completionBar}
 				
-				<div className="field">
-					<div className="field-name">subtasks</div>
-					<div className="chunks">
-						{children}
-						<div className="add-chunk">Add chunk</div>
-					</div>
-				</div>
-				
-				{completionBar}
+				</FileUpload>
 				
 			</div>
 		);
