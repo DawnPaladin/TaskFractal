@@ -307,6 +307,15 @@ export default class Chunky extends React.Component {
 						{ this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
 					</div>
 					
+					<div className="field">
+						<Icon.AlignLeft size="16" />
+						<span className="field-name"> notes</span>
+						<div className="box">
+							<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
+						</div>
+						<button className="save-notes" onClick={this.saveTask}>Save</button>
+					</div>
+
 					<div className="row">
 						<div className="field">
 							<Icon.PauseCircle size="16" />
@@ -322,15 +331,6 @@ export default class Chunky extends React.Component {
 								{blocking}
 							</div>
 						</div>
-					</div>
-					
-					<div className="field">
-						<Icon.AlignLeft size="16" />
-						<span className="field-name"> notes</span>
-						<div className="box">
-							<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
-						</div>
-						<button className="save-notes" onClick={this.saveTask}>Save</button>
 					</div>
 					
 					<div className="field">
