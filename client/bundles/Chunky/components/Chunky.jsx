@@ -1,7 +1,5 @@
 // TODO: Attachment count on subtasks
 // TODO: Rename attachments
-// TODO: Bigger drop zone for attachments
-// TODO: Use setTaskDetail() more widely
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -105,14 +103,6 @@ class FileUpload extends React.Component {
 							className={classNames('dropzone', {'dropzone--isActive': isDragActive})}
 						>
 							<input {...getInputProps()} />
-							{
-								// isDragActive ?
-									<div className="drop-files-here">
-										Drop files here
-									</div> 
-									// :
-									// <p>Click or drag files here to upload</p>
-							}
 							{this.props.children}
 							<div className="field">
 								<Icon.Paperclip size="16" />
