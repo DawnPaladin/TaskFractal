@@ -1,3 +1,11 @@
+@mixin doesnt-look-like-a-button {
+	background:none!important;
+	color:inherit;
+	border:none; 
+	padding:0!important;
+	cursor: pointer;
+}
+
 .task-card-back {
 	max-width: 350px;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -155,6 +163,16 @@
 		border: 5px dashed gray;
 		border-radius: 20px;
 		background: hsla(0, 0%, 0, 20%);
+	}
+	.delete-attachment-button {
+		@include doesnt-look-like-a-button();
+		position: absolute;
+		right: 10px;
+		opacity: 0;
+		transition: opacity .15s;
+	}
+	.attachment:hover .delete-attachment-button {
+		opacity: 1;
 	}
 
 }

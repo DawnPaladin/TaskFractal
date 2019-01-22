@@ -1,5 +1,6 @@
 // TODO: Attachment count on subtasks
 // TODO: Rename attachments
+// TODO: Delete attachments
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -14,6 +15,7 @@ import FrontSideTask from './FrontSideTask';
 
 class Attachment extends React.Component {
 	static propTypes = {
+		// task: PropTypes.object.isRequired,
 		attachment: PropTypes.object.isRequired,
 	};
 	constructor(props) {
@@ -24,7 +26,23 @@ class Attachment extends React.Component {
 		this.state = {
 			isImage: isImage
 		}
-		this.dropzoneRef = null;
+		this.deleteAttachment = this.deleteAttachment.bind(this);
+	}
+	deleteAttachment() {
+		const attachmentId = this.props.attachment.id;
+		console.log(this.props.attachment)
+		const headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		const body = JSON.stringify({
+			attachment: this.props.attachment
+		})
+		
+		fetch(`/attachments/${attachmentId}`, {
+			method: "DELETE",
+			headers: headers,
+			body: body
+		})
+		// .then(callback);
 	}
 	render() {
 		let previewImage = <img src={this.props.attachment.url} />
@@ -37,6 +55,7 @@ class Attachment extends React.Component {
 					</div>
 				</a>
 				<div className="file-name">{ this.props.attachment.name }</div>
+				<button className="delete-attachment-button" onClick={this.deleteAttachment}><Icon.Trash2 size="16" /></button>
 			</div>
 		)
 	}

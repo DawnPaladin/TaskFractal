@@ -69,6 +69,14 @@ class TasksController < ApplicationController
     end
   end
 
+  def delete_attachment
+    # FIXME: anyone can delete anyone's attachment. Might want to used find_signed instead of find
+    # FIXME: Need to pass in the model and run Task.remove instead of just purging the blob
+    @atch = ActiveStorage::Blob.find(params[:id])
+    @atch.purge
+    @atch
+  end
+
   private
     def list_attachments(task)
       task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
