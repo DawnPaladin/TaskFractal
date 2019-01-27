@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   delete 'attachments/:id', to: 'tasks#delete_attachment'
   get 'tasks/:id/attachments', to: 'tasks#attachments'
   get 'hello_world', to: 'hello_world#index'
-  get '/', to: 'chunky#index'
+  get '/', to: 'tasks#index'
 end
