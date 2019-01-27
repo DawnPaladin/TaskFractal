@@ -17,7 +17,7 @@ export default class Outline extends React.Component {
 	taskTree(task) {
 		var children = task.children.map(child => this.taskTree(child));
 		return (<div key={task.id}>
-			<FrontSideTask task={task} key={task.id} />
+			<FrontSideTask task={task} key={task.id} disableDescendantCount={true} />
 			<div className="indent">{ children }</div>
 		</div>)
 	}
