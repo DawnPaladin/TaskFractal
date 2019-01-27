@@ -10,19 +10,18 @@ export default class Outline extends React.Component {
 		super(props);
 		this.state = {
 			tasks: this.props.tasks,
-			topLevelTasks: this.props.top_level_tasks,
 		}
-		this.getDescendants = this.getDescendants.bind(this);
+		this.taskTree = this.taskTree.bind(this);
+		// console.log(this.props.tasks);
 	}
-	getDescendants(task) {
-		
+	taskTree(task) {
+		var children = task.children.map(child => this.taskTree(child));
+		return (<div key={task.id}>
+			<FrontSideTask task={task} key={task.id} />
+			<div className="indent">{ children }</div>
+		</div>)
 	}
 	render() {
-		let topLevelTasks = this.state.topLevelTasks.map(task =>
-			<FrontSideTask task={task} key={task.id} />
-		)
-		return (
-			topLevelTasks
-		)
+		return this.state.tasks.map(task => this.taskTree(task));
 	}
 }

@@ -4,9 +4,11 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
-    @top_level_tasks = Task.where(parent: nil)
-    @chunky_props = { tasks: @tasks, top_level_tasks: @top_level_tasks }
+    @outline_props = { tasks: Task.arrange_serializable }
+    # respond_to do |format|
+    #   format.html { render :index }
+    #   format.json { render json: Task.arrange_serializable.to_json }
+    # end
   end
 
   # GET /tasks/1
