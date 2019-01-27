@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Not in active use. See tasks_controller.
+
 class ChunkyController < ApplicationController
   layout "chunky"
 

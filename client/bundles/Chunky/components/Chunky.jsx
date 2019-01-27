@@ -1,6 +1,5 @@
 // TODO: Attachment count on subtasks
 // TODO: Rename attachments
-// TODO: Delete attachments
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -15,8 +14,8 @@ import FrontSideTask from './FrontSideTask';
 
 class Attachment extends React.Component {
 	static propTypes = {
-		// task: PropTypes.object.isRequired,
 		attachment: PropTypes.object.isRequired,
+		afterDelete: PropTypes.func.isRequired
 	};
 	constructor(props) {
 		super(props);
@@ -30,19 +29,22 @@ class Attachment extends React.Component {
 	}
 	deleteAttachment() {
 		const attachmentId = this.props.attachment.id;
-		console.log(this.props.attachment)
+		const name = this.props.attachment.name;
+
 		const headers = ReactOnRails.authenticityHeaders();
 		headers["Content-Type"] = "application/json";
 		const body = JSON.stringify({
 			attachment: this.props.attachment
 		})
 		
-		fetch(`/attachments/${attachmentId}`, {
-			method: "DELETE",
-			headers: headers,
-			body: body
-		})
-		// .then(callback);
+		if (confirm(`Delete ${name}?`)) {
+			fetch(`/attachments/${attachmentId}`, {
+				method: "DELETE",
+				headers: headers,
+				body: body
+			})
+			.then(this.props.afterDelete);
+		}
 	}
 	render() {
 		let previewImage = <img src={this.props.attachment.url} />
@@ -64,8 +66,8 @@ class Attachment extends React.Component {
 class FileUpload extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
-		afterUpload: PropTypes.func,
-		attachments: PropTypes.array
+		attachments: PropTypes.array,
+		refreshAttachments: PropTypes.func,
 	}
 	constructor(props) {
 		super(props);
@@ -86,7 +88,7 @@ class FileUpload extends React.Component {
 			if (error) {
 				console.warn(error);
 			} else {
-				this.attachToModel(blob, this.props.afterUpload ? this.props.afterUpload : null);
+				this.attachToModel(blob, this.props.refreshAttachments ? this.props.refreshAttachments : null);
 			}
 		});
 	}
@@ -111,7 +113,7 @@ class FileUpload extends React.Component {
 	
 	render() {
 		let attachments = this.props.attachments.map(attachment =>
-			<Attachment attachment={attachment} key={attachment.id} />
+			<Attachment attachment={attachment} key={attachment.id} afterDelete={this.props.refreshAttachments} />
 		);
 		return (
 			<Dropzone onDrop={this.onDrop} disableClick={true} ref={ref => this.dropzoneRef = ref}>
@@ -303,7 +305,7 @@ export default class Chunky extends React.Component {
 		
 		return (
 			<div className="task-card-back">
-				<FileUpload task={this.state.task} afterUpload={this.refreshAttachments} attachments={this.state.attachments}>
+				<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
 					<h1>
 						<label>
 							<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
