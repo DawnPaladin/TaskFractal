@@ -24,10 +24,11 @@ export default class FrontSideTask extends React.Component {
 		this.props.handleCheckboxChange(event, this);
 	}
 	render() {
+		var url = "/tasks/" + this.state.task.id;
 		return (
 			<div className="task-card-front">
 				<Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
-				<div className="checkbox-label">{ this.state.task.name }</div>
+				<a className="task-name" href={url}>{ this.state.task.name }</a>
 				<div className="details">
 					{ this.state.task.dueDate ?
 						<div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
