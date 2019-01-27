@@ -22,6 +22,10 @@ body {
 		border: none;
 		resize: none;
 	}
+	.home-link {
+		position: relative;
+		bottom: -.2em;		
+	}
 	.completion-bar {
 		height: 20px;
 		position: relative;

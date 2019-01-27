@@ -276,7 +276,9 @@ export default class Chunky extends React.Component {
 		{/* TODO: Consistent sorting (probably done on backend) */}
 		const none = <div className="deemphasize"><em>None</em></div>
 
-		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-name" key={ancestor.id}>{ancestor.name}</a>);
+		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-name" key={ancestor.id} >{ancestor.name}</a>);
+		ancestors.unshift(<a href="/tasks/" className="task-name home-link" key="0"><Icon.Home size="16" /></a>); // TODO: Replace with outline icon
+		
 		let children = this.state.children.map(child => 
 			<FrontSideTask task={child} key={child.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
 		);
