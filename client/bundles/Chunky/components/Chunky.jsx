@@ -272,15 +272,18 @@ export default class Chunky extends React.Component {
 	
 	render() {
 		{/* TODO: Consistent sorting (probably done on backend) */}
+		const none = <div className="deemphasize"><em>None</em></div>
 		let children = this.state.children.map(child => 
 			<FrontSideTask task={child} key={child.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
 		);
 		let blocked_by = this.state.blocked_by.map(blocked_by =>
 			<FrontSideTask task={blocked_by} key={blocked_by.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
 		);
+		if (blocked_by.length == 0) blocked_by = none;
 		let blocking = this.state.blocking.map(blocking =>
 			<FrontSideTask task={blocking} key={blocking.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
 		);
+		if (blocking.length == 0) blocking = none;
 		
 		let cells = [];
 		const completedDescendants = this.state.count_completed_descendants;
