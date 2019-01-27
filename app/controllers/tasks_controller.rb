@@ -14,7 +14,7 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @chunky_props = { task: @task, children: @task.children, blocked_by: @task.blocked_by, blocking: @task.blocking, attachments: list_attachments(@task), count_descendants: @task.descendants.count, count_completed_descendants: @task.completed_descendants.count }
+    @chunky_props = { task: @task, children: @task.children, blocked_by: @task.blocked_by, blocking: @task.blocking, attachments: list_attachments(@task), count_descendants: @task.descendants.count, count_completed_descendants: @task.completed_descendants.count, ancestors: @task.ancestors }
   end
   
   def attachments

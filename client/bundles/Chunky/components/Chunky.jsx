@@ -8,6 +8,7 @@ import * as Icon from 'react-feather';
 import classNames from 'classnames';
 import Dropzone from 'react-dropzone';
 import { DirectUpload } from "activestorage";
+import WithSeparator from 'react-with-separator';
 
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
@@ -152,6 +153,7 @@ export default class Chunky extends React.Component {
 		attachments: PropTypes.array.isRequired,
 		count_descendants: PropTypes.number.isRequired,
 		count_completed_descendants: PropTypes.number.isRequired,
+		ancestors: PropTypes.array,
 	};
 
 	/**
@@ -273,6 +275,8 @@ export default class Chunky extends React.Component {
 	render() {
 		{/* TODO: Consistent sorting (probably done on backend) */}
 		const none = <div className="deemphasize"><em>None</em></div>
+
+		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-name" key={ancestor.id}>{ancestor.name}</a>);
 		let children = this.state.children.map(child => 
 			<FrontSideTask task={child} key={child.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
 		);
@@ -309,6 +313,7 @@ export default class Chunky extends React.Component {
 		return (
 			<div className="task-card-back">
 				<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
+					<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
 					<h1>
 						<label>
 							<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
