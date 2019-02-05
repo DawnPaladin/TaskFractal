@@ -156,14 +156,9 @@ export default class Chunky extends React.Component {
 		ancestors: PropTypes.array,
 	};
 
-	/**
-	 * @param props - Comes from your rails view.
-	 */
 	constructor(props) {
 		super(props);
 		
-		// How to set initial state in ES6 class syntax
-		// https://reactjs.org/docs/state-and-lifecycle.html#adding-local-state-to-a-class
 		this.state = { 
 			task: this.props.task,
 			name: this.props.task.name,
@@ -173,14 +168,19 @@ export default class Chunky extends React.Component {
 			attachments: this.props.attachments,
 			count_descendants: this.props.count_descendants,
 			count_completed_descendants: this.props.count_completed_descendants,
+			new_task_name: '',
 		};
 		
+		// functions
 		this.checkboxChange = this.checkboxChange.bind(this);
 		this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
 		this.saveTask = this.saveTask.bind(this);
 		this.setTaskDetail = this.setTaskDetail.bind(this);
 		this.test = this.test.bind(this);
+		this.refresh = this.refresh.bind(this);
 		this.refreshAttachments = this.refreshAttachments.bind(this);
+		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
+		this.addSubtask = this.addSubtask.bind(this);
 	}
 	
 	test(value) {
@@ -237,8 +237,7 @@ export default class Chunky extends React.Component {
 			headers: headers
 		})
 		.then(response => response.json())
-		.then(json => this.setState({ task: json }));
-		
+		.then(json => this.setState({ task: json, children: json.descendants }));
 	}
 	
 	refreshAttachments() {
@@ -256,6 +255,32 @@ export default class Chunky extends React.Component {
 			console.log(json);
 			this.setState({ attachments: json })
 		})
+	}
+	
+	handleAddSubtaskEdit(event) {
+		this.setState({ new_task_name: event.target.value });
+	}
+	
+	addSubtask(event) {
+		event.preventDefault();
+
+		var task = {
+			name: this.state.new_task_name,
+			parent_id: this.state.task.id
+		};
+		
+		let body = JSON.stringify({task});
+		let headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		
+		fetch("/tasks", {
+			method: "POST",
+			body: body,
+			headers: headers,
+		}).then(this.refresh());
+		
+		this.setState({ new_task_name: '' });
+		
 	}
 	
 	send(task) {
@@ -356,9 +381,11 @@ export default class Chunky extends React.Component {
 					
 					<div className="field">
 						<div className="field-name">subtasks</div>
-						<div className="chunks">
+						<div className="subtasks">
 							{children}
-							<div className="add-chunk">Add chunk</div>
+							<form className="add-subtask" onSubmit={this.addSubtask} >
+								<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
+							</form>
 						</div>
 					</div>
 				

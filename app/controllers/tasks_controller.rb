@@ -14,7 +14,16 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @chunky_props = { task: @task, children: @task.children, blocked_by: @task.blocked_by, blocking: @task.blocking, attachments: list_attachments(@task), count_descendants: @task.descendants.count, count_completed_descendants: @task.completed_descendants.count, ancestors: @task.ancestors }
+    @chunky_props = {
+      task: @task,
+      children: @task.children,
+      blocked_by: @task.blocked_by,
+      blocking: @task.blocking,
+      attachments: list_attachments(@task),
+      count_descendants: @task.descendants.count,
+      count_completed_descendants: @task.completed_descendants.count,
+      ancestors: @task.ancestors
+    }
   end
   
   def attachments
@@ -90,6 +99,6 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:name, :description, :completed, :due_date, :completed_date, :attachments)
+      params.require(:task).permit(:name, :description, :completed, :due_date, :completed_date, :attachments, :parent_id)
     end
 end
