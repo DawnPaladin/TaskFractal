@@ -26,6 +26,10 @@ body {
 		position: relative;
 		bottom: -.2em;		
 	}
+	.delete-task-button {
+		@include doesnt-look-like-a-button;
+		float: right;
+	}
 	.completion-bar {
 		height: 20px;
 		position: relative;

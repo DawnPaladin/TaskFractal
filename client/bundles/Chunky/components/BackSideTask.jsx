@@ -1,5 +1,6 @@
 // TODO: Attachment count on subtasks
 // TODO: Rename attachments
+// TODO: Alphabetize functions
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -182,6 +183,7 @@ export default class BackSideTask extends React.Component {
 		this.refreshAttachments = this.refreshAttachments.bind(this);
 		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
 		this.addSubtask = this.addSubtask.bind(this);
+		this.deleteTask = this.deleteTask.bind(this);
 	}
 	
 	test(value) {
@@ -211,6 +213,22 @@ export default class BackSideTask extends React.Component {
 		);
 	}
 	
+	deleteTask() {
+		if (confirm(`Delete ${this.state.task.name}?`)) {
+			let id = this.state.task.id;
+			let headers = ReactOnRails.authenticityHeaders();
+			headers["Content-Type"] = "application/json";
+
+			fetch(`/tasks/${id}.json`, {
+				method: "DELETE",
+				headers: headers
+			});
+			
+			var redirectUrl = this.state.task.parent_id ? this.state.task.parent_id : '/';
+			window.location.replace(redirectUrl);
+		}
+	}
+	
 	setTaskDetail(detailName, value) {
 		console.log(value);
 		this.setState(
@@ -229,7 +247,7 @@ export default class BackSideTask extends React.Component {
 	
 	refresh = () => {
 		let id = this.state.task.id;
-	
+		
 		let headers = ReactOnRails.authenticityHeaders();
 		headers["Content-Type"] = "application/json";
 		
@@ -327,6 +345,7 @@ export default class BackSideTask extends React.Component {
 		return (
 			<div className="task-card-back">
 				<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
+					<div className="delete-task-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></div>
 					<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
 					<h1>
 						<label>
