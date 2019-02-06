@@ -11,7 +11,7 @@ import send from './send';
 export default class FrontSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
-		checkboxChange: PropTypes.func,
+		handleCheckboxChange: PropTypes.func,
 		disableDescendantCount: PropTypes.bool,
 	}
 	constructor(props) {
@@ -20,9 +20,9 @@ export default class FrontSideTask extends React.Component {
 		this.state = {
 			task: this.props.task
 		}
-		if (this.handleCheckbox) this.handleCheckbox = this.handleCheckbox.bind(this);
-		if (this.props.checkboxChange) { 
-			this.checkboxChange = this.props.checkboxChange.bind(this);
+		this.handleCheckbox = this.handleCheckbox.bind(this);
+		if (this.props.handleCheckboxChange) { 
+			this.checkboxChange = this.props.handleCheckboxChange.bind(this);
 		} else {
 			this.checkboxChange = this.checkboxChange.bind(this);
 		}

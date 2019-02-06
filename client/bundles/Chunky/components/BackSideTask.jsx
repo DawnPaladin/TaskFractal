@@ -196,7 +196,7 @@ export default class BackSideTask extends React.Component {
 	
 	changeCompletedDescendants(amount) {
 		let new_ccd = this.state.count_completed_descendants + amount;
-		this.setState({ count_completedDescendants: new_ccd });
+		this.setState({ count_completed_descendants: new_ccd });
 	}
 	checkboxChange(event, component) {
 		if (!component) component = this;
