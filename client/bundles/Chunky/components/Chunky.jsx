@@ -12,6 +12,7 @@ import WithSeparator from 'react-with-separator';
 
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
+import send from './send'
 
 class Attachment extends React.Component {
 	static propTypes = {
@@ -206,7 +207,7 @@ export default class Chunky extends React.Component {
 					completed: completed
 				}
 			}),
-			() => { component.send(component.state.task); }
+			() => { send(component.state.task); }
 		);
 	}
 	
@@ -223,7 +224,7 @@ export default class Chunky extends React.Component {
 	}
 	
 	saveTask() {
-		this.send(this.state.task);
+		send(this.state.task);
 	}
 	
 	refresh = () => {
@@ -283,20 +284,6 @@ export default class Chunky extends React.Component {
 		
 	}
 	
-	send(task) {
-		let body = JSON.stringify({task});
-		let id = task.id;
-		
-		let headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		
-		fetch(`/tasks/${id}.json`, {
-			method: "PUT",
-			body: body,
-			headers: headers
-		});
-	}
-	
 	render() {
 		{/* TODO: Consistent sorting (probably done on backend) */}
 		const none = <div className="deemphasize"><em>None</em></div>
@@ -305,14 +292,14 @@ export default class Chunky extends React.Component {
 		ancestors.unshift(<a href="/tasks/" className="task-link home-link" key="0"><Icon.Home size="16" /></a>); // TODO: Replace with outline icon
 		
 		let children = this.state.children.map(child => 
-			<FrontSideTask task={child} key={child.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
+			<FrontSideTask task={child} key={child.id} handleCheckboxChange={this.checkboxChange} />
 		);
 		let blocked_by = this.state.blocked_by.map(blocked_by =>
-			<FrontSideTask task={blocked_by} key={blocked_by.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
+			<FrontSideTask task={blocked_by} key={blocked_by.id} handleCheckboxChange={this.checkboxChange} />
 		);
 		if (blocked_by.length == 0) blocked_by = none;
 		let blocking = this.state.blocking.map(blocking =>
-			<FrontSideTask task={blocking} key={blocking.id} send={this.send} handleCheckboxChange={this.checkboxChange} />
+			<FrontSideTask task={blocking} key={blocking.id} handleCheckboxChange={this.checkboxChange} />
 		);
 		if (blocking.length == 0) blocking = none;
 		

@@ -3,12 +3,15 @@ import React from 'react';
 import * as Icon from 'react-feather';
 
 import Checkbox from './Checkbox';
+import send from './send';
 
+/**
+ * This component is placed either on a Chunky (back-side task) component or in an Outline.
+ */
 export default class FrontSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
-		send: PropTypes.func,
-		handleCheckboxChange: PropTypes.func,
+		checkboxChange: PropTypes.func,
 		disableDescendantCount: PropTypes.bool,
 	}
 	constructor(props) {
@@ -17,12 +20,31 @@ export default class FrontSideTask extends React.Component {
 		this.state = {
 			task: this.props.task
 		}
-		if (this.send) this.send = this.props.send.bind(this);
 		if (this.handleCheckbox) this.handleCheckbox = this.handleCheckbox.bind(this);
+		if (this.props.checkboxChange) { 
+			this.checkboxChange = this.props.checkboxChange.bind(this);
+		} else {
+			this.checkboxChange = this.checkboxChange.bind(this);
+		}
 	}
 	handleCheckbox(event) {
-		this.props.handleCheckboxChange(event, this);
+		this.checkboxChange(event, this);
 	}
+
+	// If FrontSideTask is in a Chunky, Chunky will provide a checkboxChange function. If not, we use this one.
+	checkboxChange(event) {
+		const completed = event.target.checked;
+		this.setState(
+			(prevState, props) => ({
+				task: {
+					...prevState.task,
+					completed: completed
+				}
+			}),
+			() => { send(this.state.task); }
+		);
+	}
+
 	render() {
 		var url = "/tasks/" + this.state.task.id;
 		return (
