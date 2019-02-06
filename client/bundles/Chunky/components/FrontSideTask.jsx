@@ -6,7 +6,7 @@ import Checkbox from './Checkbox';
 import send from './send';
 
 /**
- * This component is placed either on a Chunky (back-side task) component or in an Outline.
+ * This component is placed either on a BackSideTask component or in an Outline.
  */
 export default class FrontSideTask extends React.Component {
 	static propTypes = {
@@ -31,7 +31,7 @@ export default class FrontSideTask extends React.Component {
 		this.checkboxChange(event, this);
 	}
 
-	// If FrontSideTask is in a Chunky, Chunky will provide a checkboxChange function. If not, we use this one.
+	// If FrontSideTask is in a BackSideTask, BackSideTask will provide a checkboxChange function. If not, we use this one.
 	checkboxChange(event) {
 		const completed = event.target.checked;
 		this.setState(

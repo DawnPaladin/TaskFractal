@@ -145,7 +145,7 @@ class FileUpload extends React.Component {
 	}
 }
 
-export default class Chunky extends React.Component {
+export default class BackSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
 		children: PropTypes.array.isRequired,

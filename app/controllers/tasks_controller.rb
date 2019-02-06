@@ -14,7 +14,7 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @chunky_props = {
+    @back_side_task_props = {
       task: @task,
       children: @task.children,
       blocked_by: @task.blocked_by,
