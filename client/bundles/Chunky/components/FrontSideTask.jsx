@@ -4,6 +4,7 @@ import * as Icon from 'react-feather';
 
 import Checkbox from './Checkbox';
 import send from './send';
+import deleteTask from './deleteTask';
 
 /**
  * This component is placed either on a BackSideTask component or in an Outline.
@@ -21,11 +22,8 @@ export default class FrontSideTask extends React.Component {
 			task: this.props.task
 		}
 		this.handleCheckbox = this.handleCheckbox.bind(this);
-		if (this.props.handleCheckboxChange) { 
-			this.checkboxChange = this.props.handleCheckboxChange.bind(this);
-		} else {
-			this.checkboxChange = this.checkboxChange.bind(this);
-		}
+		this.checkboxChange = this.props.handleCheckboxChange ? this.props.handleCheckboxChange.bind(this) : this.checkboxChange.bind(this);
+		this.deleteTask = deleteTask.bind(this);
 	}
 	handleCheckbox(event) {
 		this.checkboxChange(event, this);
@@ -49,6 +47,7 @@ export default class FrontSideTask extends React.Component {
 		var url = "/tasks/" + this.state.task.id;
 		return (
 			<div className="task-card-front">
+				{/* <button className="delete-attachment-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button> */}
 				<Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
 				<a className="task-link" href={url}>{ this.state.task.name }</a>
 				<div className="details">

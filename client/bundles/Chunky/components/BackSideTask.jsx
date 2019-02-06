@@ -13,7 +13,8 @@ import WithSeparator from 'react-with-separator';
 
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
-import send from './send'
+import send from './send';
+import deleteTask from './deleteTask';
 
 class Attachment extends React.Component {
 	static propTypes = {
@@ -183,7 +184,7 @@ export default class BackSideTask extends React.Component {
 		this.refreshAttachments = this.refreshAttachments.bind(this);
 		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
 		this.addSubtask = this.addSubtask.bind(this);
-		this.deleteTask = this.deleteTask.bind(this);
+		this.deleteTask = deleteTask.bind(this);
 	}
 	
 	test(value) {
@@ -211,22 +212,6 @@ export default class BackSideTask extends React.Component {
 			}),
 			() => { send(component.state.task); }
 		);
-	}
-	
-	deleteTask() {
-		if (confirm(`Delete ${this.state.task.name}?`)) {
-			let id = this.state.task.id;
-			let headers = ReactOnRails.authenticityHeaders();
-			headers["Content-Type"] = "application/json";
-
-			fetch(`/tasks/${id}.json`, {
-				method: "DELETE",
-				headers: headers
-			});
-			
-			var redirectUrl = this.state.task.parent_id ? this.state.task.parent_id : '/';
-			window.location.replace(redirectUrl);
-		}
 	}
 	
 	setTaskDetail(detailName, value) {
@@ -345,7 +330,7 @@ export default class BackSideTask extends React.Component {
 		return (
 			<div className="task-card-back">
 				<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
-					<div className="delete-task-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></div>
+					<button className="delete-task-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button>
 					<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
 					<h1>
 						<label>
