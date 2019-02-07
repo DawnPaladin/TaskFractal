@@ -1,6 +1,5 @@
 // TODO: Attachment count on subtasks
 // TODO: Rename attachments
-// TODO: Alphabetize functions
 
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -31,6 +30,7 @@ class Attachment extends React.Component {
 		}
 		this.deleteAttachment = this.deleteAttachment.bind(this);
 	}
+	
 	deleteAttachment() {
 		const attachmentId = this.props.attachment.id;
 		const name = this.props.attachment.name;
@@ -50,6 +50,7 @@ class Attachment extends React.Component {
 			.then(this.props.afterDelete);
 		}
 	}
+	
 	render() {
 		let previewImage = <img src={this.props.attachment.url} />
 		let icon = <Icon.File size="16" />
@@ -158,7 +159,7 @@ export default class BackSideTask extends React.Component {
 		count_completed_descendants: PropTypes.number.isRequired,
 		ancestors: PropTypes.array,
 	};
-
+	
 	constructor(props) {
 		super(props);
 		
@@ -175,30 +176,45 @@ export default class BackSideTask extends React.Component {
 		};
 		
 		// functions
-		this.checkboxChange = this.checkboxChange.bind(this);
+		this.addSubtask = this.addSubtask.bind(this);
 		this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
+		this.checkboxChange = this.checkboxChange.bind(this);
+		this.deleteTask = deleteTask.bind(this);
+		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
+		this.refresh = this.refresh.bind(this);
+		this.refreshAttachments = this.refreshAttachments.bind(this);
 		this.saveTask = this.saveTask.bind(this);
 		this.setTaskDetail = this.setTaskDetail.bind(this);
 		this.test = this.test.bind(this);
-		this.refresh = this.refresh.bind(this);
-		this.refreshAttachments = this.refreshAttachments.bind(this);
-		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
-		this.addSubtask = this.addSubtask.bind(this);
-		this.deleteTask = deleteTask.bind(this);
+		this.updateName = this.updateName.bind(this);
 	}
 	
-	test(value) {
-		console.log(value);
+	addSubtask(event) {
+		event.preventDefault();
+		
+		var task = {
+			name: this.state.new_task_name,
+			parent_id: this.state.task.id
+		};
+		
+		let body = JSON.stringify({task});
+		let headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		
+		fetch("/tasks", {
+			method: "POST",
+			body: body,
+			headers: headers,
+		}).then(this.refresh());
+		
+		this.setState({ new_task_name: '' });
 	}
-	
-	updateName = (name) => {
-		this.setState({ name });
-	};
 	
 	changeCompletedDescendants(amount) {
 		let new_ccd = this.state.count_completed_descendants + amount;
 		this.setState({ count_completed_descendants: new_ccd });
 	}
+	
 	checkboxChange(event, component) {
 		if (!component) component = this;
 		const completed = event.target.checked;
@@ -211,23 +227,11 @@ export default class BackSideTask extends React.Component {
 				}
 			}),
 			() => { send(component.state.task); }
-		);
-	}
-	
-	setTaskDetail(detailName, value) {
-		console.log(value);
-		this.setState(
-			(prevState, props) => {
-				let newTaskObj = { ...prevState.task };
-				newTaskObj[detailName] = value;
-				console.log(newTaskObj);
-				return { task: newTaskObj }
-			}
 		)
 	}
 	
-	saveTask() {
-		send(this.state.task);
+	handleAddSubtaskEdit(event) {
+		this.setState({ new_task_name: event.target.value });
 	}
 	
 	refresh = () => {
@@ -261,36 +265,34 @@ export default class BackSideTask extends React.Component {
 		})
 	}
 	
-	handleAddSubtaskEdit(event) {
-		this.setState({ new_task_name: event.target.value });
+	saveTask() {
+		send(this.state.task);
 	}
 	
-	addSubtask(event) {
-		event.preventDefault();
-
-		var task = {
-			name: this.state.new_task_name,
-			parent_id: this.state.task.id
-		};
-		
-		let body = JSON.stringify({task});
-		let headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		
-		fetch("/tasks", {
-			method: "POST",
-			body: body,
-			headers: headers,
-		}).then(this.refresh());
-		
-		this.setState({ new_task_name: '' });
-		
+	setTaskDetail(detailName, value) {
+		console.log(value);
+		this.setState(
+			(prevState, props) => {
+				let newTaskObj = { ...prevState.task };
+				newTaskObj[detailName] = value;
+				console.log(newTaskObj);
+				return { task: newTaskObj }
+			}
+		)
+	}
+	
+	test(value) {
+		console.log(value);
+	}
+	
+	updateName = (name) => {
+		this.setState({ name, task: {...this.state.task, name } });
 	}
 	
 	render() {
 		{/* TODO: Consistent sorting (probably done on backend) */}
 		const none = <div className="deemphasize"><em>None</em></div>
-
+		
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
 		ancestors.unshift(<a href="/tasks/" className="task-link home-link" key="0"><Icon.Home size="16" /></a>); // TODO: Replace with outline icon
 		

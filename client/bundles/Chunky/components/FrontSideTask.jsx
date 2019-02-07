@@ -25,6 +25,7 @@ export default class FrontSideTask extends React.Component {
 		this.checkboxChange = this.props.handleCheckboxChange ? this.props.handleCheckboxChange.bind(this) : this.checkboxChange.bind(this);
 		this.deleteTask = deleteTask.bind(this);
 	}
+	
 	handleCheckbox(event) {
 		this.checkboxChange(event, this);
 	}
