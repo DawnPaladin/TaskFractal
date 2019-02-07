@@ -9,9 +9,10 @@ export default function deleteTask() {
 		fetch(`/tasks/${id}.json`, {
 			method: "DELETE",
 			headers: headers
-		});
+		}).then(() => {
+			var redirectUrl = this.state.task.parent_id ? this.state.task.parent_id : '/';
+			window.location.replace(redirectUrl);
+		})
 		
-		var redirectUrl = this.state.task.parent_id ? this.state.task.parent_id : '/';
-		window.location.replace(redirectUrl);
 	}
 }
