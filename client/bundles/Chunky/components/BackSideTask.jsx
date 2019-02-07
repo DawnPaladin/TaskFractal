@@ -245,7 +245,7 @@ export default class BackSideTask extends React.Component {
 			headers: headers
 		})
 		.then(response => response.json())
-		.then(json => this.setState({ task: json, children: json.descendants }));
+		.then(json => this.setState({ task: json, children: json.children }));
 	}
 	
 	refreshAttachments() {
@@ -290,7 +290,6 @@ export default class BackSideTask extends React.Component {
 	}
 	
 	render() {
-		{/* TODO: Consistent sorting (probably done on backend) */}
 		const none = <div className="deemphasize"><em>None</em></div>
 		
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
