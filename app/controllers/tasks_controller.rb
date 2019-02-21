@@ -1,29 +1,47 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  
+  # include ActionController::Serialization
+  # ^ uninitialized constant 
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @outline_props = { tasks: Task.arrange_serializable }
-    # respond_to do |format|
-    #   format.html { render :index }
-    #   format.json { render json: Task.arrange_serializable.to_json }
-    # end
+    respond_to do |format|
+      format.html { 
+        @outline_props = { 
+          tasks: Task.arrange_serializable do |parent, children|
+            TaskSerializer.new(parent, children: children)
+          end
+        }
+        render :index 
+      }
+      format.json { render json: Task.arrange_serializable.to_json do |parent, children|
+        TaskSerializer.new(parent, children: children)
+      end }
+    end
   end
 
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @back_side_task_props = {
-      task: @task,
-      children: @task.children.order(:name),
-      blocked_by: @task.blocked_by.order(:name),
-      blocking: @task.blocking.order(:name),
-      attachments: list_attachments(@task),
-      count_descendants: @task.descendants.count,
-      count_completed_descendants: @task.completed_descendants.count,
-      ancestors: @task.ancestors.order(:name)
-    }
+    respond_to do |format|
+      format.html {
+        @back_side_task_props = {
+          task: @task,
+          children: @task.children.order(:name),
+          blocked_by: @task.blocked_by.order(:name),
+          blocking: @task.blocking.order(:name),
+          attachments: list_attachments(@task),
+          count_descendants: @task.descendants.count,
+          count_completed_descendants: @task.completed_descendants.count,
+          ancestors: @task.ancestors.order(:name)
+        }
+      }
+      format.json {
+        render json: @task
+      }
+    end
   end
   
   def attachments

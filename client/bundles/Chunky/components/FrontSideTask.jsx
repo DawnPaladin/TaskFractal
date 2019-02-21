@@ -58,8 +58,8 @@ export default class FrontSideTask extends React.Component {
 					{ this.state.task.description ?
 						<div><Icon.AlignLeft size="16" /></div> : ""
 					}
-					{ this.state.task.attachments ?
-						<div><Icon.Paperclip size="16" /> {this.state.task.attachments}</div> : ""
+					{ this.state.task.attachments.length ?
+						<div><Icon.Paperclip size="16" /> {this.state.task.attachments.length}</div> : ""
 					}
 					{ parseInt(this.state.task.descendants.length) > 0 && !this.props.disableDescendantCount ? 
 						<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants.length}/{this.state.task.descendants.length}</div> : ""
