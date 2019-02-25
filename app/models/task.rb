@@ -17,4 +17,9 @@ class Task < ApplicationRecord
 	def completed_descendants
 		self.descendants.where(completed: true)
 	end
+	
+	def attachment_count
+		self.attachments.count
+	end
+
 end
