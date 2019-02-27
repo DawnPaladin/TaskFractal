@@ -1,9 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
   
-  # include ActionController::Serialization
-  # ^ uninitialized constant 
-
   # GET /tasks
   # GET /tasks.json
   def index
@@ -103,6 +100,12 @@ class TasksController < ApplicationController
     @atch = ActiveStorage::Attachment.find(params[:id])
     # @task = @atch.record
     @atch.purge
+  end
+  
+  def rename_attachment
+    # FIXME: anyone can rename anyone's attachment.
+    @atch = ActiveStorage::Attachment.find(params[:id])
+    @atch.blob.update(filename: params[:new_name] + '.' + @atch.filename.extension)
   end
 
   private
