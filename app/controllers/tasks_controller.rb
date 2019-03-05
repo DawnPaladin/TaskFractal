@@ -105,7 +105,11 @@ class TasksController < ApplicationController
   def rename_attachment
     # FIXME: anyone can rename anyone's attachment.
     @atch = ActiveStorage::Attachment.find(params[:id])
-    @atch.blob.update(filename: params[:new_name] + '.' + @atch.filename.extension)
+    if @atch.blob.update(filename: params[:new_name] + '.' + @atch.filename.extension)
+      render json: { name: @atch.filename }
+    else
+      render json: @atch.errors, status: :unprocessable_entity
+    end
   end
 
   private

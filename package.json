@@ -13,6 +13,7 @@
     "react-dropzone": "^8.0.3",
     "react-feather": "^1.1.5",
     "react-on-rails": "11.2.1",
+    "react-sane-contenteditable": "^1.5.0",
     "react-with-separator": "^1.1.0"
   },
   "devDependencies": {

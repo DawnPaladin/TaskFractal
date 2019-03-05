@@ -9,6 +9,13 @@
     core-js "^2.5.7"
     regenerator-runtime "^0.12.0"
 
+"@babel/runtime@^7.1.2":
+  version "7.3.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.3.4.tgz#73d12ba819e365fcf7fd152aed56d6df97d21c83"
+  integrity sha512-IvfvnMdSaLBateu0jfsYIpZTxAc2cKEXEMiezGGN75QcBcecDUKd3PgLAncT0oOgxKy8dd8hrJKj9MfzgfZd6g==
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@rails/webpacker@3.5":
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-3.5.5.tgz#8911c66bcefc8bc6b91270e92f0d39e3c2d43116"
@@ -4714,6 +4721,13 @@ react-on-rails@11.2.1:
   resolved "https://registry.yarnpkg.com/react-on-rails/-/react-on-rails-11.2.1.tgz#b25637bb3d5c6cebd89f4697eb021ede332a3000"
   dependencies:
     "@babel/runtime-corejs2" "^7.0.0"
+
+react-sane-contenteditable@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-sane-contenteditable/-/react-sane-contenteditable-1.5.0.tgz#907db4fb6a05a613f858949285c141983f6b1e08"
+  integrity sha512-R+zJLhLqhz5awngQq8Ie3cQzJY2+gM/kPZTKiO316tRd6EklU8d+Q8PdzkzOHgYkcZLIczGBT9uTR5HAWD0CoQ==
+  dependencies:
+    "@babel/runtime" "^7.1.2"
 
 react-with-separator@^1.1.0:
   version "1.1.0"

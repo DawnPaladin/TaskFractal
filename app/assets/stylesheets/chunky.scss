@@ -161,13 +161,40 @@ body {
 					max-width: 100%;
 				}
 			}
-			.file-name {
+			.right-side {
 				margin-left: 10px;
+			}
+			.file-name a {
+				color: inherit;
+				text-decoration: none;
+			}
+			.attachment-action-links {
+				display: flex;
+				flex-wrap: wrap;
+				margin-top: .25em;
+				div {
+					margin-left: .25em;
+				}
+				svg {
+					margin-right: .25em;
+				}
+				a {
+					@extend .deemphasize;
+					font-size: 0.8em;
+					text-decoration: none;
+				}
+				button {
+					@include doesnt-look-like-a-button();
+					color: gray;
+				}
 			}
 		}
 	}
 	.attach-file {
 		margin-left: 5px;
+	}
+	.dropzone {
+		outline: 0;
 	}
 	.dropzone--isActive::before {
 		content: '';
@@ -179,16 +206,6 @@ body {
 		border: 5px dashed gray;
 		border-radius: 20px;
 		background: hsla(0, 0%, 0, 20%);
-	}
-	.delete-attachment-button {
-		@include doesnt-look-like-a-button();
-		position: absolute;
-		right: 10px;
-		opacity: 0;
-		transition: opacity .15s;
-	}
-	.attachment:hover .delete-attachment-button {
-		opacity: 1;
 	}
 
 }

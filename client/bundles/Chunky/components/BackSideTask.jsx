@@ -1,6 +1,3 @@
-// TODO: Attachment count on subtasks
-// TODO: Rename attachments
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
@@ -22,18 +19,25 @@ class Attachment extends React.Component {
 	};
 	constructor(props) {
 		super(props);
-		let fileExtension = this.props.attachment.name.split('.').pop();
+		let fileName = this.props.attachment.name.split('.');
+		let fileExtension = fileName.pop();
 		const imageExtensions = ['png', 'jpg', 'jpeg', 'gif', 'apng', 'svg', 'bmp', 'ico'];
 		const isImage = imageExtensions.indexOf(fileExtension) > -1;
 		this.state = {
-			isImage: isImage
+			renaming: false,
+			isImage: isImage,
+			fileName: fileName[0],
+			fileExtension: fileExtension,
 		}
 		this.deleteAttachment = this.deleteAttachment.bind(this);
+		this.toggleRenaming = this.toggleRenaming.bind(this);
+		this.handleNameChange = this.handleNameChange.bind(this);
+		this.submitRename = this.submitRename.bind(this);
 	}
 	
 	deleteAttachment() {
 		const attachmentId = this.props.attachment.id;
-		const name = this.props.attachment.name;
+		const name = this.state.fileName;
 
 		const headers = ReactOnRails.authenticityHeaders();
 		headers["Content-Type"] = "application/json";
@@ -51,6 +55,35 @@ class Attachment extends React.Component {
 		}
 	}
 	
+	toggleRenaming() {
+		this.setState({ renaming: !this.state.renaming });
+	}
+	handleNameChange(event) {
+		this.setState({ fileName: event.target.value });
+	}
+	submitRename(event) {
+		event.preventDefault();
+		const attachmentId = this.props.attachment.id;
+		const name = this.state.fileName;
+		const headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		
+		fetch(`/attachments/${attachmentId}/rename/${name}`, {
+			method: "GET",
+			headers: headers,
+		})
+		.then(response => response.json())
+		.then(json => {
+			var name = json.name.split('.');
+			let [withoutExtension, fileExtension] = name;
+			this.setState({
+				fileName: withoutExtension,
+				fileExtension: fileExtension,
+				renaming: false,
+			});
+		})
+	}
+	
 	render() {
 		let previewImage = <img src={this.props.attachment.url} />
 		let icon = <Icon.File size="16" />
@@ -61,8 +94,17 @@ class Attachment extends React.Component {
 						{ this.state.isImage ? previewImage : icon }
 					</div>
 				</a>
-				<div className="file-name">{ this.props.attachment.name }</div>
-				<button className="delete-attachment-button" onClick={this.deleteAttachment}><Icon.Trash2 size="16" /></button>
+				<div className="right-side">
+					<form className="file-name" onSubmit={this.submitRename}>
+						{ this.state.renaming && <input value={this.state.fileName} onChange={this.handleNameChange} /> }
+						{ this.state.renaming && '.' + this.state.fileExtension}
+						{!this.state.renaming && <a href={this.props.attachment.url} target="_blank" rel="noopener noreferrer">{this.state.fileName}.{this.state.fileExtension}</a> }
+					</form>
+					<div className="attachment-action-links">
+						<div><button onClick={this.toggleRenaming}><Icon.Edit size="16"/>Rename</button></div>
+						<div><button onClick={this.deleteAttachment}><Icon.Trash2 size="16"/>Delete</button></div>
+					</div>
+				</div>
 			</div>
 		)
 	}
