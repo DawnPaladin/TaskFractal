@@ -5,6 +5,7 @@
 	padding:0!important;
 	cursor: pointer;
 }
+.doesnt-look-like-a-button { @include doesnt-look-like-a-button() }
 
 body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -138,6 +139,17 @@ body {
 	
 	.due-date {
 		margin-bottom: 15px;
+		height: 1.4em;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		button {
+			font-size: .9em;
+		}
+		input {
+			font-family: inherit;
+			margin: 0 4px;
+		}
 	}
 	
 	.attachments {
@@ -227,4 +239,8 @@ body {
 			margin-right: 10px;
 		}
 	}
+}
+
+.hidden {
+	display: none;
 }

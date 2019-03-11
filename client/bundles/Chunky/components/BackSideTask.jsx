@@ -215,6 +215,7 @@ export default class BackSideTask extends React.Component {
 			count_descendants: this.props.count_descendants,
 			count_completed_descendants: this.props.count_completed_descendants,
 			new_task_name: '',
+			editingDueDate: false,
 		};
 		
 		// functions
@@ -222,11 +223,14 @@ export default class BackSideTask extends React.Component {
 		this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
 		this.checkboxChange = this.checkboxChange.bind(this);
 		this.deleteTask = deleteTask.bind(this);
+		this.editDueDate = this.editDueDate.bind(this);
 		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.refreshAttachments = this.refreshAttachments.bind(this);
 		this.saveTask = this.saveTask.bind(this);
 		this.setTaskDetail = this.setTaskDetail.bind(this);
+		this.startEditingDueDate = this.startEditingDueDate.bind(this);
+		this.stopEditingDueDate = this.stopEditingDueDate.bind(this);
 		this.test = this.test.bind(this);
 		this.updateName = this.updateName.bind(this);
 	}
@@ -270,6 +274,10 @@ export default class BackSideTask extends React.Component {
 			}),
 			() => { send(component.state.task); }
 		)
+	}
+	
+	editDueDate(event) {
+		this.setTaskDetail('due_date', event.target.value);
 	}
 	
 	handleAddSubtaskEdit(event) {
@@ -321,6 +329,17 @@ export default class BackSideTask extends React.Component {
 				return { task: newTaskObj }
 			}
 		)
+	}
+	
+	startEditingDueDate(event) {
+		event.preventDefault();
+		this.setState({editingDueDate: true});
+	}
+	
+	stopEditingDueDate(event) {
+		event.preventDefault();
+		this.setState({editingDueDate: false});
+		this.saveTask();
 	}
 	
 	test(value) {
@@ -382,10 +401,18 @@ export default class BackSideTask extends React.Component {
 						</label>
 					</h1>
 					
-					<div className="field box due-date">
-						<Icon.Calendar size="16" />
-						{ this.state.task.due_date ? " Due: " + this.state.task.due_date : <em> Add due date</em> }
-					</div>
+					<form className="field box due-date">
+						<button onClick={this.startEditingDueDate} className={this.state.editingDueDate ? "hidden doesnt-look-like-a-button" : "doesnt-look-like-a-button"}>
+							<Icon.Calendar size="16" />
+							{!this.state.task.due_date && <em> Add due date</em> }
+							{ this.state.task.due_date && " Due: " + this.state.task.due_date }
+						</button>
+						<div className={this.state.editingDueDate ? "" : "hidden"}>
+							<Icon.Calendar size="16" />
+							<input type="date" value={this.state.task.due_date || ""} onChange={this.editDueDate} />
+							<button onClick={this.stopEditingDueDate}><Icon.Check size="16"/></button>
+						</div>
+					</form>
 					
 					<div className="field">
 						<Icon.AlignLeft size="16" />
