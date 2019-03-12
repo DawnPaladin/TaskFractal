@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import Dropzone from 'react-dropzone';
 import { DirectUpload } from "activestorage";
 import WithSeparator from 'react-with-separator';
+import Markdown from 'react-markdown';
 
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
@@ -216,6 +217,7 @@ export default class BackSideTask extends React.Component {
 			count_completed_descendants: this.props.count_completed_descendants,
 			new_task_name: '',
 			editingDueDate: false,
+			editingDescription: false,
 		};
 		
 		// functions
@@ -231,6 +233,8 @@ export default class BackSideTask extends React.Component {
 		this.setTaskDetail = this.setTaskDetail.bind(this);
 		this.startEditingDueDate = this.startEditingDueDate.bind(this);
 		this.stopEditingDueDate = this.stopEditingDueDate.bind(this);
+		this.startEditingDescription = this.startEditingDescription.bind(this);
+		this.stopEditingDescription = this.stopEditingDescription.bind(this);
 		this.test = this.test.bind(this);
 		this.updateName = this.updateName.bind(this);
 	}
@@ -320,12 +324,10 @@ export default class BackSideTask extends React.Component {
 	}
 	
 	setTaskDetail(detailName, value) {
-		console.log(value);
 		this.setState(
 			(prevState, props) => {
 				let newTaskObj = { ...prevState.task };
 				newTaskObj[detailName] = value;
-				console.log(newTaskObj);
 				return { task: newTaskObj }
 			}
 		)
@@ -339,6 +341,17 @@ export default class BackSideTask extends React.Component {
 	stopEditingDueDate(event) {
 		event.preventDefault();
 		this.setState({editingDueDate: false});
+		this.saveTask();
+	}
+	
+	startEditingDescription(event) {
+		event.preventDefault();
+		this.setState({editingDescription: true});
+	}
+	
+	stopEditingDescription(event) {
+		event.preventDefault();
+		this.setState({editingDescription: false});
 		this.saveTask();
 	}
 	
@@ -401,7 +414,7 @@ export default class BackSideTask extends React.Component {
 						</label>
 					</h1>
 					
-					<form className="field box due-date">
+					<div className="field box due-date">
 						<button onClick={this.startEditingDueDate} className={this.state.editingDueDate ? "hidden doesnt-look-like-a-button" : "doesnt-look-like-a-button"}>
 							<Icon.Calendar size="16" />
 							{!this.state.task.due_date && <em> Add due date</em> }
@@ -412,15 +425,29 @@ export default class BackSideTask extends React.Component {
 							<input type="date" value={this.state.task.due_date || ""} onChange={this.editDueDate} />
 							<button onClick={this.stopEditingDueDate}><Icon.Check size="16"/></button>
 						</div>
-					</form>
+					</div>
 					
-					<div className="field">
-						<Icon.AlignLeft size="16" />
-						<span className="field-name"> notes</span>
-						<div className="box">
-							<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
-						</div>
-						<button className="save-notes" onClick={this.saveTask}>Save</button>
+					<Icon.AlignLeft size="16" />
+					<span className="field-name"> notes</span>
+					<div className="description-field">
+						{ this.state.editingDescription ? (
+							<div>
+								<div className="field box">
+									<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
+								</div>
+								<button className="save-notes" onClick={this.stopEditingDescription}>Save</button>
+							</div>
+						) : (
+							<button onClick={this.startEditingDescription} className="block doesnt-look-like-a-button">
+								<div className="field box">
+									{ this.state.task.description ? (
+										<Markdown source={this.state.task.description} className="description" />
+									) : (
+										<div className="deemphasize">Add a description...</div>
+									) }
+								</div>
+							</button>
+						) }
 					</div>
 
 					<div className="row">

@@ -20,11 +20,6 @@ body {
 	border-radius: 3px;
 	padding: 10px 20px 0 20px;
 	position: relative;
-	textarea {
-		width: 99%;
-		border: none;
-		resize: none;
-	}
 	.home-link {
 		position: relative;
 		bottom: -.2em;		
@@ -133,10 +128,6 @@ body {
 		margin-right: 10px;
 	}
 
-	.save-notes {
-		margin-bottom: 15px;
-	}
-	
 	.due-date {
 		margin-bottom: 15px;
 		height: 1.4em;
@@ -149,6 +140,31 @@ body {
 		input {
 			font-family: inherit;
 			margin: 0 4px;
+		}
+	}
+	
+	.description-field {
+		margin-bottom: 15px;
+		.block, .box {
+			width: 100%;
+			max-width: 100%;
+			box-sizing: border-box;
+			text-align: left;
+		}
+		textarea {
+			width: 99%;
+			min-height: 8em;
+			border: none;
+			resize: vertical;
+		}
+		.description {
+			// user-entered Markdown elements
+			:first-child {
+				margin-top: 0;
+			}
+			:last-child {
+				margin-bottom: 0;
+			}
 		}
 	}
 	
@@ -243,4 +259,7 @@ body {
 
 .hidden {
 	display: none;
+}
+.block {
+	display: block;
 }
