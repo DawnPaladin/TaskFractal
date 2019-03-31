@@ -16,6 +16,8 @@ class Task < ApplicationRecord
 	
 	has_many_attached :attachments
 	
+	before_validation :inherit_user, on: :create
+	
 	def completed_descendants
 		self.descendants.where(completed: true)
 	end
@@ -23,5 +25,12 @@ class Task < ApplicationRecord
 	def attachment_count
 		self.attachments.count
 	end
-
+	
+	private
+		def inherit_user
+			if self.user == nil and self.parent
+				self.user = self.parent.user
+			end
+		end
+	
 end
