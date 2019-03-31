@@ -8,7 +8,7 @@
 
 p "Seeding database..."
 
-user = User.create!(email: "test@test.com", password: "password", password_confirmation: "password")
+user = User.create!(email: "test@test.com", nickname: "Test user", password: "password", password_confirmation: "password")
 
 pb = Task.create!(name: "Pack boxes", user: user)
 pk = pb.children.create!(name: "Pack kitchen")
