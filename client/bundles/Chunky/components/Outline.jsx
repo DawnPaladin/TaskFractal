@@ -22,6 +22,8 @@ export default class Outline extends React.Component {
 		</div>)
 	}
 	render() {
-		return this.state.tasks.map(task => this.taskTree(task));
+		return <div className="outline">
+			{ this.state.tasks.map(task => this.taskTree(task)) }
+		</div>
 	}
 }
