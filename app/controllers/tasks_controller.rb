@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :attachments]
   
   # GET /tasks
   # GET /tasks.json
@@ -7,13 +8,13 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { 
         @outline_props = { 
-          tasks: Task.arrange_serializable do |parent, children|
+          tasks: Task.where(user: current_user).arrange_serializable do |parent, children|
             TaskSerializer.new(parent, children: children)
           end
         }
         render :index 
       }
-      format.json { render json: Task.arrange_serializable.to_json do |parent, children|
+      format.json { render json: Task.where(user: current_user).arrange_serializable.to_json do |parent, children|
         TaskSerializer.new(parent, children: children)
       end }
     end
@@ -94,21 +95,34 @@ class TasksController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
   def delete_attachment
-    # FIXME: anyone can delete anyone's attachment.
     @atch = ActiveStorage::Attachment.find(params[:id])
-    # @task = @atch.record
-    @atch.purge
+    @task = @atch.record
+    if @task.user == current_user
+      @atch.purge
+    else
+      render json: {
+        error: "That attachment does not belong to you.",
+        status: :forbidden
+      }, status: :forbidden
+    end
   end
   
   def rename_attachment
-    # FIXME: anyone can rename anyone's attachment.
     @atch = ActiveStorage::Attachment.find(params[:id])
-    if @atch.blob.update(filename: params[:new_name] + '.' + @atch.filename.extension)
-      render json: { name: @atch.filename }
+    @task = @atch.record
+    if @task.user == current_user
+      if @atch.blob.update(filename: params[:new_name] + '.' + @atch.filename.extension)
+        render json: { name: @atch.filename }
+      else
+        render json: @atch.errors, status: :unprocessable_entity
+      end
     else
-      render json: @atch.errors, status: :unprocessable_entity
+      render json: {
+        error: "That attachment does not belong to you.",
+        status: :forbidden
+      }, status: :forbidden
     end
   end
 
@@ -120,6 +134,17 @@ class TasksController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_task
       @task = Task.find(params[:id])
+      if @task.user != current_user
+        respond_to do |format|
+          format.html { redirect_to destroy_user_session_url, status: :unauthorized, text: "That task does not belong to you." and return }
+          format.json { 
+            render json: {
+              error: "That task does not belong to you.",
+              status: :forbidden
+            }, status: :forbidden
+          }
+        end
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
