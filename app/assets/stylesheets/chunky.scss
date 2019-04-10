@@ -16,12 +16,19 @@ body {
 header {
 	color: white;
 	background: #3F3F3F;
+	position: absolute;
+	top: 0;
+	right: 0;
 	text-align: right;
 	padding: .5em;
-	margin: -1em -1em 0 -1em;
+	border-radius: 0 0 0 5px;
 	a {
 		color: white;
 	}
+}
+
+#toast-container {
+	top: 3em;
 }
 
 .task-card-back {

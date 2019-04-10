@@ -35,6 +35,9 @@ gem 'active_model_serializers', '~> 0.10.0'
 # Users and authentication
 gem 'devise'
 
+# Toast notifications
+gem 'toastr-rails'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

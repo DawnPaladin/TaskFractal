@@ -19,8 +19,7 @@
         <%= link_to "Sign in", new_user_session_path %>
       <% end %>
     </header>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
     <%= yield %>
+    <%= toastr_flash %>
   </body>
 </html>

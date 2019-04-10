@@ -94,6 +94,8 @@ GEM
     duktape (2.0.1.0)
     erubi (1.7.1)
     execjs (2.7.0)
+    feathericon-rails (1.0.0)
+      rails (>= 4.0.0)
     ffi (1.9.25-x64-mingw32)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
@@ -195,6 +197,8 @@ GEM
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.9)
+    toastr-rails (1.0.3)
+      railties (>= 3.1.0)
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -234,6 +238,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   devise
   duktape
+  feathericon-rails
   hirb
   jbuilder (~> 2.5)
   mini_racer
@@ -243,6 +248,7 @@ DEPENDENCIES
   react_on_rails (= 11.2.1)
   sass-rails (~> 5.0)
   selenium-webdriver
+  toastr-rails
   turbolinks (~> 5)
   tzinfo-data
   uglifier (>= 1.3.0)
