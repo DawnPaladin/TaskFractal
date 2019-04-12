@@ -1,0 +1,27 @@
+<div class="home-row">
+	<div class="hero">
+		<img src="logo.svg" class="logo" alt="">
+		<h1>TaskFractal</h1>
+		<div class="tagline">the infinitely nesting task tracker</div>
+	</div>
+	<div class="buttons">
+		<% if user_signed_in? %>
+			<%= link_to "View my TaskFractal", tasks_path, class: 'button-link primary' %>
+			<%= link_to "Sign out", destroy_user_session_path, method: :delete, class: 'button-link secondary' %>
+		<% else %>
+			<%= link_to "Sign in", new_user_session_path, class: 'button-link primary' %>
+			<%= link_to "Sign up", new_user_registration_path, class: 'button-link secondary' %>
+		<% end %>
+	</div>
+</div>
+
+<style>
+html, body {
+	margin: 0;
+	height: 100%;
+}
+
+header {
+	display: none;
+}
+</style>

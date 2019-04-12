@@ -5,7 +5,6 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    flash[:notice] = "I am a toast"
     respond_to do |format|
       format.html { 
         @outline_props = { 
