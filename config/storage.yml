@@ -26,7 +26,7 @@ microsoft:
   service: AzureStorage
   storage_account_name: taskfractalattachments
   storage_access_key: <%= ENV["azure_storage_access_key"] %>
-  # container: your_container_name
+  container: taskfractalattachments
 
 # mirror:
 #   service: Mirror
