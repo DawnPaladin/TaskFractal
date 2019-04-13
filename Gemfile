@@ -32,9 +32,12 @@ gem 'active_model_serializers', '~> 0.10.0'
 
 # Users and authentication
 gem 'devise'
-
 # Toast notifications
 gem 'toastr-rails'
+# Store attachments in Azure
+gem 'azure-storage', require: false
+# Environmental variables
+gem 'figaro'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'

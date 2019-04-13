@@ -54,6 +54,15 @@ GEM
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
+    azure-core (0.1.15)
+      faraday (~> 0.9)
+      faraday_middleware (~> 0.10)
+      nokogiri (~> 1.6)
+    azure-storage (0.15.0.preview)
+      azure-core (~> 0.1)
+      faraday (~> 0.9)
+      faraday_middleware (~> 0.10)
+      nokogiri (~> 1.6, >= 1.6.8)
     bcrypt (3.1.12-x64-mingw32)
     bindex (0.5.0)
     bootsnap (1.3.2)
@@ -87,7 +96,13 @@ GEM
     duktape (2.0.1.0)
     erubi (1.7.1)
     execjs (2.7.0)
+    faraday (0.15.4)
+      multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.13.1)
+      faraday (>= 0.7.4, < 1.0)
     ffi (1.9.25-x64-mingw32)
+    figaro (1.1.1)
+      thor (~> 0.14)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hirb (0.7.3)
@@ -112,6 +127,7 @@ GEM
     minitest (5.11.3)
     msgpack (1.2.4-x64-mingw32)
     multi_json (1.13.1)
+    multipart-post (2.0.0)
     nio4r (2.3.1)
     nokogiri (1.9.0-x64-mingw32)
       mini_portile2 (~> 2.4.0)
@@ -222,12 +238,14 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   ancestry
+  azure-storage
   bootsnap (>= 1.1.0)
   byebug
   capybara (>= 2.15)
   chromedriver-helper
   devise
   duktape
+  figaro
   hirb
   jbuilder (~> 2.5)
   mini_racer
