@@ -5,3 +5,12 @@
 	margin-left: 25px;
 	// border-left: 1px solid black;
 }
+
+.add-new-task {
+	margin-top: 5px;
+	margin-left: 24px;
+	color: hsl(0, 0%, 50%);
+	::placeholder {
+		font-style: italic;
+	}
+}
