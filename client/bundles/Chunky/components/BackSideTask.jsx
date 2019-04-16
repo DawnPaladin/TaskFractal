@@ -46,11 +46,19 @@ class Attachment extends React.Component {
 			attachment: this.props.attachment
 		})
 		
-		if (confirm(`Delete ${name}?`)) {
+		if (confirm(`Delete "${name}"?`)) {
 			fetch(`/attachments/${attachmentId}`, {
 				method: "DELETE",
 				headers: headers,
 				body: body
+			}).then(response => response.json())
+			.then(json => {
+				console.log(json);
+				if (json.error) {
+					toastr.error(json.error);
+				} else {
+					toastr.info(`"${name}" deleted.`);
+				}
 			})
 			.then(this.props.afterDelete);
 		}
@@ -75,13 +83,17 @@ class Attachment extends React.Component {
 		})
 		.then(response => response.json())
 		.then(json => {
-			var name = json.name.split('.');
-			let [withoutExtension, fileExtension] = name;
-			this.setState({
-				fileName: withoutExtension,
-				fileExtension: fileExtension,
-				renaming: false,
-			});
+			if (json.error) {
+				toastr.error(json.error);
+			} else {
+				var name = json.name.split('.');
+				let [withoutExtension, fileExtension] = name;
+				this.setState({
+					fileName: withoutExtension,
+					fileExtension: fileExtension,
+					renaming: false,
+				});
+			}
 		})
 	}
 	

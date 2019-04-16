@@ -102,6 +102,7 @@ class TasksController < ApplicationController
     @task = @atch.record
     if @task.user == current_user
       @atch.purge
+      render json: { status: :ok }
     else
       render json: {
         error: "That attachment does not belong to you.",
