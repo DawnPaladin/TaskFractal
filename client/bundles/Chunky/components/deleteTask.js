@@ -1,5 +1,7 @@
 import ReactOnRails from 'react-on-rails';
 
+// TODO: Convert to React hook
+
 export default function deleteTask() {
 	if (confirm(`Delete ${this.state.task.name}?`)) {
 		let id = this.state.task.id;
