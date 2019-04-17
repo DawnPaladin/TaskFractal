@@ -10,6 +10,7 @@ import Markdown from 'react-markdown';
 
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
+import TaskPicker from './TaskPicker';
 import send from './send';
 import deleteTask from './deleteTask';
 
@@ -53,7 +54,6 @@ class Attachment extends React.Component {
 				body: body
 			}).then(response => response.json())
 			.then(json => {
-				console.log(json);
 				if (json.error) {
 					toastr.error(json.error);
 				} else {
@@ -221,6 +221,7 @@ export default class BackSideTask extends React.Component {
 			children: this.props.children,
 			blocked_by: this.props.blocked_by,
 			blocking: this.props.blocking,
+			allTasks: [],
 			attachments: this.props.attachments,
 			count_descendants: this.props.count_descendants,
 			count_completed_descendants: this.props.count_completed_descendants,
@@ -237,6 +238,7 @@ export default class BackSideTask extends React.Component {
 		this.editDueDate = this.editDueDate.bind(this);
 		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
 		this.refresh = this.refresh.bind(this);
+		this.refreshAllTasks = this.refreshAllTasks.bind(this);
 		this.refreshAttachments = this.refreshAttachments.bind(this);
 		this.saveTask = this.saveTask.bind(this);
 		this.setTaskDetail = this.setTaskDetail.bind(this);
@@ -306,6 +308,24 @@ export default class BackSideTask extends React.Component {
 		fetch(`/tasks/${id}.json`, {headers})
 		.then(response => response.json())
 		.then(json => this.setState({ task: json, children: json.children }));
+	}
+	
+	refreshAllTasks() {
+		const headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		fetch('/tasks.json', {headers})
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error("Couldn't fetch tasks.");
+			}
+		})
+		.then(json => {
+			this.setState({ allTasks: json });
+		}).catch(error => {
+			toastr.error(error.message);
+		});
 	}
 	
 	refreshAttachments() {
@@ -459,6 +479,7 @@ export default class BackSideTask extends React.Component {
 							<span className="field-name"> waiting on</span>
 							<div className="box">
 								{blocked_by}
+								<TaskPicker allTasks={this.state.allTasks} refreshAllTasks={this.refreshAllTasks} />
 							</div>
 						</div>
 						<div className="field">
