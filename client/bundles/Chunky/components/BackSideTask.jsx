@@ -77,10 +77,7 @@ class Attachment extends React.Component {
 		const headers = ReactOnRails.authenticityHeaders();
 		headers["Content-Type"] = "application/json";
 		
-		fetch(`/attachments/${attachmentId}/rename/${name}`, {
-			method: "GET",
-			headers: headers,
-		})
+		fetch(`/attachments/${attachmentId}/rename/${name}`, {headers})
 		.then(response => response.json())
 		.then(json => {
 			if (json.error) {
@@ -306,10 +303,7 @@ export default class BackSideTask extends React.Component {
 		let headers = ReactOnRails.authenticityHeaders();
 		headers["Content-Type"] = "application/json";
 		
-		fetch(`/tasks/${id}.json`, {
-			method: "GET",
-			headers: headers
-		})
+		fetch(`/tasks/${id}.json`, {headers})
 		.then(response => response.json())
 		.then(json => this.setState({ task: json, children: json.children }));
 	}
@@ -320,10 +314,7 @@ export default class BackSideTask extends React.Component {
 		let headers = ReactOnRails.authenticityHeaders();
 		headers["Content-Type"] = "application/json";
 		
-		fetch(`/tasks/${id}/attachments.json`, {
-			method: "GET",
-			headers: headers
-		})
+		fetch(`/tasks/${id}/attachments.json`, {headers})
 		.then(response => response.json())
 		.then(json => {
 			console.log(json);
