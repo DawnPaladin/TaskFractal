@@ -341,7 +341,7 @@ export default class BackSideTask extends React.Component {
 		
 		fetch(`/tasks/${id}.json`, {headers})
 		.then(response => response.json())
-		.then(json => this.setState({ task: json, children: json.children }));
+		.then(json => this.setState({ task: json, children: json.descendants }));
 	}
 	
 	refreshAllTasks() {
