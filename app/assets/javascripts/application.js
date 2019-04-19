@@ -21,3 +21,5 @@
 toastr.options.closeButton = true;
 toastr.options.timeOut = 0;
 toastr.options.extendedTimeOut = 0;
+
+feather.replace();
