@@ -136,6 +136,16 @@ header {
 	.deemphasize {
 		color: hsl(0, 0%, 50%);
 	}
+	
+	.blocked-task {
+		position: relative;
+		.remove-blocked-task-button {
+			@include doesnt-look-like-a-button();
+			position: absolute;
+			right: 0;
+			z-index: 2;
+		}
+	}
 
 	.subtasks {
 		padding-top: 5px;

@@ -14,6 +14,11 @@ import TaskPicker from './TaskPicker';
 import send from './send';
 import deleteTask from './deleteTask';
 
+const removeTaskFromArray = (task, array) => {
+	let taskIndex = array.findIndex(arrayTask => arrayTask.id == task.id);
+	array.splice(taskIndex, 1);
+}
+
 class Attachment extends React.Component {
 	static propTypes = {
 		attachment: PropTypes.object.isRequired,
@@ -231,6 +236,7 @@ export default class BackSideTask extends React.Component {
 		};
 		
 		// functions
+		this.addBlockingTask = this.addBlockingTask.bind(this);
 		this.addSubtask = this.addSubtask.bind(this);
 		this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
 		this.checkboxChange = this.checkboxChange.bind(this);
@@ -240,6 +246,7 @@ export default class BackSideTask extends React.Component {
 		this.refresh = this.refresh.bind(this);
 		this.refreshAllTasks = this.refreshAllTasks.bind(this);
 		this.refreshAttachments = this.refreshAttachments.bind(this);
+		this.removeBlockingTask = this.removeBlockingTask.bind(this);
 		this.saveTask = this.saveTask.bind(this);
 		this.setTaskDetail = this.setTaskDetail.bind(this);
 		this.startEditingDueDate = this.startEditingDueDate.bind(this);
@@ -250,6 +257,33 @@ export default class BackSideTask extends React.Component {
 		this.updateName = this.updateName.bind(this);
 	}
 	
+	addBlockingTask(blockingTask, relationship) {
+		const id = this.state.task.id;
+		this.setState(state => {
+			state[relationship].push(blockingTask);
+			return state;
+		}, () => {
+			let headers = ReactOnRails.authenticityHeaders();
+			headers["Content-Type"] = "application/json";
+			
+			fetch(`/tasks/${id}/${relationship}/${blockingTask.id}.json`, { method: "POST", headers })
+			.then(response => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error("Couldn't remove blocking task.");
+				}
+			}).then(json => {
+				if (json.error) {
+					toastr.error(json.error);
+				} else {
+					toastr.info(json.text);
+				}
+			}).catch(error => {
+				toastr.error(error.message);
+			});
+		})
+	}
 	addSubtask(event) {
 		event.preventDefault();
 		
@@ -337,11 +371,41 @@ export default class BackSideTask extends React.Component {
 		fetch(`/tasks/${id}/attachments.json`, {headers})
 		.then(response => response.json())
 		.then(json => {
-			console.log(json);
 			this.setState({ attachments: json })
 		})
 	}
 	
+	removeBlockingTask(blockingTask, relationship) {
+		const id = this.state.task.id;
+		const baseTask = {id};
+		this.setState(state => {
+			removeTaskFromArray(blockingTask, state[relationship]);
+			return state;
+		}, () => {
+			let body = JSON.stringify({task: baseTask});
+			let headers = ReactOnRails.authenticityHeaders();
+			headers["Content-Type"] = "application/json";
+			
+			fetch(`/tasks/${id}/${relationship}/${blockingTask.id}.json`, { method: "DELETE", body, headers })
+			.then(response => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error("Couldn't remove blocking task.");
+				}
+			}).then(json => {
+				if (json.error) {
+					toastr.error(json.error);
+				} else {
+					toastr.info(json.text);
+				}
+			}).catch(error => {
+				toastr.error(error.message);
+			});
+		})
+	}
+	
+
 	saveTask() {
 		send(this.state.task);
 	}
@@ -387,22 +451,28 @@ export default class BackSideTask extends React.Component {
 	}
 	
 	render() {
-		const none = <div className="deemphasize"><em>None</em></div>
-		
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
 		ancestors.unshift(<a href="/tasks/" className="task-link home-link" key="0"><Icon.Home size="16" /></a>); // TODO: Replace with outline icon
 		
 		let children = this.state.children.map(child => 
 			<FrontSideTask task={child} key={child.id} handleCheckboxChange={this.checkboxChange} />
 		);
-		let blocked_by = this.state.blocked_by.map(blocked_by =>
-			<FrontSideTask task={blocked_by} key={blocked_by.id} handleCheckboxChange={this.checkboxChange} />
-		);
-		if (blocked_by.length == 0) blocked_by = none;
-		let blocking = this.state.blocking.map(blocking =>
-			<FrontSideTask task={blocking} key={blocking.id} handleCheckboxChange={this.checkboxChange} />
-		);
-		if (blocking.length == 0) blocking = none;
+		let blocked_by = this.state.blocked_by.map(blocked_by => (
+			<div className="blocked-task" key={blocked_by.id}>
+				<button className="remove-blocked-task-button" onClick={e => this.removeBlockingTask(blocked_by, 'blocked_by')}>
+					<Icon.XCircle size="16" />
+				</button>
+				<FrontSideTask task={blocked_by} handleCheckboxChange={this.checkboxChange} />
+			</div>
+		));
+		let blocking = this.state.blocking.map(blocking => (
+			<div className="blocked-task" key={blocking.id}>
+				<button className="remove-blocked-task-button" onClick={e => this.removeBlockingTask(blocking, 'blocking')}>
+					<Icon.XCircle size="16" />
+				</button>
+				<FrontSideTask task={blocking} key={blocking.id} handleCheckboxChange={this.checkboxChange} />
+			</div>
+		));
 		
 		let cells = [];
 		const completedDescendants = this.state.count_completed_descendants;
@@ -479,7 +549,12 @@ export default class BackSideTask extends React.Component {
 							<span className="field-name"> waiting on</span>
 							<div className="box">
 								{blocked_by}
-								<TaskPicker allTasks={this.state.allTasks} refreshAllTasks={this.refreshAllTasks} />
+								<TaskPicker 
+									allTasks={this.state.allTasks} 
+									refreshAllTasks={this.refreshAllTasks} 
+									addBlockingTask={this.addBlockingTask}
+									relationship="blocked_by"
+								/>
 							</div>
 						</div>
 						<div className="field">
@@ -487,6 +562,12 @@ export default class BackSideTask extends React.Component {
 							<span className="field-name"> blocking</span>
 							<div className="box">
 								{blocking}
+								<TaskPicker 
+									allTasks={this.state.allTasks} 
+									refreshAllTasks={this.refreshAllTasks} 
+									addBlockingTask={this.addBlockingTask}
+									relationship="blocking"
+								/>
 							</div>
 						</div>
 					</div>

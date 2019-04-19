@@ -18,6 +18,8 @@ export default class TaskPicker extends React.Component {
 	static propTypes = {
 		allTasks: PropTypes.array.isRequired,
 		refreshAllTasks: PropTypes.func.isRequired,
+		addBlockingTask: PropTypes.func.isRequired,
+		relationship: PropTypes.string.isRequired,
 	}
 	constructor(props) {
 		super(props);
@@ -37,10 +39,14 @@ export default class TaskPicker extends React.Component {
 			task.name.toLowerCase().slice(0, inputLength) === inputValue
 		);
 	};
-	onChange = (event, { newValue }) => {
+	onInputChange = (event, { newValue }) => {
 		this.setState({
 			value: newValue
 		});
+	}
+	onSuggestionSelected = (event, { suggestion, suggestionValue }) => {
+		this.props.addBlockingTask(suggestion, this.props.relationship);
+		this.setState({ value: '' });
 	}
 	onSuggestionsFetchRequested = ({ value }) => {
 		this.setState({
@@ -57,16 +63,18 @@ export default class TaskPicker extends React.Component {
 		const inputProps = {
 			placeholder: "Add a task...",
 			value,
-			onChange: this.onChange,
+			onChange: this.onInputChange,
 		}
 		return <div>
 			<Autosuggest
 				suggestions={suggestions}
+				onSuggestionSelected={this.onSuggestionSelected}
 				onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
 				onSuggestionsClearRequested={this.onSuggestionsClearRequested}
 				getSuggestionValue={getSuggestionValue}
 				renderSuggestion={renderSuggestion}
 				inputProps={inputProps}
+				highlightFirstSuggestion={true}
 			/>
 		</div>
 	}
