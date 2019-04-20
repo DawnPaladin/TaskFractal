@@ -9,7 +9,7 @@
 
 body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	background: url('groovepaper.png');
+	background: radial-gradient(583.50px at 50% 50%, #FAD8F5 0%, #EBD8FF 100%);
 	margin: 1em;
 }
 
@@ -45,6 +45,7 @@ header {
 	border-radius: 3px;
 	padding: 10px 20px 0 20px;
 	position: relative;
+	margin: auto;
 	.home-link {
 		position: relative;
 		bottom: -.2em;		

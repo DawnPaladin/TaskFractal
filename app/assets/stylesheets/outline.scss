@@ -1,5 +1,11 @@
-// .outline {
-// }
+.outline {
+	max-width: 500px;
+	margin: auto;
+	background: white;
+	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
+	border-radius: 3px;
+	padding: 10px 20px;
+}
 
 .indent {
 	margin-left: 25px;
