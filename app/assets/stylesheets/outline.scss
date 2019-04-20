@@ -6,11 +6,22 @@
 	// border-left: 1px solid black;
 }
 
-.add-new-task {
-	margin-top: 5px;
-	margin-left: 24px;
+// from chunky.scss
+.task-adder {
 	color: hsl(0, 0%, 50%);
+	input {
+		position: relative;
+		top: -3px;
+	}
 	::placeholder {
 		font-style: italic;
+	}
+	&::before {
+		content: '';
+		display: inline-block;
+		width: .9em;
+		height: .9em;
+		border: 2px dashed silver;
+		margin: 2px 7px 0 2px;
 	}
 }

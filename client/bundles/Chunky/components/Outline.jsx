@@ -62,7 +62,7 @@ export default class Outline extends React.Component {
 	render() {
 		return <div className="outline">
 			{ this.state.tasks.map(task => this.taskTree(task)) }
-			<form className="add-new-task" onSubmit={this.addNewTask} >
+			<form className="task-adder" onSubmit={this.addNewTask} >
 				<input type="text" placeholder="New task" value={this.state.new_task_name} onChange={this.handleAddNewTaskEdit} />
 			</form>
 		</div>

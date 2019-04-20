@@ -388,7 +388,7 @@ export default class BackSideTask extends React.Component {
 						<div className="field-name">subtasks</div>
 						<div className="subtasks">
 							{children}
-							<form className="add-subtask" onSubmit={this.addSubtask} >
+							<form className="task-adder" onSubmit={this.addSubtask} >
 								<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
 							</form>
 						</div>
