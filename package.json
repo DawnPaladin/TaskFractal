@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "3.5",
-    "activestorage": "^5.2.2",
+    "activestorage": "^5.2.3",
     "babel-preset-react": "^6.24.1",
     "classnames": "^2.2.6",
     "color-interpolate": "^1.0.4",
