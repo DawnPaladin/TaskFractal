@@ -337,7 +337,8 @@ export default class BackSideTask extends React.Component {
 						}
 						{ this.state.editingTaskName && 
 							<form onSubmit={this.stopEditingTaskName}>
-								<input type="text" value={this.state.task.name} onChange={this.editTaskName} /> 
+								<input type="text" value={this.state.task.name} onChange={this.editTaskName} />
+								<button><Icon.Check/></button>
 							</form>
 						}
 					</h1>

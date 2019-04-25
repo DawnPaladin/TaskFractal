@@ -113,13 +113,17 @@ header {
 		font-weight: 400;
 		font-size: 1.75em;
 		form {
-			display: inline-block;
+			display: inline-flex;
+			flex-direction: row;
+			align-items: stretch;
+			width: 90%;
 		}
 		input[type=checkbox] {
 			transform: scale(1.75) translateY(-2.5px);
 		}
 		input[type=text] {
 			font-size: inherit;
+			width: 75%;
 		}
 		label {
 			cursor: text;
