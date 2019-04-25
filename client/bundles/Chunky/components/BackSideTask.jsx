@@ -34,7 +34,6 @@ export default class BackSideTask extends React.Component {
 		
 		this.state = { 
 			task: this.props.task,
-			name: this.props.task.name,
 			children: this.props.children,
 			blocked_by: this.props.blocked_by,
 			blocking: this.props.blocking,
@@ -45,6 +44,7 @@ export default class BackSideTask extends React.Component {
 			new_task_name: '',
 			editingDueDate: false,
 			editingDescription: false,
+			editingTaskName: false,
 		};
 		
 		// functions
@@ -54,6 +54,7 @@ export default class BackSideTask extends React.Component {
 		this.checkboxChange = this.checkboxChange.bind(this);
 		this.deleteTask = deleteTask.bind(this);
 		this.editDueDate = this.editDueDate.bind(this);
+		this.editTaskName = this.editTaskName.bind(this);
 		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.refreshAllTasks = this.refreshAllTasks.bind(this);
@@ -65,6 +66,8 @@ export default class BackSideTask extends React.Component {
 		this.stopEditingDueDate = this.stopEditingDueDate.bind(this);
 		this.startEditingDescription = this.startEditingDescription.bind(this);
 		this.stopEditingDescription = this.stopEditingDescription.bind(this);
+		this.startEditingTaskName = this.startEditingTaskName.bind(this);
+		this.stopEditingTaskName = this.stopEditingTaskName.bind(this);
 		this.test = this.test.bind(this);
 		this.updateName = this.updateName.bind(this);
 	}
@@ -139,6 +142,10 @@ export default class BackSideTask extends React.Component {
 	
 	editDueDate(event) {
 		this.setTaskDetail('due_date', event.target.value);
+	}
+
+	editTaskName(event) {
+		this.setTaskDetail('name', event.target.value);
 	}
 	
 	handleAddSubtaskEdit(event) {
@@ -253,6 +260,17 @@ export default class BackSideTask extends React.Component {
 		this.setState({editingDescription: false});
 		this.saveTask();
 	}
+
+	startEditingTaskName(event) {
+		event.preventDefault();
+		this.setState({editingTaskName: true});
+	}
+	
+	stopEditingTaskName(event) {
+		event.preventDefault();
+		this.setState({editingTaskName: false});
+		this.saveTask();
+	}
 	
 	test(value) {
 		console.log(value);
@@ -313,10 +331,15 @@ export default class BackSideTask extends React.Component {
 					<button className="delete-task-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button>
 					<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
 					<h1>
-						<label>
-							<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
-							{ this.state.task.name }
-						</label>
+						<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
+						{!this.state.editingTaskName && 
+							<label onClick={this.startEditingTaskName}>{this.state.task.name}<Icon.Edit2 size="20" className="edit-icon"/></label>
+						}
+						{ this.state.editingTaskName && 
+							<form onSubmit={this.stopEditingTaskName}>
+								<input type="text" value={this.state.task.name} onChange={this.editTaskName} /> 
+							</form>
+						}
 					</h1>
 					
 					<div className="field box due-date">
