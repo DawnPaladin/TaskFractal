@@ -115,8 +115,21 @@ export default class BackSideTask extends React.Component {
 			method: "POST",
 			body: body,
 			headers: headers,
-		}).then(this.refresh());
-		
+		}).then(response => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error("Couldn't send new subtask.");
+			}
+		}).then(json => {
+			if (json.error) {
+				toastr.error(json.error);
+			}
+		}).then(this.refresh)
+		.catch(error => {
+			toastr.error(error.message);
+		});
+	
 		this.setState({ new_task_name: '' });
 	}
 	
@@ -414,6 +427,7 @@ export default class BackSideTask extends React.Component {
 							{children}
 							<form className="task-adder" onSubmit={this.addSubtask} >
 								<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
+								<button type="submit">Add</button>
 							</form>
 						</div>
 					</div>
