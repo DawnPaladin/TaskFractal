@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import FrontSideTask from './FrontSideTask';
 
@@ -52,6 +53,9 @@ export default class Outline extends React.Component {
 	handleAddNewTaskEdit(event) {
 		this.setState({ new_task_name: event.target.value });
 	}
+	onDragEnd = result => {
+		
+	}
 	taskTree(task) {
 		var children = task.descendants ? task.descendants.map(child => this.taskTree(child)) : <div></div>;
 		return (<div key={task.id}>
@@ -61,11 +65,13 @@ export default class Outline extends React.Component {
 	}
 	render() {
 		return <div className="outline">
-			{ this.state.tasks.map(task => this.taskTree(task)) }
-			<form className="task-adder" onSubmit={this.addNewTask} >
-				<input type="text" placeholder="New task" value={this.state.new_task_name} onChange={this.handleAddNewTaskEdit} />
-				<button>Add</button>
-			</form>
+			<DragDropContext onDragEnd={this.onDragEnd}>
+				{ this.state.tasks.map(task => this.taskTree(task)) }
+				<form className="task-adder" onSubmit={this.addNewTask} >
+					<input type="text" placeholder="New task" value={this.state.new_task_name} onChange={this.handleAddNewTaskEdit} />
+					<button>Add</button>
+				</form>
+			</DragDropContext>
 		</div>
 	}
 }

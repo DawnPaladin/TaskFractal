@@ -4,6 +4,7 @@ import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 import WithSeparator from 'react-with-separator';
 import Markdown from 'react-markdown';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import FileUpload from './FileUpload';
 import Checkbox from './Checkbox';
@@ -56,6 +57,7 @@ export default class BackSideTask extends React.Component {
 		this.editDueDate = this.editDueDate.bind(this);
 		this.editTaskName = this.editTaskName.bind(this);
 		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
+		this.onDragEnd = this.onDragEnd.bind(this);
 		this.refresh = this.refresh.bind(this);
 		this.refreshAllTasks = this.refreshAllTasks.bind(this);
 		this.refreshAttachments = this.refreshAttachments.bind(this);
@@ -163,6 +165,10 @@ export default class BackSideTask extends React.Component {
 	
 	handleAddSubtaskEdit(event) {
 		this.setState({ new_task_name: event.target.value });
+	}
+	
+	onDragEnd() {
+		return;
 	}
 	
 	refresh = () => {
@@ -424,11 +430,13 @@ export default class BackSideTask extends React.Component {
 					<div className="field">
 						<div className="field-name">subtasks</div>
 						<div className="subtasks">
-							{children}
-							<form className="task-adder" onSubmit={this.addSubtask} >
-								<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
-								<button>Add</button>
-							</form>
+							<DragDropContext onDragEnd={this.onDragEnd}>
+								{children}
+								<form className="task-adder" onSubmit={this.addSubtask} >
+									<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
+									<button>Add</button>
+								</form>
+							</DragDropContext>
 						</div>
 					</div>
 				
