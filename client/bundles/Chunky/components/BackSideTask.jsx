@@ -4,7 +4,7 @@ import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 import WithSeparator from 'react-with-separator';
 import Markdown from 'react-markdown';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import FileUpload from './FileUpload';
 import Checkbox from './Checkbox';
@@ -303,8 +303,14 @@ export default class BackSideTask extends React.Component {
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
 		ancestors.unshift(<a href="/tasks/" className="task-link home-link" key="0"><Icon.Home size="16" /></a>); // TODO: Replace with outline icon
 		
-		let children = this.state.children.map(child => 
-			<FrontSideTask task={child} key={child.id} handleCheckboxChange={this.checkboxChange} />
+		let children = this.state.children.map((child, index) => 
+			<Draggable draggableId={child.id} key={child.id} index={index}>
+				{(provided) => (
+					<div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+						<FrontSideTask task={child} handleCheckboxChange={this.checkboxChange} />
+					</div>
+				)}
+			</Draggable>
 		);
 		let blocked_by = this.state.blocked_by.map(blocked_by => (
 			<div className="blocked-task" key={blocked_by.id}>
@@ -431,11 +437,18 @@ export default class BackSideTask extends React.Component {
 						<div className="field-name">subtasks</div>
 						<div className="subtasks">
 							<DragDropContext onDragEnd={this.onDragEnd}>
-								{children}
-								<form className="task-adder" onSubmit={this.addSubtask} >
-									<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
-									<button>Add</button>
-								</form>
+								<Droppable droppableId="1">
+									{provided => (
+										<div {...provided.droppableProps} ref={provided.innerRef}>
+											{children}
+											<form className="task-adder" onSubmit={this.addSubtask} >
+												<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
+												<button>Add</button>
+											</form>
+											{provided.placeholder}
+										</div>
+									)}
+								</Droppable>
 							</DragDropContext>
 						</div>
 					</div>

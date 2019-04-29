@@ -45,7 +45,7 @@ export default class FrontSideTask extends React.Component {
 		render() {
 			var url = "/tasks/" + this.state.task.id;
 			return (
-				<div className="task-card-front">
+				<div className="task-card-front" ref={this.props.innerRef}>
 				{/* <button className="delete-attachment-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button> */}
 				<Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
 				<a className="task-link" href={url}>{ this.state.task.name }</a>
