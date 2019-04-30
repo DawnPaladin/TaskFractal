@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { 
         @outline_props = { 
-          tasks: Task.where(user: current_user).arrange_serializable do |parent, children|
+          tasks: Task.where(user: current_user).arrange_serializable(:order => :position) do |parent, children|
             TaskSerializer.new(parent, children: children)
           end
         }

@@ -23,6 +23,8 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 # Parent-child-grandchild relationships
 gem 'ancestry'
+# Reorder subtasks
+gem 'acts_as_list'
 # Serializer
 gem 'active_model_serializers', '~> 0.10.0'
 # Use Redis adapter to run Action Cable in production

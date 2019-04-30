@@ -6,6 +6,7 @@ class Task < ApplicationRecord
 	has_many :children, class_name: "Task", foreign_key: "parent_id"
 	belongs_to :parent, class_name: "Task", optional: true
 	has_ancestry
+	acts_as_list scope: [:ancestry]
 	
 	# thanks to https://medium.com/@jbmilgrom/active-record-many-to-many-self-join-table-e0992c27c1e
 	has_many :blocked_blocks, foreign_key: :blocker_id, class_name: "BlockingTask"
