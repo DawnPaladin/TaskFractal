@@ -18,6 +18,12 @@ const removeTaskFromArray = (task, array) => {
 	array.splice(taskIndex, 1);
 }
 
+const moveItemInArray = (array, sourceIndex, destinationIndex) => {
+	let item = array[sourceIndex];
+	array.splice(sourceIndex, 1);
+	array.splice(destinationIndex, 0, item);
+}
+
 export default class BackSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
@@ -167,8 +173,37 @@ export default class BackSideTask extends React.Component {
 		this.setState({ new_task_name: event.target.value });
 	}
 	
-	onDragEnd() {
-		return;
+	onDragEnd(result) {
+		const { destination, source, draggableId } = result;
+		
+		if (!destination) return;
+		if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+		
+		this.setState(state => {
+			const children = Array.from(state.children);
+			moveItemInArray(children, source.index, destination.index);
+			return { children };
+		});
+		
+		const destinationIndex = destination.index + 1; // Ruby lists are 1-indexed
+		
+		const url = `/tasks/${draggableId}/move/position/${destinationIndex}.json`
+		const headers = ReactOnRails.authenticityHeaders();
+		headers["Content-Type"] = "application/json";
+		fetch(url, { method: "PATCH", headers })
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error("Couldn't move task.");
+			}
+		}).then(json => {
+			if (json.error) {
+				toastr.error(json.error);
+			}
+		}).catch(error => {
+			toastr.error(error.message);
+		})
 	}
 	
 	refresh = () => {

@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task, only: [:show, :edit, :update, :destroy, :attachments]
+  before_action :set_task, only: [:show, :edit, :update, :move, :destroy, :attachments]
   
   # GET /tasks
   # GET /tasks.json
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
       format.html {
         @back_side_task_props = {
           task: @task,
-          children: @task.children.order(:name),
+          children: @task.children.order(:position),
           blocked_by: @task.blocked_by.order(:name),
           blocking: @task.blocking.order(:name),
           attachments: list_attachments(@task),
@@ -82,6 +82,33 @@ class TasksController < ApplicationController
         format.json { render json: @task, status: :ok }
       else
         format.html { render :edit }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def move
+    position = params[:position].to_i
+    parent_id = params[:parent_id]
+    unless (parent_id.nil?)
+      new_parent = Task.find(parent: params[:parent_id])
+      if new_parent.user == current_user
+        @task.parent = new_parent
+      else
+        not_your_task
+      end
+    end
+    
+    @task.insert_at(position)
+    
+    if @task.save
+      respond_to do |format|
+        format.html { redirect_to @task, notice: 'Task was successfully moved.' }
+        format.json { render json: @task, status: :ok }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_back fallback_location: @task, warning: "Couldn't move task." }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end

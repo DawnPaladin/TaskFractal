@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     delete 'blocking/:id', to: 'tasks#remove_blocking_task'
     delete 'blocked_by/:id', to: 'tasks#remove_blocked_by_task'
   end
+  patch 'tasks/:id/move/position/:position', to: 'tasks#move'
+  patch 'tasks/:id/move/position/:position/parent/:parent_id', to: 'tasks#move'
   get 'tasks/:id/attachments', to: 'tasks#attachments'
   get 'attachments/:id/rename/:new_name', to: 'tasks#rename_attachment'
   delete 'attachments/:id', to: 'tasks#delete_attachment'
