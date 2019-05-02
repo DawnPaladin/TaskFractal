@@ -8,9 +8,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { 
         @outline_props = { 
-          tasks: Task.where(user: current_user).arrange_serializable(:order => :position) do |parent, children|
-            TaskSerializer.new(parent, children: children)
-          end
+          tasks: normalize_user_tasks
         }
         render :index 
       }
@@ -172,6 +170,61 @@ class TasksController < ApplicationController
   end
   
   private
+    def normalize_user_tasks
+      # sample_output = {
+      #   rootId: 'root',
+      #   items: {
+      #     'root': {
+      #       id: 'root',
+      #       children: ['1'],
+      #     },
+      #     '1': {
+      #       id: '1',
+      #       children: ['2'],
+      #       isExpanded: true,
+      #       data: { name: "Parent" },
+      #     },
+      #     '2': {
+      #       id: '2',
+      #       children: [],
+      #       isExpanded: true,
+      #       data: { name: "Child" },
+      #     },
+      #   }
+      # }
+      ar_tasks = Task.where(user: current_user) # ActiveRecord tasks
+      prop_tasks = {
+        "rootId" => 'root',
+        "items" => {}
+      }
+      root_task = {
+        "id" => 'root',
+        "children" => [],
+      }
+      ar_tasks.each do |ar_task|
+        id = ar_task.id.to_s
+        prop_task = {
+          "id" => id,
+          "children" => ar_task.child_ids,
+          "isExpanded" => true,
+          "data" => {
+            "id" => id,
+            "name" => ar_task.name,
+            "completed" => ar_task.completed,
+            "due_date" => ar_task.due_date,
+            "description" => ar_task.description,
+            "attachment_count" => ar_task.attachment_count,
+          }
+        }
+        prop_tasks["items"][id] = prop_task
+        if ar_task.parent.nil?
+          root_task['children'] << id
+        end
+      end
+      prop_tasks["items"]['root'] = root_task
+      return prop_tasks
+    end
+    
     def list_attachments(task)
       task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
     end
