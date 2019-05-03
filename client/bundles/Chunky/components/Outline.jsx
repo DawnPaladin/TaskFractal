@@ -59,8 +59,18 @@ export default class Outline extends React.Component {
 	// onDragEnd = result => {
 		
 	// }
+	getIcon(item, onExpand, onCollapse) {
+		if (item.children && item.children.length > 0) {
+			return item.isExpanded ? <span className="tree-node-icon">▾</span> : <span className="tree-node-icon">▸</span>;
+		} else {
+			return <span className="tree-node-icon"></span>;
+		}
+	}
+	
 	renderItem = ({item, provided}) => {
-		return <div ref={provided.innerRef} {...provided.draggableProps}>
+		var icon = this.getIcon(item);
+		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps}>
+			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} />
 		</div>
 	}
@@ -83,6 +93,7 @@ export default class Outline extends React.Component {
 			<Tree
 				tree={this.state.treeData}
 				renderItem={this.renderItem}
+				offsetPerLevel={23}
 			/>
 		</div>
 	}

@@ -36,3 +36,21 @@
 		top: -3px;
 	}
 }
+
+.tree-node-icon {
+	display: inline-block;
+	font-size: 20px;
+	width: 15px;
+	opacity: 0;
+	transition: opacity .2s;
+	margin-left: -15px;
+}
+.tree-node:hover {
+	.tree-node-icon {
+		opacity: 1;
+	}
+}
+
+.task-card-front {
+	display: inline-block;
+}
