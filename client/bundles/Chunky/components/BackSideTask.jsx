@@ -12,6 +12,7 @@ import FrontSideTask from './FrontSideTask';
 import TaskPicker from './TaskPicker';
 import send from './send';
 import deleteTask from './deleteTask';
+import sendTaskMovement from './sendTaskMovement';
 
 const removeTaskFromArray = (task, array) => {
 	let taskIndex = array.findIndex(arrayTask => arrayTask.id == task.id);
@@ -185,25 +186,7 @@ export default class BackSideTask extends React.Component {
 			return { children };
 		});
 		
-		const destinationIndex = destination.index + 1; // Ruby lists are 1-indexed
-		
-		const url = `/tasks/${draggableId}/move/position/${destinationIndex}.json`
-		const headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		fetch(url, { method: "PATCH", headers })
-		.then(response => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error("Couldn't move task.");
-			}
-		}).then(json => {
-			if (json.error) {
-				toastr.error(json.error);
-			}
-		}).catch(error => {
-			toastr.error(error.message);
-		})
+		sendTaskMovement(draggableId, destination.index);
 	}
 	
 	refresh = () => {

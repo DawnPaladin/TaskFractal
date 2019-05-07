@@ -89,17 +89,20 @@ class TasksController < ApplicationController
     position = params[:position].to_i
     parent_id = params[:parent_id]
     unless (parent_id.nil?)
-      new_parent = Task.find(parent: params[:parent_id])
-      if new_parent.user == current_user
-        @task.parent = new_parent
+      if (parent_id == "root")
+        @task.parent = nil
       else
-        not_your_task
+        new_parent = Task.find(parent_id)
+        if new_parent.user == current_user
+          @task.parent = new_parent
+        else
+          not_your_task
+        end
       end
     end
     
-    @task.insert_at(position)
-    
     if @task.save
+      @task.insert_at(position)
       respond_to do |format|
         format.html { redirect_to @task, notice: 'Task was successfully moved.' }
         format.json { render json: @task, status: :ok }
@@ -192,7 +195,7 @@ class TasksController < ApplicationController
       #     },
       #   }
       # }
-      ar_tasks = Task.where(user: current_user) # ActiveRecord tasks
+      ar_tasks = Task.where(user: current_user).order(:position) # ActiveRecord tasks
       prop_tasks = {
         "rootId" => 'root',
         "items" => {}
