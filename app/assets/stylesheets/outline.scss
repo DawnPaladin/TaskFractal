@@ -44,6 +44,8 @@
 	opacity: 0;
 	transition: opacity .2s;
 	margin-left: -15px;
+	vertical-align: top;
+	line-height: 100%;
 }
 .tree-node:hover {
 	.tree-node-icon {
