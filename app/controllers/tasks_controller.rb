@@ -86,7 +86,11 @@ class TasksController < ApplicationController
   end
   
   def move
-    position = params[:position].to_i
+    if params[:position] == "NaN" # Arrives with no position due to being the first child of a new parent
+      position = false
+    else
+      position = params[:position].to_i
+    end
     parent_id = params[:parent_id]
     unless (parent_id.nil?)
       if (parent_id == "root")
@@ -102,7 +106,7 @@ class TasksController < ApplicationController
     end
     
     if @task.save
-      @task.insert_at(position)
+      @task.insert_at(position) if position
       respond_to do |format|
         format.html { redirect_to @task, notice: 'Task was successfully moved.' }
         format.json { render json: @task, status: :ok }
