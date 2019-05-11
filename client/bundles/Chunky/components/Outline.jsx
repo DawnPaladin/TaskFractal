@@ -17,6 +17,7 @@ export default class Outline extends React.Component {
 		}
 		this.addNewTask = this.addNewTask.bind(this);
 		this.renderItem = this.renderItem.bind(this);
+		this.onDragStart = this.onDragStart.bind(this);
 		this.onDragEnd = this.onDragEnd.bind(this);
 		this.handleAddNewTaskEdit = this.handleAddNewTaskEdit.bind(this);
 	}
@@ -52,6 +53,11 @@ export default class Outline extends React.Component {
 		
 		this.setState({ new_task_name: '' });
 	}
+	componentDidMount() {
+		const outline = document.getElementsByClassName('outline')[0];
+		const tree = outline.firstChild;
+		this.treeElement = tree;
+	}
 	handleAddNewTaskEdit(event) {
 		this.setState({ new_task_name: event.target.value });
 	}
@@ -63,7 +69,15 @@ export default class Outline extends React.Component {
 		}
 	}
 	
+	onDragStart() {
+		// work around bug where New Task field at the bottom pops up and covers last list item
+		var treeHeight = this.treeElement.clientHeight; // offsetHeight or clientHeight
+		treeHeight = treeHeight + 26;
+		this.treeElement.style.height = `${treeHeight}px`;
+	}
+	
 	onDragEnd(source, destination) {
+		this.treeElement.style.height = "";
 		const tree = this.state.treeData;
 		if (!destination) return;
 		
@@ -80,7 +94,6 @@ export default class Outline extends React.Component {
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
 			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} />
-			{ provided.placeholder }
 		</div>
 	}
 
@@ -90,6 +103,7 @@ export default class Outline extends React.Component {
 				tree={this.state.treeData}
 				renderItem={this.renderItem}
 				offsetPerLevel={23}
+				onDragStart={this.onDragStart}
 				onDragEnd={this.onDragEnd}
 				isDragEnabled
 			/>
