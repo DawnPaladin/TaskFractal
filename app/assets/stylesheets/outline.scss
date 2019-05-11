@@ -1,3 +1,5 @@
+@import 'partials';
+
 .outline {
 	max-width: 500px;
 	margin: auto;
@@ -12,31 +14,6 @@
 	// border-left: 1px solid black;
 }
 
-// from chunky.scss
-.task-adder {
-	color: hsl(0, 0%, 50%);
-	input {
-		position: relative;
-		top: -3px;
-	}
-	::placeholder {
-		font-style: italic;
-	}
-	&::before {
-		content: '';
-		display: inline-block;
-		width: .9em;
-		height: .9em;
-		border: 2px dashed silver;
-		margin: 2px 7px 0 2px;
-	}
-	button {
-		height: 1.8em;
-		position: relative;
-		top: -3px;
-	}
-}
-
 .tree-node-icon {
 	display: inline-block;
 	font-size: 20px;
@@ -46,6 +23,7 @@
 	margin-left: -15px;
 	vertical-align: top;
 	line-height: 100%;
+	@include doesnt-look-like-a-button;
 }
 .tree-node:hover {
 	.tree-node-icon {

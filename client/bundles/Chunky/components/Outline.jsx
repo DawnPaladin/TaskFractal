@@ -16,9 +16,12 @@ export default class Outline extends React.Component {
 			treeData: this.props.tasks,
 		}
 		this.addNewTask = this.addNewTask.bind(this);
+		this.getIcon = this.getIcon.bind(this);
 		this.renderItem = this.renderItem.bind(this);
 		this.onDragStart = this.onDragStart.bind(this);
 		this.onDragEnd = this.onDragEnd.bind(this);
+		this.onExpand = this.onExpand.bind(this);
+		this.onCollapse = this.onCollapse.bind(this);
 		this.handleAddNewTaskEdit = this.handleAddNewTaskEdit.bind(this);
 	}
 	addNewTask(event) {
@@ -63,7 +66,11 @@ export default class Outline extends React.Component {
 	}
 	getIcon(item, onExpand, onCollapse) {
 		if (item.children && item.children.length > 0) {
-			return item.isExpanded ? <span className="tree-node-icon">▾</span> : <span className="tree-node-icon">▸</span>;
+			if (item.isExpanded) {
+				return <button className="tree-node-icon" onClick={() => onCollapse(item.id)}>▾</button>
+			} else {
+				return <button className="tree-node-icon" onClick={() => onExpand(item.id)}>▸</button>
+			}
 		} else {
 			return <span className="tree-node-icon"></span>;
 		}
@@ -89,8 +96,22 @@ export default class Outline extends React.Component {
 		sendTaskMovement(taskId, destination.index, destination.parentId);
 	}
 	
+	onExpand = (itemId) => {
+		const treeData = this.state.treeData;
+		this.setState({
+			treeData: mutateTree(treeData, itemId, { isExpanded: true }),
+		});
+	}
+	
+	onCollapse = (itemId) => {
+		const treeData = this.state.treeData;
+		this.setState({
+			treeData: mutateTree(treeData, itemId, { isExpanded: false }),
+		});
+	}
+	
 	renderItem = ({item, provided, snapshot, onExpand, onCollapse}) => {
-		var icon = this.getIcon(item);
+		var icon = this.getIcon(item, onExpand, onCollapse);
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
 			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} />
@@ -105,6 +126,8 @@ export default class Outline extends React.Component {
 				offsetPerLevel={23}
 				onDragStart={this.onDragStart}
 				onDragEnd={this.onDragEnd}
+				onExpand={this.onExpand}
+				onCollapse={this.onCollapse}
 				isDragEnabled
 			/>
 			<form className="task-adder" onSubmit={this.addNewTask} >

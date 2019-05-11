@@ -1,11 +1,4 @@
-@mixin doesnt-look-like-a-button {
-	background:none!important;
-	color:inherit;
-	border:none; 
-	padding:0!important;
-	cursor: pointer;
-}
-.doesnt-look-like-a-button { @include doesnt-look-like-a-button() }
+@import 'partials';
 
 body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -168,30 +161,6 @@ header {
 			z-index: 2;
 		}
 	}
-
-.task-adder {
-	color: hsl(0, 0%, 50%);
-	input {
-		position: relative;
-		top: -3px;
-	}
-	::placeholder {
-		font-style: italic;
-	}
-	&::before {
-		content: '';
-		display: inline-block;
-		width: .9em;
-		height: .9em;
-		border: 2px dashed silver;
-		margin: 2px 7px 0 2px;
-	}
-	button {
-		height: 1.8em;
-		position: relative;
-		top: -3px;
-	}
-}
 
 	.subtasks {
 		padding-top: 5px;
