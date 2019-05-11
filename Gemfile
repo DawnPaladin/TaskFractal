@@ -40,6 +40,8 @@ gem 'toastr-rails'
 gem 'azure-storage', require: false
 # Environmental variables
 gem 'figaro'
+# Better logging and error-catching than Heroku
+gem 'rollbar'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
