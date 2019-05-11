@@ -18,17 +18,10 @@
 	display: inline-block;
 	font-size: 20px;
 	width: 15px;
-	opacity: 0;
-	transition: opacity .2s;
 	margin-left: -15px;
 	vertical-align: top;
 	line-height: 100%;
 	@include doesnt-look-like-a-button;
-}
-.tree-node:hover {
-	.tree-node-icon {
-		opacity: 1;
-	}
 }
 
 .task-card-front {

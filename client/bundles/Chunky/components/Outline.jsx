@@ -76,11 +76,21 @@ export default class Outline extends React.Component {
 		}
 	}
 	
-	onDragStart() {
+	onDragStart(itemId) {
 		// work around bug where New Task field at the bottom pops up and covers last list item
 		var treeHeight = this.treeElement.clientHeight; // offsetHeight or clientHeight
-		treeHeight = treeHeight + 26;
+		var itemElement = document.querySelectorAll(`[data-item-number='${itemId}']`)[0];
+		var itemHeight = itemElement.clientHeight;
+		treeHeight = treeHeight + itemHeight;
 		this.treeElement.style.height = `${treeHeight}px`;
+
+		// collapse items before dragging them
+		const item = this.state.treeData.items[itemId];
+		if (item.children && item.children.length > 0) {
+			if (item.isExpanded) {
+				this.onCollapse(itemId);
+			}
+		}
 	}
 	
 	onDragEnd(source, destination) {
@@ -112,7 +122,7 @@ export default class Outline extends React.Component {
 	
 	renderItem = ({item, provided, snapshot, onExpand, onCollapse}) => {
 		var icon = this.getIcon(item, onExpand, onCollapse);
-		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} />
 		</div>
