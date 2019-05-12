@@ -47,8 +47,19 @@ export default class Outline extends React.Component {
 			}
 		}).then(json => {
 			this.setState(state => {
-				state.tasks.push(json);
-				return state;
+				var newState = {...state}
+				var newId = json.id;
+				json.id = json.id.toString();
+				var newTask = {
+					id: json.id,
+					children: [],
+					isExpanded: true,
+					data: json,
+				}
+				newState.tasks.items[newId] = newTask;
+				newState.treeData.items[newId] = newTask;
+				newState.treeData.items.root.children.push(json.id);
+				return newState;
 			})
 		}).catch(error => {
 			toastr.error(error.message);
