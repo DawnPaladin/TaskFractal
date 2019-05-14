@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import * as Icon from 'react-feather';
+import classNames from 'classnames';
 
 import Checkbox from './Checkbox';
 import send from './send';
@@ -43,24 +44,32 @@ export default class FrontSideTask extends React.Component {
 	}
 		
 	render() {
-		var url = "/tasks/" + this.state.task.id;
+		var task = this.state.task;
+		var url = "/tasks/" + task.id;
+		var attachmentTitle = task.attachment_count > 1 ? task.attachment_count + " attachments" : "1 attachment";
 		return (
 			<div className="task-card-front" ref={this.props.innerRef}>
 				{/* <button className="delete-attachment-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button> */}
-				<Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
-				<a className="task-link" href={url}>{ this.state.task.name }</a>
+				<Checkbox checked={task.completed} handleChange={this.handleCheckbox} />
+				<a className={classNames('task-link', { "deemphasize": task.blocked_by_count > 0 })} href={url}>{ task.name }</a>
 				<div className="details">
-					{ this.state.task.due_date ?
-						<div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
+					{ task.blocked_by_count ? 
+						<div title={"Blocked by " + task.blocked_by_count}><Icon.PauseCircle size="17" /> {task.blocked_by_count} </div> : null
 					}
-					{ this.state.task.description ?
-						<div><Icon.AlignLeft size="16" /></div> : ""
+					{ task.blocking_count ? 
+						<div title={"Blocking " + task.blocking_count}><Icon.AlertCircle size="16" /> {task.blocking_count}</div> : null
 					}
-					{ this.state.task.attachment_count ?
-						<div><Icon.Paperclip size="16" /> {this.state.task.attachment_count}</div> : ""
+					{ task.due_date ?
+						<div title={"Due " + task.dueDate}><Icon.Calendar size="16" /> {task.dueDate}</div> : ""
 					}
-					{ !this.props.disableDescendantCount && parseInt(this.state.task.descendants.length) > 0 ? 
-						<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants.length}/{this.state.task.descendants.length}</div> : ""
+					{ task.description ?
+						<div title={task.description}><Icon.AlignLeft size="16" /></div> : ""
+					}
+					{ task.attachment_count ?
+						<div title={attachmentTitle}><Icon.Paperclip size="16" /> {task.attachment_count}</div> : ""
+					}
+					{ !this.props.disableDescendantCount && parseInt(task.descendants.length) > 0 ? 
+						<div><Icon.CheckSquare size="16" /> {task.completed_descendants.length}/{task.descendants.length}</div> : ""
 					}
 				</div>
 			</div>

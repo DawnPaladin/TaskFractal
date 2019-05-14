@@ -148,10 +148,6 @@ header {
 		min-height: 100px;
 	}
 
-	.deemphasize {
-		color: hsl(0, 0%, 50%);
-	}
-	
 	.blocked-task {
 		position: relative;
 		.remove-blocked-task-button {
@@ -275,7 +271,7 @@ header {
 					margin-right: .25em;
 				}
 				a {
-					@extend .deemphasize;
+					@include deemphasize;
 					font-size: 0.8em;
 					text-decoration: none;
 				}
@@ -316,8 +312,9 @@ header {
 		transform: scale(1.25) translateY(0px);
 	}
 	.details {
-		@extend .deemphasize;
-		margin-top: 5px;
+		@include deemphasize;
+		margin-top: 0px;
+		cursor: default;
 		& > * {
 			display: inline-block;
 			margin-right: 10px;

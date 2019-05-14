@@ -7,6 +7,11 @@
 }
 .doesnt-look-like-a-button { @include doesnt-look-like-a-button() }
 
+@mixin deemphasize {
+	color: hsl(0, 0%, 50%);
+}
+.deemphasize { @include deemphasize }
+
 .task-adder {
 	color: hsl(0, 0%, 50%);
 	input {

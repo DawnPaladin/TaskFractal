@@ -221,6 +221,8 @@ class TasksController < ApplicationController
             "due_date" => ar_task.due_date,
             "description" => ar_task.description,
             "attachment_count" => ar_task.attachment_count,
+            "blocking_count" => ar_task.blocking.count,
+            "blocked_by_count" => ar_task.blocked_by.count,
           }
         }
         prop_tasks["items"][id] = prop_task

@@ -1,7 +1,12 @@
+@import 'partials';
+
 a.task-link {
 	&:link, &:visited, &:hover, &:active {
 		text-decoration: none;
 		color: black;
+		&.deemphasize {
+			@include deemphasize;
+		}
 	}
 }
 
