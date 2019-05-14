@@ -39,32 +39,31 @@ export default class FrontSideTask extends React.Component {
 				}
 			}),
 			() => { send(this.state.task); }
-			);
-		}
+		);
+	}
 		
-		render() {
-			var url = "/tasks/" + this.state.task.id;
-			return (
-				<div className="task-card-front" ref={this.props.innerRef}>
+	render() {
+		var url = "/tasks/" + this.state.task.id;
+		return (
+			<div className="task-card-front" ref={this.props.innerRef}>
 				{/* <button className="delete-attachment-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button> */}
 				<Checkbox checked={this.state.task.completed} handleChange={this.handleCheckbox} />
 				<a className="task-link" href={url}>{ this.state.task.name }</a>
 				<div className="details">
-				{ this.state.task.due_date ?
-					<div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
-				}
-				{ this.state.task.description ?
-					<div><Icon.AlignLeft size="16" /></div> : ""
-				}
-				{ this.state.task.attachment_count ?
-					<div><Icon.Paperclip size="16" /> {this.state.task.attachment_count}</div> : ""
-				}
-				{ !this.props.disableDescendantCount && parseInt(this.state.task.descendants.length) > 0 ? 
-					<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants.length}/{this.state.task.descendants.length}</div> : ""
-				}
+					{ this.state.task.due_date ?
+						<div><Icon.Calendar size="16" /> {this.state.task.dueDate}</div> : ""
+					}
+					{ this.state.task.description ?
+						<div><Icon.AlignLeft size="16" /></div> : ""
+					}
+					{ this.state.task.attachment_count ?
+						<div><Icon.Paperclip size="16" /> {this.state.task.attachment_count}</div> : ""
+					}
+					{ !this.props.disableDescendantCount && parseInt(this.state.task.descendants.length) > 0 ? 
+						<div><Icon.CheckSquare size="16" /> {this.state.task.completed_descendants.length}/{this.state.task.descendants.length}</div> : ""
+					}
 				</div>
-				</div>
-				)
-			}
-		}
-		
+			</div>
+		)
+	}
+}
