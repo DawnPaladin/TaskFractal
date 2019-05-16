@@ -40,6 +40,11 @@ class TasksController < ApplicationController
     end
   end
   
+  def next_up
+    tasks = Task.includes(:blocked_by).where(blocking_tasks: { id: nil })
+    render json: tasks
+  end
+  
   def attachments
     task = Task.find(params[:id])
     render json: list_attachments(task)
