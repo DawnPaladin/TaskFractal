@@ -41,8 +41,52 @@ class TasksController < ApplicationController
   end
   
   def next_up
-    tasks = Task.includes(:blocked_by).where(blocking_tasks: { id: nil })
-    render json: tasks
+    user_tasks = Task.where(user: current_user)
+    
+    candidates = user_tasks.select do |task|
+      task.completed == false and 
+      (task.has_children? == false or task.children.all? { |task| task.completed == true }) and 
+      (task.blocked_by.length == 0 or task.blocked_by.all? { |task| task.completed == true })
+    end
+    
+    # High-priority tasks whose children and blockers should be completed first
+    high_priority = {}
+    user_tasks.each do |task|
+      if task.completed == false and task.descendants.length > 0 or task.blocking.length > 0
+        score = task.descendants.length + task.blocking.length
+        high_priority[task.id] = { score: score, task: task }
+      end
+    end # Result: { 1: { score: 9, task: <task> }, 2: { score: 8, task: <task> }, etc.}
+    
+    tagged_candidates = []
+    candidates.each do |candidate|
+      reasons = []
+      score = 0
+      
+      blocking_high_priority_ids = candidate.blocking_ids & high_priority.keys
+      blocking_high_priority_ids.each do |id|
+        score += high_priority[id][:score] * 100
+        reasons << "blocking \"#{high_priority[id][:task].name}\""
+      end
+      children_of_high_priority_ids = candidate.ancestor_ids & high_priority.keys
+      children_of_high_priority_ids.each do |id|
+        score += high_priority[id][:score] * 10
+        reasons << "subtask of \"#{high_priority[id][:task].name}\""
+      end
+      if high_priority.keys.include? candidate.id
+        score += high_priority[candidate.id][:score]
+        # reasons << "task has many dependencies"
+      end
+      if candidate.parent_id != nil
+        score += 1
+        # reasons << "subtask of \"#{candidate.parent.name}\""
+      end
+      
+      tagged_candidates << { "task" => candidate, "score" => score, "reasons" => reasons }
+    end # result: { 0: { score: 120, reasons: [ "blocking \"Important Task\"" ], task: <task> }, etc.}
+    tagged_candidates = tagged_candidates.sort_by {|obj| obj["score"]}.reverse!
+    
+    render json: tagged_candidates
   end
   
   def attachments
