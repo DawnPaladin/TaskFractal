@@ -1,5 +1,38 @@
 @import 'partials';
 
+.next-up {
+	background: white;
+	margin: -1em -1em 1em -1em;
+	padding: 1em;
+	details {
+		summary {
+			cursor: pointer;
+		}
+	}
+}
+
+.next-up-cards {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.next-up-card {
+	border: 1px solid black;
+	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
+	border-radius: 3px;
+	padding: 10px 20px;
+}
+
+.or {
+	margin: 1em;
+}
+
+.reasons {
+	font-style: italic;
+	font-size: .8em;
+}
+
 .outline {
 	max-width: 500px;
 	margin: auto;

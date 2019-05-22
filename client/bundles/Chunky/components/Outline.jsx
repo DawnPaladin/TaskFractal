@@ -4,6 +4,7 @@ import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 import Tree, { mutateTree, moveItemOnTree } from '@atlaskit/tree';
 
+import NextUp from './NextUp';
 import FrontSideTask from './FrontSideTask';
 import sendTaskMovement from './sendTaskMovement';
 
@@ -140,22 +141,25 @@ export default class Outline extends React.Component {
 	}
 
 	render() {
-		return <div className="outline">
-			<Tree
-				tree={this.state.treeData}
-				renderItem={this.renderItem}
-				offsetPerLevel={23}
-				onDragStart={this.onDragStart}
-				onDragEnd={this.onDragEnd}
-				onExpand={this.onExpand}
-				onCollapse={this.onCollapse}
-				isDragEnabled
-				isNestingEnabled
-			/>
-			<form className="task-adder" onSubmit={this.addNewTask} >
-				<input type="text" placeholder="New task" value={this.state.new_task_name} onChange={this.handleAddNewTaskEdit} />
-				<button>Add</button>
-			</form>
+		return <div>
+			<NextUp/>
+			<div className="outline">
+				<Tree
+					tree={this.state.treeData}
+					renderItem={this.renderItem}
+					offsetPerLevel={23}
+					onDragStart={this.onDragStart}
+					onDragEnd={this.onDragEnd}
+					onExpand={this.onExpand}
+					onCollapse={this.onCollapse}
+					isDragEnabled
+					isNestingEnabled
+				/>
+				<form className="task-adder" onSubmit={this.addNewTask} >
+					<input type="text" placeholder="New task" value={this.state.new_task_name} onChange={this.handleAddNewTaskEdit} />
+					<button>Add</button>
+				</form>
+			</div>
 		</div>
 	}
 }
