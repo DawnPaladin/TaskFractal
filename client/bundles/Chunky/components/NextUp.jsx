@@ -1,35 +1,24 @@
 import React from 'react';
 import NextUpCard from './NextUpCard';
+import PropTypes from 'prop-types';
 
 export default class NextUp extends React.Component {
-	constructor() {
-		super();
+	static propTypes = {
+		tasks: PropTypes.array.isRequired,
+	}
+	constructor(props) {
+		super(props);
+		var tasks = props.tasks.map(taggedTask => {
+			var task = taggedTask.task;
+			task.score = taggedTask.score;
+			task.reasons = taggedTask.reasons;
+			return task;
+		})
 		this.state = {
-			tasks: [],
-			leftCard: null,
-			rightCard: null,
-		}
-		fetch("/next_up")
-			.then(response => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					throw new Error("Couldn't fetch Next Up tasks.");
-				}
-			}).then(json => {
-				console.log(json);
-				var tasks = json.map(taggedTask => {
-					var task = taggedTask.task;
-					task.score = taggedTask.score;
-					task.reasons = taggedTask.reasons;
-					return task;
-				})
-				this.setState({
-					tasks,
-					leftCard: tasks[0],
-					rightCard: tasks[tasks.length-1]
-				});
-			})
+			tasks,
+			leftCard: tasks[0],
+			rightCard: tasks[tasks.length-1]
+		};
 	}
 	render() {
 		return <div className="next-up">

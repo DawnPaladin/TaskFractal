@@ -147,9 +147,15 @@ export default class Outline extends React.Component {
 
 	render() {
 		return <div>
-			{ this.state.NextUpVisible ? <NextUp/> : <div className="next-up-hidden"></div> }
+			<div className={this.state.NextUpVisible ? "" : "hidden"}>
+				<NextUp tasks={this.props.next_up} />
+			</div>
 			<div className="button-wrapper">
-				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility}>{this.state.NextUpVisible ? "Hide" : "Next Up"}</button>
+				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility} 
+					style={{ top: this.state.NextUpVisible ? "-2em" : "0"}}
+				>
+					{this.state.NextUpVisible ? "Hide" : "Next Up"}
+				</button>
 			</div>
 			<div className="outline">
 				<Tree

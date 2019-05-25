@@ -8,7 +8,8 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { 
         @outline_props = { 
-          tasks: normalize_user_tasks
+          tasks: normalize_user_tasks,
+          next_up: next_up,
         }
         render :index 
       }
@@ -85,8 +86,6 @@ class TasksController < ApplicationController
       tagged_candidates << { "task" => candidate, "score" => score, "reasons" => reasons }
     end # result: { 0: { score: 120, reasons: [ "blocking \"Important Task\"" ], task: <task> }, etc.}
     tagged_candidates = tagged_candidates.sort_by {|obj| obj["score"]}.reverse!
-    
-    render json: tagged_candidates
   end
   
   def attachments
