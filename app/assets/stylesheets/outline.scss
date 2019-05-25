@@ -48,11 +48,29 @@
 
 .or {
 	margin: 1em;
+	font-style: italic;
 }
 
 .reasons {
 	font-style: italic;
 	font-size: .8em;
+}
+
+.card-and-buttons {
+	position: relative;
+}
+
+.cycle-card-stack-button {
+	border: 1px solid black;
+	position: absolute;
+	top: -.5em;
+	right: 1em;
+}
+.reverse-cycle-card-stack-button {
+	@extend .cycle-card-stack-button;
+	right: 6em;
+	height: 1.35em;
+	padding-top: 2px;
 }
 
 .outline {

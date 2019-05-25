@@ -18,10 +18,10 @@ export default class NextUpCard extends React.Component {
 		return capitalizedString;
 	}
 	render() {
+		// The key passed to FrontSideTask resets the FrontSideTask state when the task is changed. Otherwise FrontSideTask caches its state. See https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
 		var reasons = this.formatReasons();
 		return <div className="next-up-card">
-			{ this.props.task ? <FrontSideTask task={this.props.task} /> : null }
-			{/* FIXME: Give FrontSideTask a guard clause, causing it to render nothing if a task isn't passed? */}
+			<FrontSideTask task={this.props.task} key={this.props.task.id} />
 			<div className="reasons">{ reasons }</div>
 		</div>
 	}

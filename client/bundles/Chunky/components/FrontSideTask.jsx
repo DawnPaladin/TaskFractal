@@ -7,7 +7,7 @@ import Checkbox from './Checkbox';
 import send from './send';
 import deleteTask from './deleteTask';
 
-// This component is placed either on a BackSideTask component or in an Outline.
+// This component is placed either on a BackSideTask component, in an Outline, or in NextUp.
 export default class FrontSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
