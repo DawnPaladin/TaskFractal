@@ -1,9 +1,11 @@
 @import 'partials';
 
 .next-up {
-	background: white;
+	background: rgba(45, 0, 70, 0.62);
+	color: white;
 	margin: -1em -1em 1em -1em;
 	padding: 1em;
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 10%);
 	details {
 		summary {
 			cursor: pointer;
@@ -18,10 +20,13 @@
 }
 
 .next-up-card {
+	background: white;
+	color: black;
 	border: 1px solid black;
 	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
 	border-radius: 3px;
 	padding: 10px 20px;
+	align-self: flex-start;
 }
 
 .or {
