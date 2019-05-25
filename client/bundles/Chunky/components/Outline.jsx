@@ -14,6 +14,7 @@ export default class Outline extends React.Component {
 		this.state = {
 			tasks: this.props.tasks,
 			new_task_name: '',
+			NextUpVisible: true,
 			treeData: this.props.tasks,
 		}
 		this.addNewTask = this.addNewTask.bind(this);
@@ -139,10 +140,17 @@ export default class Outline extends React.Component {
 			<FrontSideTask task={item.data} disableDescendantCount={true} />
 		</div>
 	}
+	
+	toggleNextUpVisibility = () => {
+		this.setState({ NextUpVisible : !this.state.NextUpVisible });
+	}
 
 	render() {
 		return <div>
-			<NextUp/>
+			{ this.state.NextUpVisible ? <NextUp/> : <div className="next-up-hidden"></div> }
+			<div className="button-wrapper">
+				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility}>{this.state.NextUpVisible ? "Hide" : "Next Up"}</button>
+			</div>
 			<div className="outline">
 				<Tree
 					tree={this.state.treeData}

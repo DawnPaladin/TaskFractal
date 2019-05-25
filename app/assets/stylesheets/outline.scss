@@ -6,17 +6,36 @@
 	margin: -1em -1em 1em -1em;
 	padding: 1em;
 	box-shadow: 0 3px 3px rgba(0, 0, 0, 10%);
-	details {
-		summary {
-			cursor: pointer;
-		}
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	.next-up-label {
+		position: absolute;
+		left: 1em;
 	}
+}
+
+.button-wrapper {
+	position: relative;
+	.next-up-toggle {
+		position: absolute;
+	}
+}
+.next-up ~ .button-wrapper .next-up-toggle {
+	top: -2em;
 }
 
 .next-up-cards {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	.column {
+		text-align: center;
+		align-self: flex-start;
+		.column-label {
+			margin-bottom: .5em;
+		}
+	}
 }
 
 .next-up-card {
@@ -26,7 +45,8 @@
 	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
 	border-radius: 3px;
 	padding: 10px 20px;
-	align-self: flex-start;
+	text-align: left;
+	width: 250px;
 }
 
 .or {

@@ -33,14 +33,18 @@ export default class NextUp extends React.Component {
 	}
 	render() {
 		return <div className="next-up">
-			<details>
-				<summary>Next Up</summary>
-				<div className="next-up-cards">
+			<div className="next-up-label">Next Up</div>
+			<div className="next-up-cards">
+				<div className="column">
+					<div className="column-label">High Impact</div>
 					<NextUpCard task={this.state.leftCard} />
-					<div className="or">or</div>
+				</div>
+				<div className="or">or</div>
+				<div className="column">
+					<div className="column-label">Easy Win</div>
 					<NextUpCard task={this.state.rightCard} />
 				</div>
-			</details>
+			</div>
 		</div>
 	}
 }
