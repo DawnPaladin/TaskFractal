@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import * as Icon from 'react-feather';
+import network from './network';
 
 export default class Attachment extends React.Component {
 	static propTypes = {
@@ -29,18 +30,8 @@ export default class Attachment extends React.Component {
 		const attachmentId = this.props.attachment.id;
 		const name = this.state.fileName;
 
-		const headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		const body = JSON.stringify({
-			attachment: this.props.attachment
-		})
-		
 		if (confirm(`Delete "${name}"?`)) {
-			fetch(`/attachments/${attachmentId}`, {
-				method: "DELETE",
-				headers: headers,
-				body: body
-			}).then(response => response.json())
+			network.delete(`/attachments/${attachmentId}`, { attachment: this.props.attachment })
 			.then(json => {
 				if (json.error) {
 					toastr.error(json.error);

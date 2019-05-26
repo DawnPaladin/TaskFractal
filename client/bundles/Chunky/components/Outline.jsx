@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 import Tree, { mutateTree, moveItemOnTree } from '@atlaskit/tree';
 
 import NextUp from './NextUp';
 import FrontSideTask from './FrontSideTask';
 import sendTaskMovement from './sendTaskMovement';
+import network from './network';
 
 export default class Outline extends React.Component {
 	constructor(props) {
@@ -33,34 +33,22 @@ export default class Outline extends React.Component {
 			name: this.state.new_task_name
 		};
 		
-		let body = JSON.stringify({task});
-		let headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		
-		fetch("/tasks", {
-			method: "POST",
-			body: body,
-			headers: headers,
-		}).then(response => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error("Couldn't create new task.");
-			}
-		}).then(json => {
+		network.post("/tasks", task)
+		.then(response => {
 			this.setState(state => {
+				var newTask = response.data;
 				var newState = {...state}
-				var newId = json.id;
-				json.id = json.id.toString();
+				var newId = newTask.id;
+				newTask.id = newTask.id.toString();
 				var newTask = {
-					id: json.id,
+					id: newTask.id,
 					children: [],
 					isExpanded: true,
-					data: json,
+					data: newTask,
 				}
 				newState.tasks.items[newId] = newTask;
 				newState.treeData.items[newId] = newTask;
-				newState.treeData.items.root.children.push(json.id);
+				newState.treeData.items.root.children.push(newTask.id);
 				return newState;
 			})
 		}).catch(error => {
