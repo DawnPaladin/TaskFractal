@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 export default class NextUp extends React.Component {
 	static propTypes = {
 		tasks: PropTypes.array.isRequired,
+		checkboxCallback: PropTypes.func.isRequired,
 	}
 	constructor(props) {
 		super(props);
@@ -43,7 +44,7 @@ export default class NextUp extends React.Component {
 				<div className="column">
 					<div className="column-label">High Impact</div>
 					<div className="card-and-buttons">
-						<NextUpCard task={tasks[leftCardIndex]} />
+						<NextUpCard task={tasks[leftCardIndex]} checkboxCallback={this.props.checkboxCallback} />
 						<button className="reverse-cycle-card-stack-button" 
 							onClick={() => { this.cycleCardPile("left", -1) }}
 							style={{ display: leftCardIndex == 0 ? "none" : "block" }}
@@ -58,7 +59,7 @@ export default class NextUp extends React.Component {
 				<div className="column">
 					<div className="column-label">Easy Win</div>
 					<div className="card-and-buttons">
-						<NextUpCard task={tasks[rightCardIndex]} />
+						<NextUpCard task={tasks[rightCardIndex]} checkboxCallback={this.props.checkboxCallback} />
 						<button className="reverse-cycle-card-stack-button" 
 							onClick={() => { this.cycleCardPile("right", 1) }}
 							style={{ display: rightCardIndex == tasks.length - 1 ? "none" : "block" }}

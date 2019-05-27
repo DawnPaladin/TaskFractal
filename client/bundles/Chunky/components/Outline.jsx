@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import * as Icon from 'react-feather';
 import Tree, { mutateTree, moveItemOnTree } from '@atlaskit/tree';
+import update from 'immutability-helper';
 
 import NextUp from './NextUp';
 import FrontSideTask from './FrontSideTask';
@@ -16,6 +17,7 @@ export default class Outline extends React.Component {
 			new_task_name: '',
 			NextUpVisible: true,
 			treeData: this.props.tasks,
+			changeNumber: 0,
 		}
 		this.addNewTask = this.addNewTask.bind(this);
 		this.getIcon = this.getIcon.bind(this);
@@ -56,6 +58,18 @@ export default class Outline extends React.Component {
 		});
 		
 		this.setState({ new_task_name: '' });
+	}
+	checkboxCallback = task => {
+		this.setState(oldState => {
+			// state.treeData.items[task.id].data.completed = task.completed;
+			// state.tasks.items[task.id].data.completed = task.completed;
+			const newState = update(oldState, {
+				treeData: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
+				tasks: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
+			});
+			newState.changeNumber = oldState.changeNumber + 1; // force tree to update
+			return newState;
+		});
 	}
 	componentDidMount() {
 		const outline = document.getElementsByClassName('outline')[0];
@@ -136,7 +150,7 @@ export default class Outline extends React.Component {
 	render() {
 		return <div>
 			<div className={this.state.NextUpVisible ? "" : "hidden"}>
-				<NextUp tasks={this.props.next_up} />
+				<NextUp tasks={this.props.next_up} checkboxCallback={this.checkboxCallback} />
 			</div>
 			<div className="button-wrapper">
 				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility} 
@@ -156,6 +170,7 @@ export default class Outline extends React.Component {
 					onCollapse={this.onCollapse}
 					isDragEnabled
 					isNestingEnabled
+					key={this.state.changeNumber}
 				/>
 				<form className="task-adder" onSubmit={this.addNewTask} >
 					<input type="text" placeholder="New task" value={this.state.new_task_name} onChange={this.handleAddNewTaskEdit} />

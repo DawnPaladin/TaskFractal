@@ -11,7 +11,7 @@ import deleteTask from './deleteTask';
 export default class FrontSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
-		handleCheckboxChange: PropTypes.func,
+		checkboxCallback: PropTypes.func,
 		disableDescendantCount: PropTypes.bool,
 	}
 	constructor(props) {
@@ -29,18 +29,21 @@ export default class FrontSideTask extends React.Component {
 		this.checkboxChange(event, this);
 	}
 	
-	// If FrontSideTask is in a BackSideTask, BackSideTask will provide a checkboxChange function. If not, we use this one.
-	checkboxChange(event) {
+	checkboxChange(event, component) {
+		if (!component) component = this;
 		const completed = event.target.checked;
-		this.setState(
+		component.setState(
 			(prevState, props) => ({
 				task: {
-					...prevState.task,
+					...prevState.task, // https://stackoverflow.com/a/41391598/1805453
 					completed: completed
 				}
 			}),
-			() => { send(this.state.task); }
-		);
+			() => { 
+				send(component.state.task); 
+				if (this.props.checkboxCallback) this.props.checkboxCallback(component.state.task);
+			}
+		)
 	}
 		
 	render() {

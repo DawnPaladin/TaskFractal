@@ -58,7 +58,6 @@ export default class BackSideTask extends React.Component {
 		// functions
 		this.addBlockingTask = this.addBlockingTask.bind(this);
 		this.addSubtask = this.addSubtask.bind(this);
-		this.changeCompletedDescendants = this.changeCompletedDescendants.bind(this);
 		this.checkboxChange = this.checkboxChange.bind(this);
 		this.deleteTask = deleteTask.bind(this);
 		this.editDueDate = this.editDueDate.bind(this);
@@ -142,23 +141,27 @@ export default class BackSideTask extends React.Component {
 		this.setState({ new_task_name: '' });
 	}
 	
-	changeCompletedDescendants(amount) {
+	changeCompletedDescendants = amount => {
 		let new_ccd = this.state.count_completed_descendants + amount;
 		this.setState({ count_completed_descendants: new_ccd });
 	}
 	
-	checkboxChange(event, component) {
-		if (!component) component = this;
+	// for FrontSideTasks in list of subtasks
+	checkboxCallback = (task) => {
+		task.completed ? this.changeCompletedDescendants(1) : this.changeCompletedDescendants(-1);
+	}
+	
+	// for the Checkbox at the top of the page
+	checkboxChange(event) {
 		const completed = event.target.checked;
-		completed ? this.changeCompletedDescendants(1) : this.changeCompletedDescendants(-1);
-		component.setState(
+		this.setState(
 			(prevState, props) => ({
 				task: {
 					...prevState.task, // https://stackoverflow.com/a/41391598/1805453
 					completed: completed
 				}
 			}),
-			() => { send(component.state.task); }
+			() => { send(this.state.task); }
 		)
 	}
 	
@@ -325,7 +328,7 @@ export default class BackSideTask extends React.Component {
 			<Draggable draggableId={child.id} key={child.id} index={index}>
 				{(provided) => (
 					<div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-						<FrontSideTask task={child} handleCheckboxChange={this.checkboxChange} />
+						<FrontSideTask task={child} checkboxCallback={this.checkboxCallback} />
 					</div>
 				)}
 			</Draggable>
@@ -335,7 +338,7 @@ export default class BackSideTask extends React.Component {
 				<button className="remove-blocked-task-button" onClick={e => this.removeBlockingTask(blocked_by, 'blocked_by')}>
 					<Icon.XCircle size="16" />
 				</button>
-				<FrontSideTask task={blocked_by} handleCheckboxChange={this.checkboxChange} />
+				<FrontSideTask task={blocked_by} checkboxCallback={this.checkboxCallback} />
 			</div>
 		));
 		let blocking = this.state.blocking.map(blocking => (
@@ -343,7 +346,7 @@ export default class BackSideTask extends React.Component {
 				<button className="remove-blocked-task-button" onClick={e => this.removeBlockingTask(blocking, 'blocking')}>
 					<Icon.XCircle size="16" />
 				</button>
-				<FrontSideTask task={blocking} key={blocking.id} handleCheckboxChange={this.checkboxChange} />
+				<FrontSideTask task={blocking} key={blocking.id} checkboxCallback={this.checkboxCallback} />
 			</div>
 		));
 		
