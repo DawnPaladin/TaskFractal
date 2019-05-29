@@ -5,33 +5,16 @@ import PropTypes from 'prop-types';
 export default class NextUp extends React.Component {
 	static propTypes = {
 		tasks: PropTypes.array.isRequired,
+		leftCardIndex: PropTypes.number.isRequired,
+		rightCardIndex: PropTypes.number.isRequired,
+		cycleCardPile: PropTypes.func.isRequired,
 		checkboxCallback: PropTypes.func.isRequired,
-	}
-	constructor(props) {
-		super(props);
-		var tasks = props.tasks.map(taggedTask => {
-			var task = taggedTask.task;
-			task.score = taggedTask.score;
-			task.reasons = taggedTask.reasons;
-			return task;
-		})
-		this.state = {
-			tasks,
-			leftCardIndex: 0,
-			rightCardIndex: tasks.length - 1,
-		};
-	}
-	cycleCardPile = (pileName, cycleAmount) => {
-		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
-		var key = pileName + "CardIndex";
-		var currentValue = this.state[key];
-		this.setState({ [key]: currentValue + cycleAmount });
 	}
 	
 	render() {
-		var tasks = this.state.tasks;
-		var leftCardIndex = this.state.leftCardIndex;
-		var rightCardIndex = this.state.rightCardIndex;
+		var tasks = this.props.tasks;
+		var leftCardIndex = this.props.leftCardIndex;
+		var rightCardIndex = this.props.rightCardIndex;
 
 		const cycleBackIcon = <svg width="12" height="12" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path d="M2.11121 10.0146L1.10394 5.30332L3.77971 6.53828L6.18454 7.6482L2.11121 10.0146Z" fill="black"/>
@@ -46,11 +29,11 @@ export default class NextUp extends React.Component {
 					<div className="card-and-buttons">
 						<NextUpCard task={tasks[leftCardIndex]} checkboxCallback={this.props.checkboxCallback} />
 						<button className="reverse-cycle-card-stack-button" 
-							onClick={() => { this.cycleCardPile("left", -1) }}
+							onClick={() => { this.props.cycleCardPile("left", -1) }}
 							style={{ display: leftCardIndex == 0 ? "none" : "block" }}
 						>{cycleBackIcon}</button>
 						<button className="cycle-card-stack-button" 
-							onClick={() => { this.cycleCardPile("left", 1) }}
+							onClick={() => { this.props.cycleCardPile("left", 1) }}
 							disabled={leftCardIndex + 1 >= rightCardIndex}
 						>Not now</button>
 					</div>
@@ -61,11 +44,11 @@ export default class NextUp extends React.Component {
 					<div className="card-and-buttons">
 						<NextUpCard task={tasks[rightCardIndex]} checkboxCallback={this.props.checkboxCallback} />
 						<button className="reverse-cycle-card-stack-button" 
-							onClick={() => { this.cycleCardPile("right", 1) }}
+							onClick={() => { this.props.cycleCardPile("right", 1) }}
 							style={{ display: rightCardIndex == tasks.length - 1 ? "none" : "block" }}
 						>{cycleBackIcon}</button>
 						<button className="cycle-card-stack-button" 
-							onClick={() => { this.cycleCardPile("right", -1) }}
+							onClick={() => { this.props.cycleCardPile("right", -1) }}
 							disabled={rightCardIndex - 1 <= leftCardIndex}
 						>Not now</button>
 					</div>

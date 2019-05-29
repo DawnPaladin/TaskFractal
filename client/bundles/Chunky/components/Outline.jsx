@@ -12,12 +12,20 @@ import network from './network';
 export default class Outline extends React.Component {
 	constructor(props) {
 		super(props);
+		var NextUpTasks = props.next_up.map(taggedTask => {
+			var task = taggedTask.task;
+			task.score = taggedTask.score;
+			task.reasons = taggedTask.reasons;
+			return task;
+		})
 		this.state = {
-			tasks: this.props.tasks,
 			new_task_name: '',
-			NextUpVisible: true,
 			treeData: this.props.tasks,
-			changeNumber: 0,
+			changeNumber: 0, // Tree doesn't correctly rerender itself. Incrementing this changes the tree's key, forcing a rerender.
+			NextUpVisible: true,
+			NextUpTasks,
+			leftCardIndex: 0,
+			rightCardIndex: NextUpTasks.length - 1,
 		}
 		this.addNewTask = this.addNewTask.bind(this);
 		this.getIcon = this.getIcon.bind(this);
@@ -59,17 +67,27 @@ export default class Outline extends React.Component {
 		
 		this.setState({ new_task_name: '' });
 	}
-	checkboxCallback = task => {
+	cycleCardPile = (pileName, cycleAmount) => {
+		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
+		var key = pileName + "CardIndex";
+		var currentValue = this.state[key];
+		this.setState({ [key]: currentValue + cycleAmount });
+	}
+	NextUpCheckboxCallback = task => {
 		this.setState(oldState => {
 			// state.treeData.items[task.id].data.completed = task.completed;
 			// state.tasks.items[task.id].data.completed = task.completed;
 			const newState = update(oldState, {
 				treeData: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
-				tasks: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
 			});
 			newState.changeNumber = oldState.changeNumber + 1; // force tree to update
 			return newState;
 		});
+	}
+	outlineCheckboxCallback = task => {
+		this.setState(oldState => {
+			
+		})
 	}
 	componentDidMount() {
 		const outline = document.getElementsByClassName('outline')[0];
@@ -139,7 +157,7 @@ export default class Outline extends React.Component {
 		var icon = this.getIcon(item, onExpand, onCollapse);
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}
-			<FrontSideTask task={item.data} disableDescendantCount={true} />
+			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxCallback={this.checkboxCallback} />
 		</div>
 	}
 	
@@ -150,7 +168,7 @@ export default class Outline extends React.Component {
 	render() {
 		return <div>
 			<div className={this.state.NextUpVisible ? "" : "hidden"}>
-				<NextUp tasks={this.props.next_up} checkboxCallback={this.checkboxCallback} />
+				<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxCallback={this.NextUpCheckboxCallback} />
 			</div>
 			<div className="button-wrapper">
 				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility} 
