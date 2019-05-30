@@ -24,6 +24,8 @@ export default class Outline extends React.Component {
 			new_task_name: '',
 			treeData: this.props.tasks,
 			treeChangeNumber: 0, // Tree doesn't correctly rerender itself. Incrementing this changes the tree's key, forcing a rerender.
+			addSubtaskId: null, // ID of the task where the Add Subtask field is visible.
+			newSubtaskName: '',
 			NextUpChangeNumber: 0,
 			NextUpVisible: true,
 			NextUpTasks,
@@ -38,7 +40,6 @@ export default class Outline extends React.Component {
 		this.onDragEnd = this.onDragEnd.bind(this);
 		this.onExpand = this.onExpand.bind(this);
 		this.onCollapse = this.onCollapse.bind(this);
-		this.handleAddNewTaskEdit = this.handleAddNewTaskEdit.bind(this);
 	}
 	addNewTask(event) {
 		event.preventDefault();
@@ -70,6 +71,39 @@ export default class Outline extends React.Component {
 		});
 		
 		this.setState({ new_task_name: '' });
+	}
+	addSubtask = event => {
+		console.log(event);
+		event.preventDefault();
+		
+		var task = {
+			name: this.state.newSubtaskName,
+			parent: addSubtaskId,
+		};
+		
+		network.post("/tasks", task)
+		.then(response => {
+			this.setState(state => {
+				var newTask = response.data;
+				var newState = {...state}
+				var newId = newTask.id;
+				newTask.id = newTask.id.toString();
+				var newTask = {
+					id: newTask.id,
+					children: [],
+					isExpanded: true,
+					data: newTask,
+				}
+				newState.tasks.items[newId] = newTask;
+				newState.treeData.items[newId] = newTask;
+				newState.treeData.items.root.children.push(newTask.id);
+				return newState;
+			})
+		}).catch(error => {
+			toastr.error(error.message);
+		});
+		
+		this.setState({ newSubtaskName: '' });
 	}
 	cycleCardPile = (pileName, cycleAmount) => {
 		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
@@ -104,8 +138,12 @@ export default class Outline extends React.Component {
 		const tree = outline.firstChild;
 		this.treeElement = tree;
 	}
-	handleAddNewTaskEdit(event) {
+	handleAddNewTaskEdit = event => {
 		this.setState({ new_task_name: event.target.value });
+	}
+	handleNewSubtaskEdit = event => {
+		console.log(event.target);
+		this.setState({ newSubtaskName: event.target.value, treeChangeNumber: this.state.treeChangeNumber + 1 });
 	}
 	getIcon(item, onExpand, onCollapse) {
 		if (item.children && item.children.length > 0) {
@@ -165,10 +203,24 @@ export default class Outline extends React.Component {
 	
 	renderTreeItem = ({item, provided, snapshot, onExpand, onCollapse}) => {
 		var icon = this.getIcon(item, onExpand, onCollapse);
+		var addSubtaskIsHere = this.state.addSubtaskId == item.id;
+		var addSubtaskField = <form className="subtask-adder" onSubmit={this.addSubtask}>
+			<input className="add-subtask" placeholder="Add subtask" value={this.state.newSubtaskName} onChange={this.handleNewSubtaskEdit} />
+			<button>Add</button>
+		</form>
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxCallback={this.outlineCheckboxCallback} />
+			<button className="add-subtask-button" onClick={() => {this.showAddSubtask(item)}}><Icon.Plus size="16"/></button>
+			{ addSubtaskIsHere ? addSubtaskField : null}
 		</div>
+	}
+	
+	showAddSubtask = item => {
+		this.setState({ 
+			addSubtaskId: item.id,
+			treeChangeNumber: this.state.treeChangeNumber + 1,
+		});
 	}
 	
 	toggleNextUpVisibility = () => {

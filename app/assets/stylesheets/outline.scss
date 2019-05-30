@@ -101,3 +101,28 @@
 	display: inline-block;
 	margin: 2px 0;
 }
+
+.tree-node {
+	position: relative;
+}
+
+.tree-node .add-subtask-button {
+	@include doesnt-look-like-a-button;
+	position: absolute;
+	top: 0;
+	margin-top: 5px;
+	margin-left: 2px;
+	transition: opacity 0.25s;
+	opacity: 0;
+}
+.tree-node:hover .add-subtask-button {
+	opacity: 0.5;
+}
+.tree-node:hover .add-subtask-button:hover {
+	opacity: 1;
+}
+
+.subtask-adder {
+	@extend .task-adder;
+	margin-left: 23px;
+}
