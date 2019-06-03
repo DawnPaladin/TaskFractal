@@ -8,6 +8,7 @@ import NextUp from './NextUp';
 import FrontSideTask from './FrontSideTask';
 import sendTaskMovement from './sendTaskMovement';
 import network from './network';
+import send from './send';
 
 export default class Outline extends React.Component {
 	constructor(props) {
@@ -23,10 +24,7 @@ export default class Outline extends React.Component {
 		this.state = {
 			new_task_name: '',
 			treeData: this.props.tasks,
-			treeChangeNumber: 0, // Tree doesn't correctly rerender itself. Incrementing this changes the tree's key, forcing a rerender.
-			addSubtaskId: null, // ID of the task where the Add Subtask field is visible.
-			newSubtaskName: '',
-			NextUpChangeNumber: 0,
+			newSubtaskName: '', //
 			NextUpVisible: true,
 			NextUpTasks,
 			NextUpTaskIds,
@@ -111,28 +109,6 @@ export default class Outline extends React.Component {
 		var currentValue = this.state[key];
 		this.setState({ [key]: currentValue + cycleAmount });
 	}
-	NextUpCheckboxCallback = task => { // When a task is checked off in NextUp, check it off in the outline.
-		this.setState(oldState => {
-			// state.treeData.items[task.id].data.completed = task.completed;
-			// state.tasks.items[task.id].data.completed = task.completed;
-			const newState = update(oldState, {
-				treeData: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
-			});
-			newState.treeChangeNumber = oldState.treeChangeNumber + 1; // force tree to update
-			return newState;
-		});
-	}
-	outlineCheckboxCallback = task => { // When a task is checked off in the outline, check it off in NextUp.
-		var taskIndex = this.state.NextUpTaskIds.findIndex(item => item === Number(task.id));
-		if (taskIndex === -1) return false;
-		const newNextUpTasks = update(this.state.NextUpTasks, {
-			[taskIndex]: {completed: {$set: task.completed}}
-		});
-		this.setState({
-			NextUpTasks: newNextUpTasks,
-			NextUpChangeNumber: this.state.NextUpChangeNumber + 1,
-		});
-	}
 	componentDidMount() {
 		const outline = document.getElementsByClassName('outline')[0];
 		const tree = outline.firstChild;
@@ -143,7 +119,7 @@ export default class Outline extends React.Component {
 	}
 	handleNewSubtaskEdit = event => {
 		console.log(event.target);
-		this.setState({ newSubtaskName: event.target.value, treeChangeNumber: this.state.treeChangeNumber + 1 });
+		this.setState({ newSubtaskName: event.target.value });
 	}
 	getIcon(item, onExpand, onCollapse) {
 		if (item.children && item.children.length > 0) {
@@ -201,26 +177,47 @@ export default class Outline extends React.Component {
 		});
 	}
 	
+	checkboxChange = task => {
+		// Update treeData
+		const newState = update(this.state, {
+			treeData: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
+		});
+		this.setState(newState);
+		
+		// Update NextUp
+		const taskIndex = this.state.NextUpTaskIds.findIndex(item => item === Number(task.id));
+		if (taskIndex !== -1) {
+			const newNextUpTasks = [...this.state.NextUpTasks];
+			newNextUpTasks[taskIndex].completed = task.completed;
+			this.setState({
+				NextUpTasks: newNextUpTasks,
+			});
+		}
+		
+		// Update server
+		send(task);
+	}
+	
 	renderTreeItem = ({item, provided, snapshot, onExpand, onCollapse}) => {
 		var icon = this.getIcon(item, onExpand, onCollapse);
-		var addSubtaskIsHere = this.state.addSubtaskId == item.id;
+		var addSubtaskIsHere = item.data.addSubtaskHere;
 		var addSubtaskField = <form className="subtask-adder" onSubmit={this.addSubtask}>
 			<input className="add-subtask" placeholder="Add subtask" value={this.state.newSubtaskName} onChange={this.handleNewSubtaskEdit} />
 			<button>Add</button>
 		</form>
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}
-			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxCallback={this.outlineCheckboxCallback} />
+			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxChange={this.checkboxChange} />
 			<button className="add-subtask-button" onClick={() => {this.showAddSubtask(item)}}><Icon.Plus size="16"/></button>
 			{ addSubtaskIsHere ? addSubtaskField : null}
 		</div>
 	}
 	
 	showAddSubtask = item => {
-		this.setState({ 
-			addSubtaskId: item.id,
-			treeChangeNumber: this.state.treeChangeNumber + 1,
+		const newState = update(this.state, {
+			treeData: {items: {[item.id]: {data: {addSubtaskHere: {$set: !item.data.addSubtaskHere}}}}},
 		});
+		this.setState(newState);
 	}
 	
 	toggleNextUpVisibility = () => {
@@ -230,7 +227,7 @@ export default class Outline extends React.Component {
 	render() {
 		return <div>
 			<div className={this.state.NextUpVisible ? "" : "hidden"}>
-				<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxCallback={this.NextUpCheckboxCallback} key={this.state.NextUpChangeNumber} />
+				<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxChange={this.checkboxChange} />
 			</div>
 			<div className="button-wrapper">
 				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility} 
@@ -250,7 +247,6 @@ export default class Outline extends React.Component {
 					onCollapse={this.onCollapse}
 					isDragEnabled
 					isNestingEnabled
-					key={this.state.treeChangeNumber}
 				/>
 				<form className="task-adder" onSubmit={this.addNewTask} >
 					<input type="text" placeholder="New task" value={this.state.new_task_name} onChange={this.handleAddNewTaskEdit} />

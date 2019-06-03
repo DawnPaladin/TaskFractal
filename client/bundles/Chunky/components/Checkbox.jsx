@@ -7,6 +7,6 @@ export default class Checkbox extends React.Component {
 		checked: PropTypes.bool.isRequired,
 	};
 	render() {
-		return <input type="checkbox" onChange={this.props.handleChange} defaultChecked={this.props.checked} />
+		return <input type="checkbox" onChange={this.props.handleChange} checked={!!this.props.checked} />
 	}
 }

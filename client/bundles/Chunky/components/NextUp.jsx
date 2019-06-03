@@ -8,7 +8,7 @@ export default class NextUp extends React.Component {
 		leftCardIndex: PropTypes.number.isRequired,
 		rightCardIndex: PropTypes.number.isRequired,
 		cycleCardPile: PropTypes.func.isRequired,
-		checkboxCallback: PropTypes.func.isRequired,
+		checkboxChange: PropTypes.func.isRequired,
 	}
 	
 	render() {
@@ -27,7 +27,7 @@ export default class NextUp extends React.Component {
 				<div className="column">
 					<div className="column-label">High Impact</div>
 					<div className="card-and-buttons">
-						<NextUpCard task={tasks[leftCardIndex]} checkboxCallback={this.props.checkboxCallback} />
+						<NextUpCard task={tasks[leftCardIndex]} checkboxChange={this.props.checkboxChange} />
 						<button className="reverse-cycle-card-stack-button" 
 							onClick={() => { this.props.cycleCardPile("left", -1) }}
 							style={{ display: leftCardIndex == 0 ? "none" : "block" }}
@@ -42,7 +42,7 @@ export default class NextUp extends React.Component {
 				<div className="column">
 					<div className="column-label">Easy Win</div>
 					<div className="card-and-buttons">
-						<NextUpCard task={tasks[rightCardIndex]} checkboxCallback={this.props.checkboxCallback} />
+						<NextUpCard task={tasks[rightCardIndex]} checkboxChange={this.props.checkboxChange} />
 						<button className="reverse-cycle-card-stack-button" 
 							onClick={() => { this.props.cycleCardPile("right", 1) }}
 							style={{ display: rightCardIndex == tasks.length - 1 ? "none" : "block" }}

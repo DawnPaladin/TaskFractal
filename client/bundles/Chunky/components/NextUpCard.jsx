@@ -5,7 +5,8 @@ import FrontSideTask from './FrontSideTask';
 
 export default class NextUpCard extends React.Component {
 	static propTypes = {
-		task: PropTypes.object,
+		task: PropTypes.object.isRequired,
+		checkboxChange: PropTypes.func.isRequired,
 	}
 	constructor(props) {
 		super(props);
@@ -18,10 +19,9 @@ export default class NextUpCard extends React.Component {
 		return capitalizedString;
 	}
 	render() {
-		// The key passed to FrontSideTask resets the FrontSideTask state when the task is changed. Otherwise FrontSideTask caches its state. See https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
 		var reasons = this.formatReasons();
 		return <div className="next-up-card">
-			<FrontSideTask task={this.props.task} checkboxCallback={this.props.checkboxCallback} key={this.props.task.id} />
+			<FrontSideTask task={this.props.task} checkboxChange={this.props.checkboxChange} />
 			<div className="reasons">{ reasons }</div>
 		</div>
 	}

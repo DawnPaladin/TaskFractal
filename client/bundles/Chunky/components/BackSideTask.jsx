@@ -58,7 +58,6 @@ export default class BackSideTask extends React.Component {
 		// functions
 		this.addBlockingTask = this.addBlockingTask.bind(this);
 		this.addSubtask = this.addSubtask.bind(this);
-		this.checkboxChange = this.checkboxChange.bind(this);
 		this.deleteTask = deleteTask.bind(this);
 		this.editDueDate = this.editDueDate.bind(this);
 		this.editTaskName = this.editTaskName.bind(this);
@@ -146,23 +145,36 @@ export default class BackSideTask extends React.Component {
 		this.setState({ count_completed_descendants: new_ccd });
 	}
 	
-	// for FrontSideTasks in list of subtasks
-	checkboxCallback = (task) => {
-		task.completed ? this.changeCompletedDescendants(1) : this.changeCompletedDescendants(-1);
-	}
-	
 	// for the Checkbox at the top of the page
-	checkboxChange(event) {
-		const completed = event.target.checked;
-		this.setState(
-			(prevState, props) => ({
-				task: {
-					...prevState.task, // https://stackoverflow.com/a/41391598/1805453
-					completed: completed
-				}
-			}),
-			() => { send(this.state.task); }
-		)
+	checkboxChange = event => {
+		const task = {...this.state.task};
+		task.completed = !task.completed;
+		this.setState({task});
+		send(task);
+	}
+	// for FrontSideTasks in list of subtasks
+	subtaskCheckboxChange = task => {
+		const childIndex = this.state.children.findIndex(object => object.id == task.id);
+		const newChildren = [...this.state.children];
+		newChildren[childIndex] = task;
+		this.setState({ children: newChildren });
+		
+		task.completed ? this.changeCompletedDescendants(1) : this.changeCompletedDescendants(-1);
+		send(task);
+	}
+	blockingCheckboxChange = task => {
+		const blockingIndex = this.state.blocking.findIndex(object => object.id == task.id);
+		const newBlockingTasks = [...this.state.blocking];
+		newBlockingTasks[blockingIndex] = task;
+		this.setState({ blocking: newBlockingTasks });
+		send(task);
+	}
+	blockedByCheckboxChange = task => {
+		const blockedByIndex = this.state.blocked_by.findIndex(object => object.id == task.id);
+		const newBlockedByTasks = [...this.state.blocking];
+		newBlockedByTasks[blockedByIndex] = task;
+		this.setState({ blocked_by: newBlockedByTasks });
+		send(task);
 	}
 	
 	editDueDate(event) {
@@ -328,7 +340,7 @@ export default class BackSideTask extends React.Component {
 			<Draggable draggableId={child.id} key={child.id} index={index}>
 				{(provided) => (
 					<div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-						<FrontSideTask task={child} checkboxCallback={this.checkboxCallback} />
+						<FrontSideTask task={child} checkboxChange={this.subtaskCheckboxChange} />
 					</div>
 				)}
 			</Draggable>
@@ -338,7 +350,7 @@ export default class BackSideTask extends React.Component {
 				<button className="remove-blocked-task-button" onClick={e => this.removeBlockingTask(blocked_by, 'blocked_by')}>
 					<Icon.XCircle size="16" />
 				</button>
-				<FrontSideTask task={blocked_by} checkboxCallback={this.checkboxCallback} />
+				<FrontSideTask task={blocked_by} checkboxChange={this.blockedByCheckboxChange} />
 			</div>
 		));
 		let blocking = this.state.blocking.map(blocking => (
@@ -346,7 +358,7 @@ export default class BackSideTask extends React.Component {
 				<button className="remove-blocked-task-button" onClick={e => this.removeBlockingTask(blocking, 'blocking')}>
 					<Icon.XCircle size="16" />
 				</button>
-				<FrontSideTask task={blocking} key={blocking.id} checkboxCallback={this.checkboxCallback} />
+				<FrontSideTask task={blocking} key={blocking.id} checkboxChange={this.blockingCheckboxChange} />
 			</div>
 		));
 		

@@ -4,50 +4,32 @@ import * as Icon from 'react-feather';
 import classNames from 'classnames';
 
 import Checkbox from './Checkbox';
-import send from './send';
 import deleteTask from './deleteTask';
 
 // This component is placed either on a BackSideTask component, in an Outline, or in NextUp.
+// The checked/unchecked state must be controlled by the parent.
 export default class FrontSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
-		checkboxCallback: PropTypes.func,
+		checkboxChange: PropTypes.func.isRequired,
 		disableDescendantCount: PropTypes.bool,
 	}
 	constructor(props) {
 		super(props);
 		this.name = this.props.task.name; // for ease of debugging
-		this.state = {
-			task: this.props.task
-		}
 		this.handleCheckbox = this.handleCheckbox.bind(this);
-		this.checkboxChange = this.props.handleCheckboxChange ? this.props.handleCheckboxChange.bind(this) : this.checkboxChange.bind(this);
-		this.deleteTask = deleteTask.bind(this);
 	}
 	
 	handleCheckbox(event) {
-		this.checkboxChange(event, this);
+		const task = {...this.props.task};
+		task.completed = !task.completed;
+		this.props.checkboxChange(task);
+		// Parent component must call this.setState(), putting task wherever it belongs in parent's state.
+		// Parent should also call send(task) as appropriate.
 	}
 	
-	checkboxChange(event, component) {
-		if (!component) component = this;
-		const completed = event.target.checked;
-		component.setState(
-			(prevState, props) => ({
-				task: {
-					...prevState.task, // https://stackoverflow.com/a/41391598/1805453
-					completed: completed
-				}
-			}),
-			() => { 
-				send(component.state.task); 
-				if (this.props.checkboxCallback) this.props.checkboxCallback(component.state.task);
-			}
-		)
-	}
-		
 	render() {
-		var task = this.state.task;
+		var task = this.props.task;
 		var url = "/tasks/" + task.id;
 		var attachmentTitle = task.attachment_count > 1 ? task.attachment_count + " attachments" : "1 attachment";
 		return (
