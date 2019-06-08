@@ -238,14 +238,10 @@ export default class Outline extends React.Component {
 	}
 	
 	render() {
-		return <div>
-			<div className={this.state.NextUpVisible ? "" : "hidden"}>
-				<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxChange={this.checkboxChange} />
-			</div>
+		return <div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
+			<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxChange={this.checkboxChange} />
 			<div className="button-wrapper">
-				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility} 
-					style={{ top: this.state.NextUpVisible ? "-2em" : "0"}}
-				>
+				<button className="next-up-toggle" onClick={this.toggleNextUpVisibility}>
 					{this.state.NextUpVisible ? "Hide" : "Next Up"}
 				</button>
 			</div>
