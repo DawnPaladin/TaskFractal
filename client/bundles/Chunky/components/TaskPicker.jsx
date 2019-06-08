@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactOnRails from 'react-on-rails';
 import Autosuggest from 'react-autosuggest';
 
 // When suggestion is clicked, Autosuggest needs to populate the input
@@ -65,7 +64,7 @@ export default class TaskPicker extends React.Component {
 			value,
 			onChange: this.onInputChange,
 		}
-		return <div>
+		return <div className="task-picker">
 			<Autosuggest
 				suggestions={suggestions}
 				onSuggestionSelected={this.onSuggestionSelected}

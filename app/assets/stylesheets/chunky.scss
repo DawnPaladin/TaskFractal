@@ -143,11 +143,16 @@ header {
 			margin-left: 0;
 		}
 	}
-
+	
 	.row .field {
-		min-height: 100px;
+		// min-height: 100px;
+		margin-bottom: 1em;
 	}
-
+	
+	.task-picker .react-autosuggest__input {
+		width: 97%
+	}
+	
 	.blocked-task {
 		position: relative;
 		.remove-blocked-task-button {
