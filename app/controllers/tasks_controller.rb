@@ -36,7 +36,7 @@ class TasksController < ApplicationController
         }
       }
       format.json {
-        render json: @task
+        render json: @task.to_json(include: [:children])
       }
     end
   end
