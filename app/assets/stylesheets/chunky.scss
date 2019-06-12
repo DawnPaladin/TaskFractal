@@ -39,6 +39,9 @@ header {
 	padding: 10px 20px 0 20px;
 	position: relative;
 	margin: auto;
+	@media (max-width: 450px) {
+		margin-top: 1em;
+	}
 	.home-link {
 		position: relative;
 		bottom: -.2em;		
@@ -134,13 +137,18 @@ header {
 	
 	.row {
 		display: flex;
-		flex-direction: row;
-		& > * {
-			margin-left: 1em;
-			flex-basis: 50%;
+		@media (min-width: 375px) {
+			flex-direction: row;
+			& > * {
+				margin-left: 1em;
+				flex-basis: 50%;
+			}
+			& > *:first-child {
+				margin-left: 0;
+			}
 		}
-		& > *:first-child {
-			margin-left: 0;
+		@media (max-width: 374px) {
+			flex-direction: column;
 		}
 	}
 	
