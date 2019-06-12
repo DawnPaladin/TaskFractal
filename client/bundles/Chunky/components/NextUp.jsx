@@ -25,7 +25,6 @@ export default class NextUp extends React.Component {
 			<div className="next-up-label">Next Up</div>
 			<div className="next-up-cards">
 				<div className="column">
-					<div className="column-label">High Impact</div>
 					<div className="card-and-buttons">
 						<NextUpCard task={tasks[leftCardIndex]} checkboxChange={this.props.checkboxChange} />
 						<button className="reverse-cycle-card-stack-button" 
@@ -40,7 +39,6 @@ export default class NextUp extends React.Component {
 				</div>
 				<div className="or">or</div>
 				<div className="column">
-					<div className="column-label">Easy Win</div>
 					<div className="card-and-buttons">
 						<NextUpCard task={tasks[rightCardIndex]} checkboxChange={this.props.checkboxChange} />
 						<button className="reverse-cycle-card-stack-button" 

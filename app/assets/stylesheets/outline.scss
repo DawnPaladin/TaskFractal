@@ -27,8 +27,8 @@ header {
 	.next-up-label {
 		position: absolute;
 		left: 1em;
-		@media (max-width: 1200px) {
-			top: 2.5em;
+		@media (max-width: 449px) {
+			display: none;
 		}
 	}
 }
@@ -60,17 +60,14 @@ header {
 		width: 100%;
 	}
 	@media (max-width: 1200px) and (min-width: 450px) {
-		padding-top: 1.5em;
+		padding-top: 2em;
 	}
 	@media (max-width: 449px) {
-		padding-top: .25em;
+		padding-top: .75em;
 	}
 	.column {
 		text-align: center;
 		align-self: flex-start;
-		.column-label {
-			margin-bottom: .5em;
-		}
 	}
 }
 
