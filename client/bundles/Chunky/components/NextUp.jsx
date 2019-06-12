@@ -20,6 +20,13 @@ export default class NextUp extends React.Component {
 			<path d="M2.11121 10.0146L1.10394 5.30332L3.77971 6.53828L6.18454 7.6482L2.11121 10.0146Z" fill="black"/>
 			<path d="M12.521 14.9083C21.8338 5.30328 8.95493 -7.32752 2.11121 10.0146M2.11121 10.0146L1.10394 5.30332L6.18454 7.6482L2.11121 10.0146Z" stroke="black"/>
 		</svg>
+		
+		if (tasks.length == 0) {
+			return <div className="next-up">
+				<div className="next-up-label">Next Up</div>
+				No tasks
+			</div>
+		}
 
 		return <div className="next-up">
 			<div className="next-up-label">Next Up</div>
