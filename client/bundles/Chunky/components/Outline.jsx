@@ -18,6 +18,7 @@ export default class Outline extends React.Component {
 			var task = taggedTask.task;
 			task.score = taggedTask.score;
 			task.reasons = taggedTask.reasons;
+			task.ancestors = taggedTask.ancestors;
 			NextUpTaskIds.push(task.id);
 			return task;
 		})

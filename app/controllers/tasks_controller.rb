@@ -63,6 +63,7 @@ class TasksController < ApplicationController
     candidates.each do |candidate|
       reasons = []
       score = 0
+      ancestors = candidate.ancestors
       
       blocking_high_priority_ids = candidate.blocking_ids & high_priority.keys
       blocking_high_priority_ids.each do |id|
@@ -72,7 +73,7 @@ class TasksController < ApplicationController
       children_of_high_priority_ids = candidate.ancestor_ids & high_priority.keys
       children_of_high_priority_ids.each do |id|
         score += high_priority[id][:score] * 10
-        reasons << "subtask of \"#{high_priority[id][:task].name}\""
+        # reasons << "subtask of \"#{high_priority[id][:task].name}\""
       end
       if high_priority.keys.include? candidate.id
         score += high_priority[candidate.id][:score]
@@ -83,9 +84,10 @@ class TasksController < ApplicationController
         # reasons << "subtask of \"#{candidate.parent.name}\""
       end
       
-      tagged_candidates << { "task" => candidate, "score" => score, "reasons" => reasons }
+      tagged_candidates << { "task" => candidate, "score" => score, "reasons" => reasons, "ancestors" => ancestors }
     end # result: { 0: { score: 120, reasons: [ "blocking \"Important Task\"" ], task: <task> }, etc.}
     tagged_candidates = tagged_candidates.sort_by {|obj| obj["score"]}.reverse!
+    # render json: tagged_candidates
   end
   
   def attachments

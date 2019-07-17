@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import WithSeparator from 'react-with-separator';
 
 import FrontSideTask from './FrontSideTask';
 
@@ -19,8 +20,10 @@ export default class NextUpCard extends React.Component {
 		return capitalizedString;
 	}
 	render() {
+		let ancestors = this.props.task.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
 		var reasons = this.formatReasons();
 		return <div className="next-up-card">
+			<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
 			<FrontSideTask task={this.props.task} checkboxChange={this.props.checkboxChange} />
 			<div className="reasons">{ reasons }</div>
 		</div>
