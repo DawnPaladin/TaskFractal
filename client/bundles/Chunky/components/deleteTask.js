@@ -12,7 +12,7 @@ export default function deleteTask() {
 			method: "DELETE",
 			headers: headers
 		}).then(() => {
-			var redirectUrl = this.state.task.parent_id ? this.state.task.parent_id : '/';
+			var redirectUrl = this.state.task.parent_id ? this.state.task.parent_id : '/tasks';
 			window.location.replace(redirectUrl);
 		})
 		
