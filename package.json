@@ -28,6 +28,7 @@
     "webpack-dev-server": ">=3.1.11"
   },
   "scripts": {
-    "dev": "foreman start -f Procfile.dev"
+    "dev": "foreman start -f Procfile.dev",
+    "backup": "heroku pg:backups:download"
   }
 }
