@@ -342,3 +342,23 @@ header {
 .block {
 	display: block;
 }
+.mdc-checkbox {
+	padding: 0;
+	margin-right: 0.35em;
+	margin-bottom: .15em;
+	width: 1em;
+	height: 1em;
+	&::before, &::after {
+		display: none;
+	}
+	.mdc-checkbox__background {
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+	}
+}
+// .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background, .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
+// 	border-color: #74528c;
+// 	background-color: #74528c;
+// }
