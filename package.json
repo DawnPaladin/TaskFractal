@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@atlaskit/tree": "^6.0.0",
+    "@material/react-checkbox": "^0.15.0",
     "@rails/webpacker": "3.5",
     "activestorage": "^5.2.3",
     "axios": "^0.18.0",
