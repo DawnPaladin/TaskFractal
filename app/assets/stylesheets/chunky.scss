@@ -348,6 +348,7 @@ header {
 	margin-bottom: .15em;
 	width: 1em;
 	height: 1em;
+	--mdc-theme-secondary: #74528c;
 	&::before, &::after {
 		display: none;
 	}
@@ -358,7 +359,3 @@ header {
 		top: 0;
 	}
 }
-// .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background, .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
-// 	border-color: #74528c;
-// 	background-color: #74528c;
-// }
