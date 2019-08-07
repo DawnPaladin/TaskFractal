@@ -1,3 +1,5 @@
+@import 'themes/luna';
+
 @mixin doesnt-look-like-a-button {
 	background:none!important;
 	color:inherit;
@@ -8,7 +10,7 @@
 .doesnt-look-like-a-button { @include doesnt-look-like-a-button() }
 
 @mixin deemphasize {
-	color: hsl(0, 0%, 50%);
+	color: $text-color-deemphasize;
 }
 .deemphasize { @include deemphasize }
 

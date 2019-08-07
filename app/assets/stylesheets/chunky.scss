@@ -1,14 +1,15 @@
 @import 'partials';
+@import 'themes/luna';
 
 body {
 	font-family: 'Open Sans', sans-serif;
-	background: radial-gradient(583.50px at 50% 50%, #FAD8F5 0%, #EBD8FF 100%);
+	background: radial-gradient(583.50px at 50% 50%, $bg-center-color 0%, $bg-edge-color 100%);
 	margin: 1em;
 }
 
 header {
-	color: white;
-	background: #3F3F3F;
+	color: $text-inverse-color;
+	background: $header-bg-color;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -17,7 +18,7 @@ header {
 	border-radius: 0 0 0 5px;
 	z-index: 1;
 	a {
-		color: white;
+		color: $text-inverse-color;
 	}
 	.feather {
 		width: 1em;
@@ -35,8 +36,8 @@ button {
 }
 
 .task-card-back {
-	background: white;
-	max-width: 350px;
+	background: $card-bg-color;
+	max-width: 35em;
 	font-size: 16px;
 	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
 	border-radius: 3px;
@@ -63,7 +64,7 @@ button {
 			bottom: 0;
 			width: 100%;
 			border-collapse: collapse;
-			background-image: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
+			background-image: $task-progress-gradient;
 			td {
 				height: 6px;
 				position: relative;
@@ -72,7 +73,7 @@ button {
 				content: '';
 				width: 0;
 				height: 0;
-				border-top: 6px solid white;
+				border-top: 6px solid $card-bg-color;
 				border-left: 4px solid transparent;
 				position: absolute;
 				top: 0;
@@ -82,7 +83,7 @@ button {
 				content: '';
 				width: 0;
 				height: 0;
-				border-top: 6px solid white;
+				border-top: 6px solid $card-bg-color;
 				border-right: 4px solid transparent;
 				position: absolute;
 				top: 0;
@@ -94,7 +95,7 @@ button {
 			bottom: 0;
 			height: 8px;
 			right: 0;
-			background: white;
+			background: $card-bg-color;
 			transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1); // https://easings.net/#easeOutQuint
 		}
 	}
@@ -248,7 +249,7 @@ button {
 		cursor: pointer;
 	}
 	.react-autosuggest__suggestion--highlighted {
-		background: hsla(177, 100%, 50%, 0.37);
+		background: $bg-center-color;
 	}
 	
 	.attachments {
@@ -267,7 +268,7 @@ button {
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				background: hsl(0, 0, 85%);
+				background: $bg-center-color;
 				img {
 					max-width: 100%;
 				}
@@ -314,9 +315,9 @@ button {
 		right: 10px;
 		bottom: 10px;
 		left: 10px;
-		border: 5px dashed gray;
+		border: 5px dashed $fg-color;
 		border-radius: 20px;
-		background: hsla(0, 0%, 0, 20%);
+		background: $bg-center-color;
 	}
 
 }
@@ -352,7 +353,8 @@ button {
 	margin-bottom: .2em;
 	width: 1em;
 	height: 1em;
-	--mdc-theme-secondary: #74528c;
+	color: $text-color;
+	--mdc-theme-secondary: $fg-color;
 	&::before, &::after {
 		display: none;
 	}
@@ -361,5 +363,6 @@ button {
 		height: 100%;
 		left: 0;
 		top: 0;
+		border-color: $text-color !important;
 	}
 }

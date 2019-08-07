@@ -16,8 +16,8 @@ header {
 
 .next-up-hidden .next-up { display: none; }
 .next-up {
-	background: rgba(45, 0, 70, 0.62);
-	color: white;
+	background: $fg-color;
+	color: $text-color;
 	margin: -1em -1em 1em -1em;
 	padding: 1em;
 	box-shadow: 0 3px 3px rgba(0, 0, 0, 10%);
@@ -81,8 +81,8 @@ header {
 }
 
 .next-up-card {
-	background: white;
-	color: black;
+	background: $card-bg-color;
+	color: $text-color;
 	border: 1px solid black;
 	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
 	border-radius: 3px;
@@ -130,7 +130,7 @@ header {
 
 .outline {
 	max-width: 50em;
-	background: white;
+	background: $card-bg-color;
 	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
 	padding: 10px 20px;
 	@media (min-width: 875px) {
