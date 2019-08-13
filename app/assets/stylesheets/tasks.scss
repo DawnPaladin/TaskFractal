@@ -3,7 +3,7 @@
 a.task-link {
 	&:link, &:visited, &:hover, &:active {
 		text-decoration: none;
-		color: $text-color;
+		color: var(--text-color);
 		&.deemphasize {
 			@include deemphasize;
 		}

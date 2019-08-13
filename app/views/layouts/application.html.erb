@@ -24,5 +24,14 @@
     </header>
     <%= yield %>
     <%= toastr_flash %>
+    <% if signed_in? %>
+      <script>
+      document.body.dataset.theme = "<%= current_user.theme %>";
+      </script>
+    <% else %>
+      <script>
+      document.body.dataset.theme = "twilight-sparkle";
+      </script>
+    <% end %>
   </body>
 </html>

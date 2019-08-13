@@ -10,7 +10,7 @@
 .doesnt-look-like-a-button { @include doesnt-look-like-a-button() }
 
 @mixin deemphasize {
-	color: $text-color-deemphasize;
+	color: var(--text-color-deemphasize);
 }
 .deemphasize { @include deemphasize }
 
