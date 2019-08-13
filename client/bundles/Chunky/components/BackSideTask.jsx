@@ -10,6 +10,7 @@ import FileUpload from './FileUpload';
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
 import TaskPicker from './TaskPicker';
+import network from './network';
 import send from './send';
 import deleteTask from './deleteTask';
 import sendTaskMovement from './sendTaskMovement';
@@ -85,25 +86,7 @@ export default class BackSideTask extends React.Component {
 			state[relationship].push(blockingTask);
 			return state;
 		}, () => {
-			let headers = ReactOnRails.authenticityHeaders();
-			headers["Content-Type"] = "application/json";
-			
-			fetch(`/tasks/${id}/${relationship}/${blockingTask.id}.json`, { method: "POST", headers })
-			.then(response => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					throw new Error("Couldn't remove blocking task.");
-				}
-			}).then(json => {
-				if (json.error) {
-					toastr.error(json.error);
-				} else {
-					toastr.info(json.text);
-				}
-			}).catch(error => {
-				toastr.error(error.message);
-			});
+			network.post(`/tasks/${id}/${relationship}/${blockingTask.id}.json`);
 		})
 	}
 	addSubtask(event) {
@@ -114,28 +97,8 @@ export default class BackSideTask extends React.Component {
 			parent_id: this.state.task.id
 		};
 		
-		let body = JSON.stringify({task});
-		let headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		
-		fetch("/tasks", {
-			method: "POST",
-			body: body,
-			headers: headers,
-		}).then(response => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error("Couldn't send new subtask.");
-			}
-		}).then(json => {
-			if (json.error) {
-				toastr.error(json.error);
-			}
-		}).then(this.refresh)
-		.catch(error => {
-			toastr.error(error.message);
-		});
+		network.post("/tasks", {task})
+			.then(this.refresh);
 	
 		this.setState({ new_task_name: '' });
 	}

@@ -32,14 +32,7 @@ export default class Attachment extends React.Component {
 
 		if (confirm(`Delete "${name}"?`)) {
 			network.delete(`/attachments/${attachmentId}`, { attachment: this.props.attachment })
-			.then(json => {
-				if (json.error) {
-					toastr.error(json.error);
-				} else {
-					toastr.info(`"${name}" deleted.`);
-				}
-			})
-			.then(this.props.afterDelete);
+			.then(this.props.afterDelete)
 		}
 	}
 	
@@ -53,23 +46,17 @@ export default class Attachment extends React.Component {
 		event.preventDefault();
 		const attachmentId = this.props.attachment.id;
 		const name = this.state.fileName;
-		const headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
 		
-		fetch(`/attachments/${attachmentId}/rename/${name}`, {headers})
-		.then(response => response.json())
+		network.get(`/attachments/${attachmentId}/rename/${name}`)
 		.then(json => {
-			if (json.error) {
-				toastr.error(json.error);
-			} else {
-				var name = json.name.split('.');
-				let [withoutExtension, fileExtension] = name;
-				this.setState({
-					fileName: withoutExtension,
-					fileExtension: fileExtension,
-					renaming: false,
-				});
-			}
+			const data = json.data;
+			const name = data.name.split('.');
+			const [withoutExtension, fileExtension] = name;
+			this.setState({
+				fileName: withoutExtension,
+				fileExtension: fileExtension,
+				renaming: false,
+			});
 		})
 	}
 	

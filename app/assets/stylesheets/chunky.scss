@@ -37,6 +37,7 @@ button {
 
 .task-card-back {
 	background: var(--card-bg-color);
+	color: var(--text-color);
 	max-width: 35em;
 	font-size: 16px;
 	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
@@ -277,7 +278,7 @@ button {
 				margin-left: 10px;
 			}
 			.file-name a {
-				color: inherit;
+				color: var(--text-color);
 				text-decoration: none;
 			}
 			.attachment-action-links {

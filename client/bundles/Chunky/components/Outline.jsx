@@ -71,8 +71,6 @@ export default class Outline extends React.Component {
 				newState.treeData.items.root.children.push(newTask.id);
 				return newState;
 			})
-		}).catch(error => {
-			toastr.error(error.message);
 		});
 		
 		this.setState({ new_task_name: '' });
