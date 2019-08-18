@@ -5,6 +5,7 @@ import Dropzone from 'react-dropzone';
 import { DirectUpload } from "activestorage";
 import classNames from 'classnames';
 import * as Icon from 'react-feather';
+import network from './network';
 
 export default class FileUpload extends React.Component {
 	static propTypes = {
@@ -38,19 +39,8 @@ export default class FileUpload extends React.Component {
 	
 	attachToModel(blob, callback) {
 		const id = this.props.task.id;
-		const headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		const body = JSON.stringify({
-			task: {
-				attachments: blob.signed_id
-			}
-		})
 		
-		fetch(`/tasks/${id}.json`, {
-			method: "PUT",
-			headers: headers,
-			body: body
-		})
+		network.put(`/tasks/${id}.json`, { task: { attachments: blob.signed_id }} )
 		.then(callback);
 	}
 	

@@ -170,42 +170,23 @@ export default class BackSideTask extends React.Component {
 	refresh = () => {
 		let id = this.state.task.id;
 		
-		let headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		
-		fetch(`/tasks/${id}.json`, {headers})
-		.then(response => response.json())
-		.then(json => this.setState({ task: json, children: json.children }));
+		network.get(`/tasks/${id}.json`)
+		.then(response => this.setState({ task: response.data, children: response.data.children }));
 	}
 	
 	refreshAllTasks() {
-		const headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		fetch('/tasks.json', {headers})
+		network.get('/tasks.json')
 		.then(response => {
-			if (response.ok) {
-				return response.json();
-			} else {
-				throw new Error("Couldn't fetch tasks.");
-			}
-		})
-		.then(json => {
-			this.setState({ allTasks: json });
-		}).catch(error => {
-			toastr.error(error.message);
+			this.setState({ allTasks: response.data });
 		});
 	}
 	
 	refreshAttachments() {
 		let id = this.state.task.id;
 	
-		let headers = ReactOnRails.authenticityHeaders();
-		headers["Content-Type"] = "application/json";
-		
-		fetch(`/tasks/${id}/attachments.json`, {headers})
-		.then(response => response.json())
-		.then(json => {
-			this.setState({ attachments: json })
+		network.get(`/tasks/${id}/attachments.json`)
+		.then(response => {
+			this.setState({ attachments: response.data })
 		})
 	}
 	
@@ -215,28 +196,7 @@ export default class BackSideTask extends React.Component {
 		this.setState(state => {
 			removeTaskFromArray(blockingTask, state[relationship]);
 			return state;
-		}, () => {
-			let body = JSON.stringify({task: baseTask});
-			let headers = ReactOnRails.authenticityHeaders();
-			headers["Content-Type"] = "application/json";
-			
-			fetch(`/tasks/${id}/${relationship}/${blockingTask.id}.json`, { method: "DELETE", body, headers })
-			.then(response => {
-				if (response.ok) {
-					return response.json();
-				} else {
-					throw new Error("Couldn't remove blocking task.");
-				}
-			}).then(json => {
-				if (json.error) {
-					toastr.error(json.error);
-				} else {
-					toastr.info(json.text);
-				}
-			}).catch(error => {
-				toastr.error(error.message);
-			});
-		})
+		}, () => { network.delete(`/tasks/${id}/${relationship}/${blockingTask.id}.json`, {task: baseTask}) })
 	}
 	
 
