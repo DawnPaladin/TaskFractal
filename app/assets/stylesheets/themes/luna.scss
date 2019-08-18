@@ -4,11 +4,12 @@ body[data-theme="luna"] {
 	--text-color-deemphasize: hsl(0, 0%, 70%);
 	--fg-color: #844FDE;
 	
-	--bg-center-color: #1C4CC2;
-	--bg-edge-color: #4B37CA;
+	--bg-center-color: rgb(9, 27, 70);
+	--bg-edge-color: rgb(21, 17, 53);
 	
-	--card-bg-color: #282D5A ;
+	--card-bg-color: #282D5A;
 	--header-bg-color: #3F3F3F;
+	--nextup-bg-color: #221940;
 	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 }

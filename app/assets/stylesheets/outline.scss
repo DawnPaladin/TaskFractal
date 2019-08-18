@@ -16,7 +16,7 @@ header {
 
 .next-up-hidden .next-up { display: none; }
 .next-up {
-	background: var(--fg-color);
+	background: var(--nextup-bg-color);
 	color: var(--text-color);
 	margin: -1em -1em 1em -1em;
 	padding: 1em;
