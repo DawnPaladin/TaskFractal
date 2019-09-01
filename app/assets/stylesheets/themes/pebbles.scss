@@ -1,0 +1,20 @@
+body[data-theme="pebbles"] {
+	--text-color: black;
+	--text-inverse-color: white;
+	--text-color-deemphasize: hsl(0, 0%, 30%);
+	--fg-color: #74528c;
+	
+	--bg: url(/bg/rocks.jpg);
+	
+	--card-bg-color: rgba(255, 245, 195, 0.71);
+	--header-bg-color: #3F3F3F;
+	--nextup-bg-color: rgba(119, 132, 160, 0.79);
+	--nextup-card-bg-color: rgb(253, 221, 134);
+	
+	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
+	
+	.hero {
+		background: var(--card-bg-color);
+	}
+}
+

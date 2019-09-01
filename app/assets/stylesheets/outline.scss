@@ -25,6 +25,7 @@ header {
 	flex-direction: row;
 	justify-content: center;
 	.next-up-label {
+		color: var(--text-inverse-color);
 		position: absolute;
 		left: .75em;
 		font-weight: 600;
@@ -81,7 +82,7 @@ header {
 }
 
 .next-up-card {
-	background: var(--card-bg-color);
+	background: var(--nextup-card-bg-color);
 	color: var(--text-color);
 	border: 1px solid black;
 	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
