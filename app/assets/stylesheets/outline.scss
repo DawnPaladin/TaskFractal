@@ -125,8 +125,8 @@ header {
 .reverse-cycle-card-stack-button {
 	@extend .cycle-card-stack-button;
 	right: 6em;
-	height: 1.35em;
-	padding-top: 2px;
+	height: 20px;
+	padding: 2px 7px 2px 4px;
 }
 
 .outline {
