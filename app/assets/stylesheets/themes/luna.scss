@@ -11,7 +11,22 @@ body[data-theme="luna"] {
 	--card-bg-color: #282D5A;
 	--header-bg-color: #3F3F3F;
 	--nextup-bg-color: #221940;
+	--nextup-fg-color: var(--text-color);
 	--nextup-card-bg-color: #282D5A;
 	
+	--logo-light: #5456b9 ;
+	--logo-dark: #2b3483;
+	--welcome-button-light: #844FDE;
+	--welcome-button-dark: #363E7A;
+	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
+	
+	button {
+		color: var(--text-color);
+		background: var(--card-bg-color);
+		border: 1px solid black;
+		svg path {
+			stroke: var(--text-color);
+		}
+	}
 }

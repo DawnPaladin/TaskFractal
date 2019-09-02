@@ -9,7 +9,13 @@ body[data-theme="pebbles"] {
 	--card-bg-color: rgba(255, 245, 195, 0.71);
 	--header-bg-color: #3F3F3F;
 	--nextup-bg-color: rgba(119, 132, 160, 0.79);
-	--nextup-card-bg-color: rgb(253, 221, 134);
+	--nextup-fg-color: var(--text-color);
+	--nextup-card-bg-color: #fddd86;
+	
+	--logo-light: #fddd86;
+	--logo-dark: #7784a0;
+	--welcome-button-light: #7784a0;
+	--welcome-button-dark: #555d6d;
 	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 	

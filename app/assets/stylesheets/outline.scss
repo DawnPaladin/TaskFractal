@@ -17,7 +17,7 @@ header {
 .next-up-hidden .next-up { display: none; }
 .next-up {
 	background: var(--nextup-bg-color);
-	color: var(--text-color);
+	color: var(--nextup-fg-color);
 	margin: -1em -1em 1em -1em;
 	padding: 1em;
 	box-shadow: 0 3px 3px rgba(0, 0, 0, 10%);
@@ -25,7 +25,7 @@ header {
 	flex-direction: row;
 	justify-content: center;
 	.next-up-label {
-		color: var(--text-inverse-color);
+		color: var(--nextup-label-color);
 		position: absolute;
 		left: .75em;
 		font-weight: 600;

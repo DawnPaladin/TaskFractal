@@ -1,23 +1,25 @@
-body[data-theme='twilight-sparkle'] {
+body[data-theme='summer'] {
 	--text-color: black;
 	--text-inverse-color: white;
 	--text-color-deemphasize: hsl(0, 0%, 30%);
-	--fg-color: #74528c;
+	--fg-color: #2FB17B;
 	
-	--bg-center-color: #FAD8F5;
-	--bg-edge-color: #EBD8FF;
+	--bg-center-color: #ACE9E9;
+	--bg-edge-color: rgb(174, 238, 237);
 	--bg: radial-gradient(583.50px at 50% 50%, var(--bg-center-color) 0%, var(--bg-edge-color) 100%);
 	
 	--card-bg-color: white;
 	--header-bg-color: #3F3F3F;
-	--nextup-bg-color: #74528c;
-	--nextup-fg-color: var(--text-inverse-color);
+	--nextup-bg-color: #2FB17B;
+	--nextup-fg-color: var(--text-color);
 	--nextup-card-bg-color: white;
 	
-	--logo-light: #ff00f5;
-	--logo-dark: #4b005e;
-	--welcome-button-light: #af00a8;
-	--welcome-button-dark: #6e008a;
+	--logo-light: #95FF8C;
+	--logo-dark: #2FB17B;
+	--welcome-button-light: #2da171;
+	--welcome-button-dark: #1d6d4b;
 	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
+	
+	.next-up-card { border: none; }
 }

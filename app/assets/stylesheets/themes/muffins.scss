@@ -1,23 +1,24 @@
-body[data-theme='twilight-sparkle'] {
+body[data-theme='muffins'] {
 	--text-color: black;
 	--text-inverse-color: white;
 	--text-color-deemphasize: hsl(0, 0%, 30%);
-	--fg-color: #74528c;
+	--fg-color: #727B93  ;
 	
-	--bg-center-color: #FAD8F5;
-	--bg-edge-color: #EBD8FF;
+	--bg-center-color: #E4FFFF;
+	--bg-edge-color: #DEDEFF;
 	--bg: radial-gradient(583.50px at 50% 50%, var(--bg-center-color) 0%, var(--bg-edge-color) 100%);
 	
 	--card-bg-color: white;
 	--header-bg-color: #3F3F3F;
-	--nextup-bg-color: #74528c;
-	--nextup-fg-color: var(--text-inverse-color);
+	--nextup-bg-color: #C2C5D5;
+	--nextup-fg-color: #3F3F3F;
 	--nextup-card-bg-color: white;
 	
-	--logo-light: #ff00f5;
-	--logo-dark: #4b005e;
-	--welcome-button-light: #af00a8;
-	--welcome-button-dark: #6e008a;
-	
+	--logo-light: #8cf0a7;
+	--logo-dark: rgb(113, 116, 124);
+	--welcome-button-light: #8cf0a7;
+	--welcome-button-dark: #3dc561;
+	.button-link { color: var(--text-color); }
+
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 }
