@@ -88,3 +88,44 @@
 	width: 150px;
 	margin: auto;
 }
+.page-theme {
+	.previews {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		@media (min-width: 1600px) {
+			padding: 50px 100px;
+		}
+		@media (max-width: 1400px) {
+			justify-content: center;
+		}
+	}
+	input[type="radio"] {
+		display: none;
+	}
+	input[type="radio"]+svg {
+		border: 3px solid white;
+		@media (min-width: 500px) {
+			height: 250px;
+			width: 348px;
+			margin: 50px;
+		}
+		@media (max-width: 499px) {
+			margin: 4vw;
+		}
+	}
+	input[type="radio"]:checked+svg {
+		border: 3px solid black;
+	}
+	input[type="radio"][value="pebbles"]+svg {
+		background: center/cover url('/bg/rocks.jpg');
+	}
+	form {
+		text-align: center;
+	}
+	button {
+		width: 7em;
+		height: 2em;
+		font-size: 1.5em;
+	}
+}

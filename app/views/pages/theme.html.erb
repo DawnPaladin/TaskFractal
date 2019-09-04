@@ -1,0 +1,51 @@
+<div class="page-theme">
+	<%= form_for :user do |f| %>
+		<div class="previews">
+			<label>
+				<input type="radio" value="muffins" name="theme" <% if current_user.theme == "muffins" %> checked="checked" <% end %>>
+				<svg width="273" height="196" viewBox="0 0 273 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="273" height="63" fill="#C2C5D5"/>
+					<rect y="63" width="273" height="133" fill="#DEDEFF"/>
+				</svg>
+			</label>
+			<label>
+				<input type="radio" value="twilight-sparkle" name="theme" <% if current_user.theme == "twilight-sparkle" %> checked="checked" <% end %>>
+				<svg width="273" height="196" viewBox="0 0 273 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="273" height="63" fill="#74528C"/>
+					<rect y="63" width="273" height="133" fill="#EBD8FF"/>
+				</svg>
+			</label>
+			<label>
+				<input type="radio" value="pebbles" name="theme" <% if current_user.theme == "pebbles" %> checked="checked" <% end %>>
+				<svg width="273" height="196" viewBox="0 0 273 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="273" height="63" fill="#7784A0" fill-opacity="0.79"/>
+					<rect x="55" y="62" width="163" height="134" fill="#FFF5C3" fill-opacity="0.71"/>
+				</svg>
+			</label>
+			<label>
+				<input type="radio" value="summer" name="theme" <% if current_user.theme == "summer" %> checked="checked" <% end %>>
+				<svg width="273" height="196" viewBox="0 0 273 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="273" height="63" fill="#2FB17B"/>
+					<rect y="63" width="273" height="133" fill="#ACE9E9"/>
+				</svg>
+			</label>
+			<label>
+				<input type="radio" value="luna" name="theme" <% if current_user.theme == "luna" %> checked="checked" <% end %>>
+				<svg width="273" height="196" viewBox="0 0 273 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="273" height="63" fill="#844FDE"/>
+					<rect y="63" width="273" height="133" fill="#151135"/>
+				</svg>
+			</label>
+		</div>
+		<button>Save</button>
+	<% end %>
+</div>
+
+<script> // apply theme to the page when the user clicks on it
+document.querySelectorAll('.page-theme input').forEach(function(element) { 
+	element.addEventListener('input', function(event) {
+		var themeName = event.target.value;
+		document.body.dataset.theme = themeName;
+	});
+});
+</script>
