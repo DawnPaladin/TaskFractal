@@ -12,15 +12,6 @@ body[data-theme="pebbles"] {
 	--nextup-fg-color: var(--text-color);
 	--nextup-card-bg-color: #fddd86;
 	
-	--logo-light: #fddd86;
-	--logo-dark: #7784a0;
-	--welcome-button-light: #7784a0;
-	--welcome-button-dark: #555d6d;
-	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
-	
-	.hero {
-		background: var(--card-bg-color);
-	}
 }
 
