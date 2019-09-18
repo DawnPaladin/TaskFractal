@@ -1,10 +1,10 @@
 <div class="page-home">
 	<h1>How do you eat an elephant? One bite at a time.</h1>
-	<div class="buttons">
+	<div class="buttons dark-bg">
 		<% if user_signed_in? %>
 			<%= link_to "View my TaskFractal", tasks_path, class: 'button-link primary' %>
 		<% else %>
-			<%= link_to "Sign in", new_user_session_path, class: 'button-link primary' %>
+			<%= link_to "Log in", new_user_session_path, class: 'button-link primary' %>
 			<%= link_to "Sign up", new_user_registration_path, class: 'button-link secondary' %>
 		<% end %>
 	</div>
@@ -12,9 +12,11 @@
 		<p>The best way to handle a tough project is to break it into manageable chunks. <strong>TaskFractal</strong> lets you break projects into chunks, and then break the chunks into smaller pieces, and so on as deep as you want.</p>
 		<img src="/home/outline.png" alt="Outline view">
 	</div>
-	<h1>Always know what to work on next</h1>
-	<img src="/home/next-up.png" alt="NextUp offers two tasks, ready to be worked on" class="img-center">
-	<p class="align-center">Cut through the clutter. TaskFractal will always give you two things you can work on right now.</p>
+	<div class="work-on-next dark-bg">
+		<h1>Always know what to work on next</h1>
+		<img src="/home/next-up.png" alt="NextUp offers two tasks, ready to be worked on" class="img-center">
+		<p class="align-center">Cut through the clutter. TaskFractal will always give you two things you can work on right now.</p>
+	</div>
 	<h1>Everything in one place</h1>
 	<div class="features-grid">
 		<i data-feather='paperclip'></i>
@@ -24,7 +26,7 @@
 		<i data-feather='align-left'></i>
 		<p>Take notes on each task. Write down addresses, details, and how-to's.</p>
 	</div>
-	<footer>
+	<footer class="dark-bg">
 		<ul>
 			<li><a href="https://github.com/DawnPaladin/TaskFractal">Source code</a></li>
 			<li>By <a href="https://jamesharris.design">James Harris</a></li>
@@ -37,6 +39,7 @@
 html, body {
 	margin: 0;
 	height: 100%;
+	background: #0F296A;
 }
 
 <% unless user_signed_in? %>
