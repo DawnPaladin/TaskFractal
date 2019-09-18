@@ -1,10 +1,10 @@
 <div class="page-home">
 	<h1>How do you eat an elephant? One bite at a time.</h1>
-	<div class="buttons dark-bg">
+	<div class="buttons">
 		<% if user_signed_in? %>
 			<%= link_to "View my TaskFractal", tasks_path, class: 'button-link primary' %>
 		<% else %>
-			<%= link_to "Log in", new_user_session_path, class: 'button-link primary' %>
+			<%= link_to "Sign in", new_user_session_path, class: 'button-link primary' %>
 			<%= link_to "Sign up", new_user_registration_path, class: 'button-link secondary' %>
 		<% end %>
 	</div>
@@ -12,7 +12,7 @@
 		<p>The best way to handle a tough project is to break it into manageable chunks. <strong>TaskFractal</strong> lets you break projects into chunks, and then break the chunks into smaller pieces, and so on as deep as you want.</p>
 		<img src="/home/outline.png" alt="Outline view">
 	</div>
-	<div class="work-on-next dark-bg">
+	<div class="work-on-next">
 		<h1>Always know what to work on next</h1>
 		<picture>
 			<source srcset="/home/next-up.png" media="(min-width: 1000px)">
@@ -29,7 +29,7 @@
 		<i data-feather='align-left'></i>
 		<p>Take notes on each task. Write down addresses, details, and how-to's.</p>
 	</div>
-	<footer class="dark-bg">
+	<footer>
 		<ul>
 			<li><a href="https://github.com/DawnPaladin/TaskFractal">Source code</a></li>
 			<li>By <a href="https://jamesharris.design">James Harris</a></li>
