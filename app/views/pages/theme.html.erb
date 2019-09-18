@@ -16,6 +16,13 @@
 				</svg>
 			</label>
 			<label>
+				<input type="radio" value="jeans" name="theme" <% if current_user.theme == "jeans" %> checked="checked" <% end %>>
+				<svg width="273" height="196" viewBox="0 0 273 196" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect width="273" height="63" fill="#153890"/>
+					<rect y="63" width="273" height="133" fill="#0F296A"/>
+				</svg>
+			</label>
+			<label>
 				<input type="radio" value="pebbles" name="theme" <% if current_user.theme == "pebbles" %> checked="checked" <% end %>>
 				<svg width="273" height="196" viewBox="0 0 273 196" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect width="273" height="63" fill="#7784A0" fill-opacity="0.79"/>

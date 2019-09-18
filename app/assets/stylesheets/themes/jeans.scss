@@ -1,0 +1,18 @@
+body[data-theme='jeans'] {
+	--text-color: black;
+	--text-inverse-color: white;
+	--text-color-deemphasize: hsl(0, 0%, 30%);
+	--fg-color: #a60000;
+	
+	--bg-center-color: #153890;
+	--bg-edge-color: #0F296A;
+	--bg: radial-gradient(583.50px at 50% 50%, var(--bg-center-color) 0%, var(--bg-edge-color) 100%);
+	
+	--card-bg-color: white;
+	--header-bg-color: #3F3F3F;
+	--nextup-bg-color: #1f45a5;
+	--nextup-fg-color: var(--text-inverse-color);
+	--nextup-card-bg-color: white;
+	
+	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
+}
