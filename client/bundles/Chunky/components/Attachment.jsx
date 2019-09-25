@@ -72,7 +72,7 @@ export default class Attachment extends React.Component {
 				</a>
 				<div className="right-side">
 					<form className="file-name" onSubmit={this.submitRename}>
-						{ this.state.renaming && <input value={this.state.fileName} onChange={this.handleNameChange} /> }
+						{ this.state.renaming && <input type="text" value={this.state.fileName} onChange={this.handleNameChange} /> }
 						{ this.state.renaming && '.' + this.state.fileExtension}
 						{!this.state.renaming && <a href={this.props.attachment.url} target="_blank" rel="noopener noreferrer">{this.state.fileName}.{this.state.fileExtension}</a> }
 					</form>

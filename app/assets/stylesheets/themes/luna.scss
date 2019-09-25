@@ -16,10 +16,10 @@ body[data-theme="luna"] {
 	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 	
-	button {
+	button:not(.doesnt-look-like-a-button) {
 		color: var(--text-color);
 		background: var(--card-bg-color);
-		border: 1px solid black;
+		border: 1px solid rgba(255, 255, 255, .5);
 		svg path {
 			stroke: var(--text-color);
 		}

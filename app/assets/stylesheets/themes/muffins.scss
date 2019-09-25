@@ -4,6 +4,9 @@ body[data-theme='muffins'] {
 	--text-color-deemphasize: hsl(0, 0%, 30%);
 	--fg-color: #727B93  ;
 	
+	--button-border-color: black;
+	--button-bg-color: white;
+	
 	--bg-center-color: #E4FFFF;
 	--bg-edge-color: #DEDEFF;
 	--bg: radial-gradient(583.50px at 50% 50%, var(--bg-center-color) 0%, var(--bg-edge-color) 100%);

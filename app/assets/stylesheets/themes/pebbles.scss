@@ -4,6 +4,9 @@ body[data-theme="pebbles"] {
 	--text-color-deemphasize: hsl(0, 0%, 30%);
 	--fg-color: #74528c;
 	
+	--button-border-color: black;
+	--button-bg-color: var(--card-bg-color);
+	
 	--bg: url(/bg/rocks.jpg);
 	
 	--card-bg-color: rgba(255, 245, 195, 0.71);
@@ -13,5 +16,7 @@ body[data-theme="pebbles"] {
 	--nextup-card-bg-color: #fddd86;
 	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
+	.completion-bar-cover {
+		background: rgba(255, 245, 195, 1) !important;
+	}
 }
-

@@ -33,7 +33,17 @@ header {
 button {
 	font-family: 'Open Sans', sans-serif;
 	-webkit-appearance: none;
-	border-radius: 0;
+	border-radius: 3px;
+	border: 2px solid var(--button-border-color);
+	background: var(--button-bg-color);
+	color: var(--text-color);
+}
+
+input[type=text] {
+	border: none;
+	border-bottom: 1px solid silver;
+	background: var(--card-bg-color);
+	color: var(--text-color);
 }
 
 #toast-container {
@@ -172,6 +182,7 @@ button {
 	.task-picker .react-autosuggest__input {
 		width: 97%;
 		border-radius: 0;
+		font-style: italic;
 	}
 	
 	.blocked-task {
