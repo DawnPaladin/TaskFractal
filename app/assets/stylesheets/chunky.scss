@@ -32,6 +32,8 @@ header {
 
 button {
 	font-family: 'Open Sans', sans-serif;
+	-webkit-appearance: none;
+	border-radius: 0;
 }
 
 #toast-container {
