@@ -1,5 +1,4 @@
 @import 'partials';
-@import 'themes/luna';
 
 .page-home {
 	font-size: 22px;
@@ -13,6 +12,9 @@
 		&:first-of-type {
 			padding-top: 20px;
 		}
+		@media (max-width: 405px) {
+			font-size: 40px;
+		}
 	}
 	p {
 		padding-left: .5em;
@@ -21,21 +23,37 @@
 	.buttons {
 		margin-bottom: 28px;
 		display: flex;
-		flex-direction: row;
-		padding: 0 30px;
 		justify-content: center;
+		@media (min-width: 475px) {
+			flex-direction: row;
+			.button-link {
+				margin: 0 .5em;
+			}
+		}
+		@media (max-width: 474px) {
+			flex-direction: column;
+			.button-link {
+				margin: .5em auto;
+			}
+		}
+		form[name=guest-login] {
+			input[type=text], input[type="password"] { display: none; }
+		}
 		.button-link {
 			display: block;
+			font-family: "Open Sans", sans-serif;
+			font-size: 22px;
 			max-width: 12em;
-			margin: 0 .5em;
 			padding: .25em 1em;
 			border: 1px solid black;
 			border-radius: 2px;
 			text-align: center;
 			color: white;
 			text-decoration: none;
+			cursor: pointer;
 			&.primary { background: #a60000 }
 			&.secondary { background: #7b0000 }
+			&.tertiary { background: #5a0000 }
 		}
 	}
 	.row {
@@ -103,11 +121,14 @@
 	} 
 }
 
-.page-edit-user {
+.page-edit-user, .page-register-user {
 	max-width: 50em;
 	margin: auto;
 	background: var(--card-bg-color);
 	padding: 1em;
+	input {
+		border: 1px solid silver;
+	}
 }
 .page-log-in {
 	width: 150px;
