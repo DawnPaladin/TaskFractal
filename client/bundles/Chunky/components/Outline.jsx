@@ -220,7 +220,7 @@ export default class Outline extends React.Component {
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxChange={this.checkboxChange} />
-			<button className="add-subtask-button" onClick={() => {this.showAddSubtask(item)}}><Icon.Plus size="16"/></button>
+			<button title="Add subtask" className="add-subtask-button" onClick={() => {this.showAddSubtask(item)}}><Icon.Plus size="16"/></button>
 			{ addSubtaskIsHere ? addSubtaskField : null}
 		</div>
 	}
