@@ -15,7 +15,11 @@
   <body>
     <header>
       <% if signed_in? %>
-        <%= link_to "<i data-feather='user'></i>#{current_user.nickname}".html_safe, edit_user_registration_path %>
+        <% if current_user.email == "guest@taskfractal.com" %>
+          <i data-feather='user'></i> Guest
+        <% else %>
+          <%= link_to "<i data-feather='user'></i>#{current_user.nickname}".html_safe, edit_user_registration_path %>
+        <% end %>
         <%= link_to "<i data-feather='layout'></i>Theme".html_safe, "/theme"%>
         <%= link_to "<i data-feather='log-out'></i>Sign out".html_safe, destroy_user_session_path, method: :delete %>
       <% else %>
