@@ -38,3 +38,8 @@ task reset_guest: :environment do
 	
 	p "Done."
 end
+
+desc "Clean up orphaned attachments"
+task clean_up_attachments: :environment do
+	ActiveStorage::Blob.unattached.each(&:purge)
+end
