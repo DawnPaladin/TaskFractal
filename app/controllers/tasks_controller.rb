@@ -268,7 +268,7 @@ class TasksController < ApplicationController
         prop_task = {
           "id" => id,
           "children" => ar_task.child_ids,
-          "isExpanded" => true,
+          "isExpanded" => ar_task.is_expanded,
           "data" => {
             "id" => id,
             "name" => ar_task.name,
@@ -351,6 +351,6 @@ class TasksController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:name, :description, :completed, :due_date, :completed_date, :attachments, :parent_id)
+      params.require(:task).permit(:name, :description, :completed, :due_date, :completed_date, :attachments, :parent_id, :is_expanded)
     end
 end

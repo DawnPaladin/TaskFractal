@@ -177,6 +177,7 @@ export default class Outline extends React.Component {
 	
 	onExpand = (itemId) => {
 		const treeData = this.state.treeData;
+		network.patch(`/tasks/${itemId}.json`, {id: itemId, is_expanded: true});
 		this.setState({
 			treeData: mutateTree(treeData, itemId, { isExpanded: true }),
 		});
@@ -184,6 +185,7 @@ export default class Outline extends React.Component {
 	
 	onCollapse = (itemId) => {
 		const treeData = this.state.treeData;
+		network.patch(`/tasks/${itemId}.json`, {id: itemId, is_expanded: false});
 		this.setState({
 			treeData: mutateTree(treeData, itemId, { isExpanded: false }),
 		});
