@@ -48,6 +48,12 @@ input[type=text] {
 
 #toast-container {
 	top: 3em;
+	.toast.toast-warning {
+		color: black;
+		background-image: none !important;
+		padding-left: 15px;
+		width: 335px;
+	}
 }
 
 .task-card-back {

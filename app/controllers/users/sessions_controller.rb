@@ -8,6 +8,12 @@ class Users::SessionsController < Devise::SessionsController
   #   super
   # end
 
+  def create
+    guest_user = User.where(email: "guest@taskfractal.com").first
+    flash[:warning] = "Welcome to the guest account! Here you can explore TaskFractal as much as you want. Everything in this account will be <strong>reset</strong> once a day." if current_user == guest_user
+    super
+  end
+
   # POST /resource/sign_in
   # def create
   #   super

@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   root 'pages#home'
   
-  devise_for :users, sign_out_via: [:get, :delete], controllers: { registrations: 'users/registrations' }
+  devise_for :users,
+    sign_out_via: [:get, :delete], 
+    controllers: {
+      registrations: 'users/registrations',
+      sessions: 'users/sessions'
+    }
   resources :tasks do
     post 'blocking/:id', to: 'tasks#add_blocking_task'
     post 'blocked_by/:id', to: 'tasks#add_blocked_by_task'
