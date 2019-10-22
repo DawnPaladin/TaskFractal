@@ -40,13 +40,17 @@ class TasksController < ApplicationController
   end
   
   def next_up
+    timer = Time.now
+    logger.info "Start next_up"
     user_tasks = Task.where(user: current_user)
+    logger.info "user_tasks: #{(Time.now - timer).to_s}"
     
     candidates = user_tasks.select do |task|
       task.completed == false and 
       (task.has_children? == false or task.children.all? { |task| task.completed == true }) and 
       (task.blocked_by.length == 0 or task.blocked_by.all? { |task| task.completed == true })
     end
+    logger.info "candidates: #{(Time.now - timer).to_s}"
     
     # High-priority tasks whose children and blockers should be completed first
     high_priority = {}
@@ -56,6 +60,7 @@ class TasksController < ApplicationController
         high_priority[task.id] = { score: score, task: task }
       end
     end # Result: { 1: { score: 9, task: <task> }, 2: { score: 8, task: <task> }, etc.}
+    logger.info "high_priority: #{(Time.now - timer).to_s}"
     
     tagged_candidates = []
     candidates.each do |candidate|
@@ -84,6 +89,7 @@ class TasksController < ApplicationController
       
       tagged_candidates << { "task" => candidate, "score" => score, "reasons" => reasons, "ancestors" => ancestors }
     end # result: { 0: { score: 120, reasons: [ "blocking \"Important Task\"" ], task: <task> }, etc.}
+    logger.info "tagged_candidates: #{(Time.now - timer).to_s}"
     tagged_candidates = tagged_candidates.sort_by {|obj| obj["score"]}.reverse!
     # render json: tagged_candidates
   end
