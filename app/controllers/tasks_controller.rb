@@ -8,14 +8,12 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { 
         @outline_props = { 
-          tasks: normalize_user_tasks,
+          tasks: normalize_user_tasks_for_outline,
           next_up: next_up,
         }
         render :index 
       }
-      format.json { render json: Task.where(user: current_user).arrange_serializable.to_json do |parent, children|
-        TaskSerializer.new(parent, children: children)
-      end }
+      format.json { render json: Task.where(user: current_user).order(:position) }
     end
   end
 
@@ -232,7 +230,7 @@ class TasksController < ApplicationController
   end
   
   private
-    def normalize_user_tasks
+    def normalize_user_tasks_for_outline
       # sample_output = {
       #   rootId: 'root',
       #   items: {
@@ -254,7 +252,7 @@ class TasksController < ApplicationController
       #     },
       #   }
       # }
-      ar_tasks = Task.where(user: current_user).order(:position) # ActiveRecord tasks
+      ar_tasks = Task.where(user: current_user).order(:position).includes(:blocking, :blocked_by) # ActiveRecord tasks
       prop_tasks = {
         "rootId" => 'root',
         "items" => {}
