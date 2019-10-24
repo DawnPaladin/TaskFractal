@@ -1,5 +1,17 @@
 @import 'partials';
 
+.page-home-background {
+	padding-top: 1px;
+	background-image: url('/home/top.svg'), url('/home/bottom.svg');
+	background-position: center top, center calc(100% - 10px);
+	background-color: #0F296A;
+	background-repeat: no-repeat;
+	box-shadow:
+		inset 0 0  5px #0F296A,
+		inset 0 0 10px #0F296A,
+		inset 0 0 15px #0F296A,
+		inset 0 0 20px #0F296A;
+}
 .page-home {
 	font-size: 22px;
 	max-width: 1150px;
@@ -118,7 +130,7 @@
 				}
 			}
 		}
-	} 
+	}
 }
 
 .page-edit-user, .page-register-user {

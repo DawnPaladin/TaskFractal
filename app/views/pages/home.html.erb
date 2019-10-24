@@ -1,53 +1,55 @@
-<div class="page-home">
-	<h1>How do you eat an elephant? One bite at a time.</h1>
-	<div class="buttons">
-		<% if user_signed_in? %>
-			<%= link_to "View my TaskFractal", tasks_path, class: 'button-link primary' %>
-		<% else %>
-			<%= form_tag('/users/sign_in', method: :post, name: 'guest-login') do %>
-				<%= text_field_tag 'user[email]', 'guest@taskfractal.com' %>
-				<%= password_field_tag 'user[password]', 'password' %>
-				<%= submit_tag("Try it", class: 'button-link primary') %>
+<div class="page-home-background">
+	<div class="page-home">
+		<h1>How do you eat an elephant? One bite at a time.</h1>
+		<div class="buttons">
+			<% if user_signed_in? %>
+				<%= link_to "View my TaskFractal", tasks_path, class: 'button-link primary' %>
+			<% else %>
+				<%= form_tag('/users/sign_in', method: :post, name: 'guest-login') do %>
+					<%= text_field_tag 'user[email]', 'guest@taskfractal.com' %>
+					<%= password_field_tag 'user[password]', 'password' %>
+					<%= submit_tag("Try it", class: 'button-link primary') %>
+				<% end %>
+				<%= link_to "Sign up", new_user_registration_path, class: 'button-link secondary' %>
+				<%= link_to "Sign in", new_user_session_path, class: 'button-link tertiary' %>
 			<% end %>
-			<%= link_to "Sign up", new_user_registration_path, class: 'button-link secondary' %>
-			<%= link_to "Sign in", new_user_session_path, class: 'button-link tertiary' %>
-		<% end %>
+		</div>
+		<div class="row">
+			<p>The best way to handle a tough project is to break it into manageable chunks. <strong>TaskFractal</strong> lets you break projects into chunks, and then break the chunks into smaller pieces, and so on as deep as you want.</p>
+			<img src="/home/outline.png" alt="Outline view">
+		</div>
+		<div class="work-on-next">
+			<h1>Always know what to work on next</h1>
+			<picture>
+				<source srcset="/home/next-up.png" media="(min-width: 1000px)">
+				<img src="/home/next-up-mobile.png" alt="NextUp offers two tasks, ready to be worked on" class="img-center">
+			</picture>
+			<p class="align-center">Cut through the clutter. TaskFractal will always give you two things you can work on right now.</p>
+		</div>
+		<h1>Everything in one place</h1>
+		<div class="features-grid">
+			<i data-feather='paperclip'></i>
+			<p>Attach everything you need to complete the task so you don’t have to go hunting for it when the time is right.</p>
+			<i data-feather='camera'></i>
+			<p>Snap photos with your phone and attach them to the task for reference.</p>
+			<i data-feather='align-left'></i>
+			<p>Take notes on each task. Write down addresses, details, and how-to's.</p>
+		</div>
+		<footer>
+			<ul>
+				<li><a href="https://github.com/DawnPaladin/TaskFractal">Source code</a></li>
+				<li>By <a href="https://jamesharris.design">James Harris</a></li>
+				<li><a href="mailto:james@taskfractal.com">Contact me</a></li>
+			</ul>
+		</footer>
 	</div>
-	<div class="row">
-		<p>The best way to handle a tough project is to break it into manageable chunks. <strong>TaskFractal</strong> lets you break projects into chunks, and then break the chunks into smaller pieces, and so on as deep as you want.</p>
-		<img src="/home/outline.png" alt="Outline view">
-	</div>
-	<div class="work-on-next">
-		<h1>Always know what to work on next</h1>
-		<picture>
-			<source srcset="/home/next-up.png" media="(min-width: 1000px)">
-			<img src="/home/next-up-mobile.png" alt="NextUp offers two tasks, ready to be worked on" class="img-center">
-		</picture>
-		<p class="align-center">Cut through the clutter. TaskFractal will always give you two things you can work on right now.</p>
-	</div>
-	<h1>Everything in one place</h1>
-	<div class="features-grid">
-		<i data-feather='paperclip'></i>
-		<p>Attach everything you need to complete the task so you don’t have to go hunting for it when the time is right.</p>
-		<i data-feather='camera'></i>
-		<p>Snap photos with your phone and attach them to the task for reference.</p>
-		<i data-feather='align-left'></i>
-		<p>Take notes on each task. Write down addresses, details, and how-to's.</p>
-	</div>
-	<footer>
-		<ul>
-			<li><a href="https://github.com/DawnPaladin/TaskFractal">Source code</a></li>
-			<li>By <a href="https://jamesharris.design">James Harris</a></li>
-			<li><a href="mailto:james@taskfractal.com">Contact me</a></li>
-		</ul>
-	</footer>
 </div>
 
 <style>
 html, body {
 	margin: 0;
 	height: 100%;
-	background: #0F296A;
+	background-color: #0F296A;
 }
 
 <% unless user_signed_in? %>
