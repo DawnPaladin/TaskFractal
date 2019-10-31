@@ -66,6 +66,10 @@
 			&.primary { background: #a60000 }
 			&.secondary { background: #7b0000 }
 			&.tertiary { background: #5a0000 }
+			svg {
+				position: relative;
+				top: .1em;
+			}
 		}
 	}
 	.row {

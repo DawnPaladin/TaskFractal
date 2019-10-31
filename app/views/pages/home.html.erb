@@ -8,10 +8,10 @@
 				<%= form_tag('/users/sign_in', method: :post, name: 'guest-login') do %>
 					<%= text_field_tag 'user[email]', 'guest@taskfractal.com' %>
 					<%= password_field_tag 'user[password]', 'password' %>
-					<%= submit_tag("Try it", class: 'button-link primary') %>
+					<%= button_tag("<i data-feather='smile'></i> Try it".html_safe, class: 'button-link primary') %>
 				<% end %>
-				<%= link_to "Sign up", new_user_registration_path, class: 'button-link secondary' %>
-				<%= link_to "Sign in", new_user_session_path, class: 'button-link tertiary' %>
+				<%= link_to "<i data-feather='user-plus'></i> Sign up".html_safe, new_user_registration_path, class: 'button-link secondary' %>
+				<%= link_to "<i data-feather='log-in'></i> Sign in".html_safe, new_user_session_path, class: 'button-link tertiary' %>
 			<% end %>
 		</div>
 		<div class="row">
