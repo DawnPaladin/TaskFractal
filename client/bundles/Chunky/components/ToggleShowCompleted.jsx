@@ -20,11 +20,19 @@ export default class ToggleShowCompleted extends React.Component {
 		window.showCompletedTasks = newState;
 		network.patch('/change_show_completed_tasks.json', { show_completed_tasks: newState });
 	}
+	keyboardShortcut(event) {
+		if (event.altKey && event.key === "c") {
+			this.handleChange();
+		}
+	}
+	componentDidMount() {
+		document.addEventListener("keydown", this.keyboardShortcut);
+	}
 	render() {
 		return <button className="toggle-show-completed-button" onClick={this.handleChange}>
 			{ this.state.showCompletedTasks === true && <Icon.ToggleRight size="16" className="feather switch-on"  /> }
 			{ this.state.showCompletedTasks === false && <Icon.ToggleLeft size="16" className="feather switch-off" /> }
-			Show Completed (Alt-C)
+			Show Completed <small>(Alt-C)</small>
 		</button>
 	}
 }
