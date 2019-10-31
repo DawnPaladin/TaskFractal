@@ -10,6 +10,7 @@ class TasksController < ApplicationController
         @outline_props = { 
           tasks: normalize_user_tasks_for_outline,
           next_up: next_up,
+          show_completed_tasks: current_user.show_completed_tasks,
         }
         @show_completed_tasks = current_user.show_completed_tasks
         render :index 

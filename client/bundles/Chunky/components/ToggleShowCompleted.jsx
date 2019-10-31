@@ -11,16 +11,16 @@ export default class ToggleShowCompleted extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { showCompletedTasks: this.props.showCompletedTasks }
-		window.showCompletedTasks = this.props.showCompletedTasks;
 		this.handleChange = this.handleChange.bind(this);
 	}
-	handleChange() {
+	handleChange = () => {
 		const newState = !this.state.showCompletedTasks;
 		this.setState({ showCompletedTasks: newState });
-		window.showCompletedTasks = newState;
 		network.patch('/change_show_completed_tasks.json', { show_completed_tasks: newState });
+		const event = new CustomEvent('toggleShowCompleted', { detail: { showCompletedTasks: newState }});
+		document.dispatchEvent(event);
 	}
-	keyboardShortcut(event) {
+	keyboardShortcut = event => {
 		if (event.altKey && event.key === "c") {
 			this.handleChange();
 		}

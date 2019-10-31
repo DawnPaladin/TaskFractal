@@ -31,6 +31,7 @@ export default class Outline extends React.Component {
 			NextUpTaskIds,
 			leftCardIndex: 0,
 			rightCardIndex: NextUpTasks.length - 1,
+			showCompletedTasks: this.props.show_completed_tasks,
 		}
 		// data structure for adding new subtasks to tree items
 		Object.entries(this.state.treeData.items).forEach(([key, item]) => {
@@ -135,6 +136,11 @@ export default class Outline extends React.Component {
 		});
 		this.setState(newState);
 	}
+	handleToggleShowCompleted = event => {
+		this.setState({ showCompletedTasks: event.detail.showCompletedTasks },
+			() => { this.setHiddenOnTasks(); }
+		);
+	}
 	getIcon(item, onExpand, onCollapse) {
 		if (item.children && item.children.length > 0) {
 			if (item.isExpanded) {
@@ -223,13 +229,12 @@ export default class Outline extends React.Component {
 			treeData.items[key].hidden = false;
 		});
 		
-		if (window.showCompletedTasks === false) {
+		if (this.state.showCompletedTasks === false) {
 			Object.entries(treeData.items).forEach(([key, item]) => {
 				if (key === "root") return;
 				if (item.data && item.data.completed === true) {
 					treeData.items[key].hidden = true;
-					if (item.id == 12)
-					this.hideSubtasks(treeData, item)
+					this.hideSubtasks(treeData, item);
 				}
 			});
 		}
@@ -275,6 +280,7 @@ export default class Outline extends React.Component {
 	
 	componentDidMount() {
 		this.setHiddenOnTasks();
+		document.addEventListener('toggleShowCompleted', this.handleToggleShowCompleted);
 	}
 	
 	render() {
