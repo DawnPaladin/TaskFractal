@@ -22,6 +22,9 @@
         <% end %>
         <%= link_to "<i data-feather='layout'></i>Theme".html_safe, "/theme"%>
         <%= link_to "<i data-feather='log-out'></i>Sign out".html_safe, destroy_user_session_path, method: :delete %>
+        <% if @show_completed_tasks == true or @show_completed_tasks == false %>
+          <%= react_component("ToggleShowCompleted", props: { showCompletedTasks: @show_completed_tasks, userId: current_user.id }) %>
+        <% end %>
       <% else %>
         <%= link_to "Sign up", new_user_registration_path %>
         <%= link_to "Sign in", new_user_session_path %>

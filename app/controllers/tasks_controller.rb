@@ -11,6 +11,7 @@ class TasksController < ApplicationController
           tasks: normalize_user_tasks_for_outline,
           next_up: next_up,
         }
+        @show_completed_tasks = current_user.show_completed_tasks
         render :index 
       }
       format.json { render json: Task.where(user: current_user).order(:position) }
@@ -32,6 +33,7 @@ class TasksController < ApplicationController
           count_completed_descendants: @task.completed_descendants.count,
           ancestors: @task.ancestors.order(:name)
         }
+        @show_completed_tasks = current_user.show_completed_tasks
       }
       format.json {
         render json: @task.to_json(include: [:children])

@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React from 'react';
 import * as Icon from 'react-feather';
 import Tree, { mutateTree, moveItemOnTree } from '@atlaskit/tree';
 import update from 'immutability-helper';
+import clone from 'lodash.clonedeep';
 
 import NextUp from './NextUp';
 import FrontSideTask from './FrontSideTask';
@@ -36,6 +37,7 @@ export default class Outline extends React.Component {
 			if (item.data) {
 				item.data.newSubtaskName = "";
 				item.data.addSubtaskId = null;
+				item.hidden = false;
 			}
 		});
 		
@@ -212,6 +214,38 @@ export default class Outline extends React.Component {
 		send(task);
 	}
 	
+	setHiddenOnTasks = () => { // Go through all tasks and mark the appropriate ones (and their children) as hidden
+		const treeData = clone(this.state.treeData);
+		
+		// first go through and unhide everything
+		Object.entries(treeData.items).forEach(([key, item]) => {
+			if (key === "root") return;
+			treeData.items[key].hidden = false;
+		});
+		
+		if (window.showCompletedTasks === false) {
+			Object.entries(treeData.items).forEach(([key, item]) => {
+				if (key === "root") return;
+				if (item.data && item.data.completed === true) {
+					treeData.items[key].hidden = true;
+					if (item.id == 12)
+					this.hideSubtasks(treeData, item)
+				}
+			});
+		}
+		
+		this.setState({treeData});
+	}
+	hideSubtasks = (treeData, parent) => { // Recursively hide all the children of a parent task
+		const childIds = parent.children;
+		Object.entries(treeData.items).forEach(([key, item]) => {
+			if (childIds.includes(Number(item.id))) { // item is a child of the parent
+				item.hidden = true;
+				this.hideSubtasks(treeData, item);
+			}
+		})
+	}
+	
 	renderTreeItem = ({item, provided, snapshot, onExpand, onCollapse}) => {
 		var icon = this.getIcon(item, onExpand, onCollapse);
 		var addSubtaskIsHere = item.data.addSubtaskHere;
@@ -219,6 +253,7 @@ export default class Outline extends React.Component {
 			<input type="text" className="add-subtask" placeholder="Add subtask" value={item.data.newSubtaskName} onChange={(event) => { this.handleNewSubtaskEdit(event, item) }} />
 			<button>Add</button>
 		</form>
+		if (item.hidden === true) return <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}></div>;
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxChange={this.checkboxChange} />
@@ -236,6 +271,10 @@ export default class Outline extends React.Component {
 	
 	toggleNextUpVisibility = () => {
 		this.setState({ NextUpVisible : !this.state.NextUpVisible });
+	}
+	
+	componentDidMount() {
+		this.setHiddenOnTasks();
 	}
 	
 	render() {

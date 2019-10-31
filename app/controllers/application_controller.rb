@@ -5,10 +5,19 @@ class ApplicationController < ActionController::Base
 		tasks_path
 	end
 	
+	def change_show_completed_tasks
+		current_user.show_completed_tasks = params[:show_completed_tasks]
+		if current_user.save
+			render json: { message: "Success" }
+		else
+			render json: { error: "Couldn't change show_completed_tasks" }
+		end
+	end
+	
 	protected
 	
 	def configure_permitted_parameters
 		devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
-		devise_parameter_sanitizer.permit(:account_update, keys: [:nickname, :theme])
+		devise_parameter_sanitizer.permit(:account_update, keys: [:nickname, :theme, :show_completed_tasks])
 	end
 end

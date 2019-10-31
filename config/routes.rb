@@ -21,4 +21,5 @@ Rails.application.routes.draw do
   delete 'attachments/:id', to: 'tasks#delete_attachment'
   get '/theme', to: 'pages#theme'
   post '/theme', to: 'pages#change_theme'
+  patch '/change_show_completed_tasks', to: 'application#change_show_completed_tasks'
 end
