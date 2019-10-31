@@ -80,10 +80,6 @@ input[type=text] {
 	@media (max-width: 450px) {
 		margin-top: 1em;
 	}
-	.home-link {
-		position: relative;
-		bottom: -.2em;		
-	}
 	.delete-task-button {
 		@include doesnt-look-like-a-button;
 		float: right;

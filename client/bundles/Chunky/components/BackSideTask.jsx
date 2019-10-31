@@ -257,7 +257,7 @@ export default class BackSideTask extends React.Component {
 	
 	render() {
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
-		ancestors.unshift(<a href="/tasks/" className="task-link home-link" key="0"><Icon.Home size="16" /></a>); // TODO: Replace with outline icon
+		ancestors.unshift(<a href="/tasks/" className="task-link" key="0"><Icon.Home size="16" /> Home</a>); // TODO: Replace with outline icon
 		
 		let children = this.state.children.map((child, index) => 
 			<Draggable draggableId={child.id} key={child.id} index={index}>
