@@ -46,6 +46,10 @@ input[type=text] {
 	color: var(--text-color);
 }
 
+a {
+	color: var(--text-color);
+}
+
 .toggle-show-completed-button {
 	@include doesnt-look-like-a-button();
 	font-size: inherit;

@@ -17,6 +17,7 @@
 	max-width: 1150px;
 	margin: auto;
 	background: white;
+	color: black;
 	h1 {
 		text-align: center;
 		font-weight: normal;
@@ -32,6 +33,7 @@
 		padding-left: .5em;
 		padding-right: .5em;
 	}
+	a { color: blue; }
 	.buttons {
 		margin-bottom: 28px;
 		display: flex;
