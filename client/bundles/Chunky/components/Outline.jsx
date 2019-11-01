@@ -121,11 +121,6 @@ export default class Outline extends React.Component {
 		var currentValue = this.state[key];
 		this.setState({ [key]: currentValue + cycleAmount });
 	}
-	componentDidMount() {
-		const outline = document.getElementsByClassName('outline')[0];
-		const tree = outline.firstChild;
-		this.treeElement = tree;
-	}
 	handleAddNewTaskEdit = event => {
 		this.setState({ new_task_name: event.target.value });
 	}
@@ -278,6 +273,10 @@ export default class Outline extends React.Component {
 	}
 	
 	componentDidMount() {
+		const outline = document.getElementsByClassName('outline')[0];
+		const tree = outline.firstChild;
+		this.treeElement = tree;
+		
 		this.setHiddenOnTasks();
 		document.addEventListener('toggleShowCompleted', this.handleToggleShowCompleted);
 	}
