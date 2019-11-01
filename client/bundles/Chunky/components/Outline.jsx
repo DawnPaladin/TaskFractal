@@ -42,15 +42,11 @@ export default class Outline extends React.Component {
 			}
 		});
 		
-		this.addNewTask = this.addNewTask.bind(this);
-		this.getIcon = this.getIcon.bind(this);
-		this.renderTreeItem = this.renderTreeItem.bind(this);
-		this.onDragStart = this.onDragStart.bind(this);
-		this.onDragEnd = this.onDragEnd.bind(this);
-		this.onExpand = this.onExpand.bind(this);
-		this.onCollapse = this.onCollapse.bind(this);
 	}
-	addNewTask(event) {
+	
+	// METHODS (alphabetical)
+	
+	addNewTask = event => {
 		event.preventDefault();
 		
 		var task = {
@@ -115,83 +111,6 @@ export default class Outline extends React.Component {
 		});
 		this.setState(newState);
 	}
-	cycleCardPile = (pileName, cycleAmount) => {
-		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
-		var key = pileName + "CardIndex";
-		var currentValue = this.state[key];
-		this.setState({ [key]: currentValue + cycleAmount });
-	}
-	handleAddNewTaskEdit = event => {
-		this.setState({ new_task_name: event.target.value });
-	}
-	handleNewSubtaskEdit = (event, item) => {
-		const newState = update(this.state, {
-			treeData: {items: {[item.id]: {data: {newSubtaskName: {$set: event.target.value}}}}},
-		});
-		this.setState(newState);
-	}
-	handleToggleShowCompleted = event => {
-		this.setState({ showCompletedTasks: event.detail.showCompletedTasks },
-			() => { this.setHiddenOnTasks(); }
-		);
-	}
-	getIcon(item, onExpand, onCollapse) {
-		if (item.children && item.children.length > 0) {
-			if (item.isExpanded) {
-				return <button className="tree-node-icon" onClick={() => onCollapse(item.id)}>▾</button>
-			} else {
-				return <button className="tree-node-icon" onClick={() => onExpand(item.id)}>▸</button>
-			}
-		} else {
-			return <span className="tree-node-icon"></span>;
-		}
-	}
-	
-	onDragStart(itemId) {
-		// work around bug where New Task field at the bottom pops up and covers last list item
-		var treeHeight = this.treeElement.clientHeight; // offsetHeight or clientHeight
-		var itemElement = document.querySelectorAll(`[data-item-number='${itemId}']`)[0];
-		var itemHeight = itemElement.clientHeight;
-		treeHeight = treeHeight + itemHeight;
-		this.treeElement.style.height = `${treeHeight}px`;
-
-		// collapse items before dragging them
-		const item = this.state.treeData.items[itemId];
-		if (item.children && item.children.length > 0) {
-			if (item.isExpanded) {
-				this.onCollapse(itemId);
-			}
-		}
-	}
-	
-	onDragEnd(source, destination) {
-		this.treeElement.style.height = "";
-		const tree = this.state.treeData;
-		if (!destination) return;
-		
-		const taskId = tree.items[source.parentId].children[source.index];
-		
-		const newTree = moveItemOnTree(tree, source, destination);
-		this.setState({ treeData: newTree });
-		
-		sendTaskMovement(taskId, destination.index, destination.parentId);
-	}
-	
-	onExpand = (itemId) => {
-		const treeData = this.state.treeData;
-		network.patch(`/tasks/${itemId}.json`, {id: itemId, is_expanded: true});
-		this.setState({
-			treeData: mutateTree(treeData, itemId, { isExpanded: true }),
-		});
-	}
-	
-	onCollapse = (itemId) => {
-		const treeData = this.state.treeData;
-		network.patch(`/tasks/${itemId}.json`, {id: itemId, is_expanded: false});
-		this.setState({
-			treeData: mutateTree(treeData, itemId, { isExpanded: false }),
-		});
-	}
 	
 	checkboxChange = task => {
 		// Update treeData
@@ -212,6 +131,85 @@ export default class Outline extends React.Component {
 		
 		// Update server
 		send(task);
+	}
+	
+	cycleCardPile = (pileName, cycleAmount) => {
+		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
+		var key = pileName + "CardIndex";
+		var currentValue = this.state[key];
+		this.setState({ [key]: currentValue + cycleAmount });
+	}
+	
+	getIcon = (item, onExpand, onCollapse) => {
+		if (item.children && item.children.length > 0) {
+			if (item.isExpanded) {
+				return <button className="tree-node-icon" onClick={() => onCollapse(item.id)}>▾</button>
+			} else {
+				return <button className="tree-node-icon" onClick={() => onExpand(item.id)}>▸</button>
+			}
+		} else {
+			return <span className="tree-node-icon"></span>;
+		}
+	}
+	
+	handleAddNewTaskEdit = event => {
+		this.setState({ new_task_name: event.target.value });
+	}
+	handleNewSubtaskEdit = (event, item) => {
+		const newState = update(this.state, {
+			treeData: {items: {[item.id]: {data: {newSubtaskName: {$set: event.target.value}}}}},
+		});
+		this.setState(newState);
+	}
+	
+	handleToggleShowCompleted = event => {
+		this.setState({ showCompletedTasks: event.detail.showCompletedTasks },
+			() => { this.setHiddenOnTasks(); }
+		);
+	}
+	
+	onDragStart = itemId => {
+		// work around bug where New Task field at the bottom pops up and covers last list item
+		var treeHeight = this.treeElement.clientHeight; // offsetHeight or clientHeight
+		var itemElement = document.querySelectorAll(`[data-item-number='${itemId}']`)[0];
+		var itemHeight = itemElement.clientHeight;
+		treeHeight = treeHeight + itemHeight;
+		this.treeElement.style.height = `${treeHeight}px`;
+
+		// collapse items before dragging them
+		const item = this.state.treeData.items[itemId];
+		if (item.children && item.children.length > 0) {
+			if (item.isExpanded) {
+				this.onCollapse(itemId);
+			}
+		}
+	}
+	onDragEnd = (source, destination) => {
+		this.treeElement.style.height = "";
+		const tree = this.state.treeData;
+		if (!destination) return;
+		
+		const taskId = tree.items[source.parentId].children[source.index];
+		
+		const newTree = moveItemOnTree(tree, source, destination);
+		this.setState({ treeData: newTree });
+		
+		sendTaskMovement(taskId, destination.index, destination.parentId);
+	}
+	
+	onExpand = (itemId) => {
+		const treeData = this.state.treeData;
+		network.patch(`/tasks/${itemId}.json`, {id: itemId, is_expanded: true});
+		this.setState({
+			treeData: mutateTree(treeData, itemId, { isExpanded: true }),
+		});
+	}
+	onCollapse = (itemId) => {
+		const treeData = this.state.treeData;
+		network.patch(`/tasks/${itemId}.json`, {id: itemId, is_expanded: false});
+		this.setState({
+			treeData: mutateTree(treeData, itemId, { isExpanded: false }),
+		});
 	}
 	
 	setHiddenOnTasks = () => { // Go through all tasks and mark the appropriate ones (and their children) as hidden
@@ -245,6 +243,30 @@ export default class Outline extends React.Component {
 		})
 	}
 	
+	showAddSubtask = item => {
+		const newState = update(this.state, {
+			treeData: {items: {[item.id]: {data: {addSubtaskHere: {$set: !item.data.addSubtaskHere}}}}},
+		});
+		this.setState(newState);
+	}
+	
+	toggleNextUpVisibility = () => {
+		this.setState({ NextUpVisible : !this.state.NextUpVisible });
+	}
+	
+	// EVENTS
+	
+	componentDidMount() {
+		const outline = document.getElementsByClassName('outline')[0];
+		const tree = outline.firstChild;
+		this.treeElement = tree;
+		
+		this.setHiddenOnTasks();
+		document.addEventListener('toggleShowCompleted', this.handleToggleShowCompleted);
+	}
+	
+	// RENDERING
+	
 	renderTreeItem = ({item, provided, snapshot, onExpand, onCollapse}) => {
 		var icon = this.getIcon(item, onExpand, onCollapse);
 		var addSubtaskIsHere = item.data.addSubtaskHere;
@@ -259,26 +281,6 @@ export default class Outline extends React.Component {
 			<button title="Add subtask" className="add-subtask-button" onClick={() => {this.showAddSubtask(item)}}><Icon.Plus size="16"/></button>
 			{ addSubtaskIsHere ? addSubtaskField : null}
 		</div>
-	}
-	
-	showAddSubtask = item => {
-		const newState = update(this.state, {
-			treeData: {items: {[item.id]: {data: {addSubtaskHere: {$set: !item.data.addSubtaskHere}}}}},
-		});
-		this.setState(newState);
-	}
-	
-	toggleNextUpVisibility = () => {
-		this.setState({ NextUpVisible : !this.state.NextUpVisible });
-	}
-	
-	componentDidMount() {
-		const outline = document.getElementsByClassName('outline')[0];
-		const tree = outline.firstChild;
-		this.treeElement = tree;
-		
-		this.setHiddenOnTasks();
-		document.addEventListener('toggleShowCompleted', this.handleToggleShowCompleted);
 	}
 	
 	render() {
