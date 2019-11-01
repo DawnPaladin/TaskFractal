@@ -389,6 +389,7 @@ a {
 	height: 1em;
 	color: var(--text-color);
 	--mdc-theme-secondary: var(--fg-color);
+	background: var(--card-bg-color);
 	&::before, &::after {
 		display: none;
 	}
