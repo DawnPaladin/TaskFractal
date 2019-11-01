@@ -81,7 +81,6 @@ export default class Outline extends React.Component {
 	addSubtask = (event, itemData) => {
 		event.preventDefault();
 		
-		console.log(event, itemData);
 		const newSubtaskName = itemData.newSubtaskName;
 		const parentId = itemData.id;
 		
@@ -94,7 +93,7 @@ export default class Outline extends React.Component {
 		.then(response => {
 			this.setState(state => {
 				var newTask = response.data;
-				var newState = {...state}
+				var newState = {...state};
 				var newId = newTask.id;
 				newTask.id = newTask.id.toString();
 				var newTask = {

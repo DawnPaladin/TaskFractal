@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ReactOnRails from 'react-on-rails';
 import * as Icon from 'react-feather';
 import WithSeparator from 'react-with-separator';
 import Markdown from 'react-markdown';
@@ -98,9 +97,18 @@ export default class BackSideTask extends React.Component {
 		};
 		
 		network.post("/tasks", {task})
-			.then(this.refresh);
-	
-		this.setState({ new_task_name: '' });
+			.then(response => {
+				const newTask = response.data;
+				this.setState(state => {
+					const newState = {...state};
+					newState.children.push(newTask);
+					newState.allTasks.push(newTask);
+					newState.count_descendants++;
+					newState.new_task_name = '';
+					return newState;
+				});
+			})
+		;
 	}
 	
 	changeCompletedDescendants = amount => {
