@@ -45,7 +45,7 @@ export default class FrontSideTask extends React.Component {
 						<div title={"Blocking " + task.blocking_count}><Icon.AlertCircle size="16" /> {task.blocking_count}</div> : null
 					}
 					{ task.due_date ?
-						<div title={"Due " + task.dueDate}><Icon.Calendar size="16" /> {task.dueDate}</div> : ""
+						<div title={"Due " + task.due_date}><Icon.Calendar size="16" /> {task.dueDate}</div> : ""
 					}
 					{ task.description ?
 						<div title={task.description}><Icon.AlignLeft size="16" /></div> : ""
