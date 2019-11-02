@@ -55,6 +55,8 @@ export default class BackSideTask extends React.Component {
 			editingTaskName: false,
 		};
 		
+		document.title = this.state.task.name;
+		
 		// functions
 		this.addBlockingTask = this.addBlockingTask.bind(this);
 		this.addSubtask = this.addSubtask.bind(this);
@@ -154,6 +156,7 @@ export default class BackSideTask extends React.Component {
 
 	editTaskName(event) {
 		this.setTaskDetail('name', event.target.value);
+		document.title = event.target.value;
 	}
 	
 	handleAddSubtaskEdit(event) {
