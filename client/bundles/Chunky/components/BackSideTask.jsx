@@ -335,7 +335,7 @@ export default class BackSideTask extends React.Component {
 					<div className="field box due-date">
 						<button onClick={this.startEditingDueDate} className={this.state.editingDueDate ? "hidden doesnt-look-like-a-button" : "doesnt-look-like-a-button"}>
 							<Icon.Calendar size="16" />
-							{!this.state.task.due_date && <em> Add due date</em> }
+							{!this.state.task.due_date && <em className="deemphasize"> Add due date</em> }
 							{ this.state.task.due_date && " Due: " + this.state.task.due_date }
 						</button>
 						<div className={this.state.editingDueDate ? "" : "hidden"}>
@@ -361,7 +361,7 @@ export default class BackSideTask extends React.Component {
 									{ this.state.task.description ? (
 										<Markdown source={this.state.task.description} className="description" />
 									) : (
-										<div className="deemphasize">Add a description...</div>
+										<em className="deemphasize">Add a description</em>
 									) }
 								</div>
 							</button>

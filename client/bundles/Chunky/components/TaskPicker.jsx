@@ -60,7 +60,7 @@ export default class TaskPicker extends React.Component {
 	render() {
 		const { value, suggestions } = this.state;
 		const inputProps = {
-			placeholder: "Add a task...",
+			placeholder: "Add a task",
 			value,
 			onChange: this.onInputChange,
 		}
