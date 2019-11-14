@@ -1,10 +1,14 @@
 require 'test_helper'
 
-class TasksControllerTest < ActionDispatch::IntegrationTest
-  setup do
+class TasksControllerTest < ActionController::TestCase
+  include Devise::Test::ControllerHelpers
+
+  def setup
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    sign_in FactoryBot.create(:user)
     @task = tasks(:one)
   end
-
+  
   test "should get index" do
     get tasks_url
     assert_response :success
