@@ -8,6 +8,8 @@
 
 p "Seeding database..."
 
+User.create!(email: "guest@taskfractal.com", nickname: "Guest", password: "password", password_confirmation: "password")
+
 user = User.create!(email: "test@test.com", nickname: "Test user", password: "password", password_confirmation: "password")
 
 pb = Task.create!(name: "Pack boxes", user: user)
