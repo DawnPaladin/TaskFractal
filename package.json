@@ -31,6 +31,7 @@
   },
   "scripts": {
     "dev": "foreman start -f Procfile.dev",
-    "backup": "heroku pg:backups:download"
+    "backup": "heroku pg:backups:download",
+    "pg-start": "sudo service postgresql start"
   }
 }
