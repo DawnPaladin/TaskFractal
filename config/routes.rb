@@ -22,4 +22,5 @@ Rails.application.routes.draw do
   get '/theme', to: 'pages#theme'
   post '/theme', to: 'pages#change_theme'
   patch '/change_show_completed_tasks', to: 'application#change_show_completed_tasks'
+  patch '/change_next_up_visible', to: 'application#change_next_up_visible'
 end

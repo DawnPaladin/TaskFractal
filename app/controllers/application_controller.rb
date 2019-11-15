@@ -13,11 +13,19 @@ class ApplicationController < ActionController::Base
 			render json: { error: "Couldn't change show_completed_tasks" }
 		end
 	end
+	def change_next_up_visible
+		current_user.next_up_visible = params[:next_up_visible]
+		if current_user.save
+			render json: { message: "Success" }
+		else
+			render json: { error: "Couldn't change next_up_visible" }
+		end
+	end
 	
 	protected
 	
 	def configure_permitted_parameters
 		devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname])
-		devise_parameter_sanitizer.permit(:account_update, keys: [:nickname, :theme, :show_completed_tasks])
+		devise_parameter_sanitizer.permit(:account_update, keys: [:nickname, :theme, :show_completed_tasks, :next_up_visible])
 	end
 end

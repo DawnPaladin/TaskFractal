@@ -26,7 +26,7 @@ export default class Outline extends React.Component {
 		this.state = {
 			new_task_name: '',
 			treeData: this.props.tasks,
-			NextUpVisible: true,
+			NextUpVisible: this.props.next_up_visible,
 			NextUpTasks,
 			NextUpTaskIds,
 			leftCardIndex: 0,
@@ -251,7 +251,9 @@ export default class Outline extends React.Component {
 	}
 	
 	toggleNextUpVisibility = () => {
-		this.setState({ NextUpVisible : !this.state.NextUpVisible });
+		const newState = !this.state.NextUpVisible;
+		network.patch('/change_next_up_visible.json', { next_up_visible: newState });
+		this.setState({ NextUpVisible : newState });
 	}
 	
 	// EVENTS
