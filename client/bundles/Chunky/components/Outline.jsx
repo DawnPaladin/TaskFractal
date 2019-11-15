@@ -7,9 +7,9 @@ import clone from 'lodash.clonedeep';
 
 import NextUp from './NextUp';
 import FrontSideTask from './FrontSideTask';
-import sendTaskMovement from './sendTaskMovement';
-import network from './network';
-import send from './send';
+import network from './network'; // Performs network calls to the Rails backend
+import send from './send'; // Sends task updates to the Rails backend
+import sendTaskMovement from './sendTaskMovement'; // Tells the Rails backend that a task has a new parent and/or a new position in a list
 
 export default class Outline extends React.Component {
 	constructor(props) {
@@ -27,10 +27,10 @@ export default class Outline extends React.Component {
 			new_task_name: '',
 			treeData: this.props.tasks,
 			NextUpVisible: this.props.next_up_visible,
-			NextUpTasks,
+			NextUpTasks, // array of tasks to be displayed by NextUp
 			NextUpTaskIds,
-			leftCardIndex: 0,
-			rightCardIndex: NextUpTasks.length - 1,
+			leftCardIndex: 0, // In NextUp, the left card starts out displaying the first task...
+			rightCardIndex: NextUpTasks.length - 1, // ...and the right card displays the last task.
 			showCompletedTasks: this.props.show_completed_tasks,
 		}
 		// data structure for adding new subtasks to tree items
@@ -133,6 +133,7 @@ export default class Outline extends React.Component {
 		send(task);
 	}
 	
+	// NextUpTasks is an array of tasks. Think of it as a pile of cards. We start out pulling one card from the top and one card from the bottom of the pile. When the user clicks "Not now" on one pile, we cycle to a different card in the pile and display that instead.
 	cycleCardPile = (pileName, cycleAmount) => {
 		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
 		var key = pileName + "CardIndex";
@@ -140,7 +141,7 @@ export default class Outline extends React.Component {
 		this.setState({ [key]: currentValue + cycleAmount });
 	}
 	
-	getIcon = (item, onExpand, onCollapse) => {
+	getIcon = (item, onExpand, onCollapse) => { // Returns a disclosure triangle if a list item has children
 		if (item.children && item.children.length > 0) {
 			if (item.isExpanded) {
 				return <button className="tree-node-icon" onClick={() => onCollapse(item.id)}>▾</button>
@@ -270,12 +271,13 @@ export default class Outline extends React.Component {
 	// RENDERING
 	
 	renderTreeItem = ({item, provided, snapshot, onExpand, onCollapse}) => {
-		var icon = this.getIcon(item, onExpand, onCollapse);
-		var addSubtaskIsHere = item.data.addSubtaskHere;
-		var addSubtaskField = <form className="subtask-adder" onSubmit={() => {this.addSubtask(event, item.data)}}>
+		const icon = this.getIcon(item, onExpand, onCollapse);
+		const addSubtaskIsHere = item.data.addSubtaskHere;
+		const addSubtaskField = <form className="subtask-adder" onSubmit={() => {this.addSubtask(event, item.data)}}>
 			<input type="text" className="add-subtask" placeholder="Add subtask" value={item.data.newSubtaskName} onChange={(event) => { this.handleNewSubtaskEdit(event, item) }} />
 			<button>Add</button>
 		</form>
+		
 		if (item.hidden === true) return <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}></div>;
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}

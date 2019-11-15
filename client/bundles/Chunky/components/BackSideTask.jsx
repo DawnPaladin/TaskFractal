@@ -8,11 +8,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import FileUpload from './FileUpload';
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
-import TaskPicker from './TaskPicker';
-import network from './network';
-import send from './send';
+import TaskPicker from './TaskPicker'; // Type to select a task (autocomplete)
+import network from './network'; // Performs network calls to the Rails backend
+import send from './send'; // Sends task updates to the Rails backend
 import deleteTask from './deleteTask';
-import sendTaskMovement from './sendTaskMovement';
+import sendTaskMovement from './sendTaskMovement'; // Tells the Rails backend that a task has a new parent and/or a new position in a list
 
 const removeTaskFromArray = (task, array) => {
 	let taskIndex = array.findIndex(arrayTask => arrayTask.id == task.id);
@@ -57,31 +57,10 @@ export default class BackSideTask extends React.Component {
 		
 		document.title = this.state.task.name;
 		
-		// functions
-		this.addBlockingTask = this.addBlockingTask.bind(this);
-		this.addSubtask = this.addSubtask.bind(this);
 		this.deleteTask = deleteTask.bind(this);
-		this.editDueDate = this.editDueDate.bind(this);
-		this.editTaskName = this.editTaskName.bind(this);
-		this.handleAddSubtaskEdit = this.handleAddSubtaskEdit.bind(this);
-		this.onDragEnd = this.onDragEnd.bind(this);
-		this.refresh = this.refresh.bind(this);
-		this.refreshAllTasks = this.refreshAllTasks.bind(this);
-		this.refreshAttachments = this.refreshAttachments.bind(this);
-		this.removeBlockingTask = this.removeBlockingTask.bind(this);
-		this.saveTask = this.saveTask.bind(this);
-		this.setTaskDetail = this.setTaskDetail.bind(this);
-		this.startEditingDueDate = this.startEditingDueDate.bind(this);
-		this.stopEditingDueDate = this.stopEditingDueDate.bind(this);
-		this.startEditingDescription = this.startEditingDescription.bind(this);
-		this.stopEditingDescription = this.stopEditingDescription.bind(this);
-		this.startEditingTaskName = this.startEditingTaskName.bind(this);
-		this.stopEditingTaskName = this.stopEditingTaskName.bind(this);
-		this.test = this.test.bind(this);
-		this.updateName = this.updateName.bind(this);
 	}
 	
-	addBlockingTask(blockingTask, relationship) {
+	addBlockingTask = (blockingTask, relationship) => {
 		const id = this.state.task.id;
 		this.setState(state => {
 			state[relationship].push(blockingTask);
@@ -90,7 +69,7 @@ export default class BackSideTask extends React.Component {
 			network.post(`/tasks/${id}/${relationship}/${blockingTask.id}.json`);
 		})
 	}
-	addSubtask(event) {
+	addSubtask = event => {
 		event.preventDefault();
 		
 		var task = {
@@ -150,20 +129,20 @@ export default class BackSideTask extends React.Component {
 		send(task);
 	}
 	
-	editDueDate(event) {
+	editDueDate = event => {
 		this.setTaskDetail('due_date', event.target.value);
 	}
 
-	editTaskName(event) {
+	editTaskName = event => {
 		this.setTaskDetail('name', event.target.value);
 		document.title = event.target.value;
 	}
 	
-	handleAddSubtaskEdit(event) {
+	handleAddSubtaskEdit = event => {
 		this.setState({ new_task_name: event.target.value });
 	}
 	
-	onDragEnd(result) {
+	onDragEnd = result => {
 		const { destination, source, draggableId } = result;
 		
 		if (!destination) return;
@@ -185,14 +164,14 @@ export default class BackSideTask extends React.Component {
 		.then(response => this.setState({ task: response.data, children: response.data.children }));
 	}
 	
-	refreshAllTasks() {
+	refreshAllTasks = () => {
 		network.get('/tasks.json')
 		.then(response => {
 			this.setState({ allTasks: response.data });
 		});
 	}
 	
-	refreshAttachments() {
+	refreshAttachments = () => {
 		let id = this.state.task.id;
 	
 		network.get(`/tasks/${id}/attachments.json`)
@@ -201,7 +180,7 @@ export default class BackSideTask extends React.Component {
 		})
 	}
 	
-	removeBlockingTask(blockingTask, relationship) {
+	removeBlockingTask = (blockingTask, relationship) => {
 		const id = this.state.task.id;
 		const baseTask = {id};
 		this.setState(state => {
@@ -210,12 +189,12 @@ export default class BackSideTask extends React.Component {
 		}, () => { network.delete(`/tasks/${id}/${relationship}/${blockingTask.id}.json`, {task: baseTask}) })
 	}
 	
-
-	saveTask() {
+	saveTask = () => {
 		send(this.state.task);
 	}
 	
-	setTaskDetail(detailName, value) {
+	// setState any part of a task. Network update not included.
+	setTaskDetail = (detailName, value) => {
 		this.setState(
 			(prevState, props) => {
 				let newTaskObj = { ...prevState.task };
@@ -225,50 +204,46 @@ export default class BackSideTask extends React.Component {
 		)
 	}
 	
-	startEditingDueDate(event) {
+	startEditingDueDate = event => {
 		event.preventDefault();
 		this.setState({editingDueDate: true});
 	}
 	
-	stopEditingDueDate(event) {
+	stopEditingDueDate = event => {
 		event.preventDefault();
 		this.setState({editingDueDate: false});
 		this.saveTask();
 	}
 	
-	startEditingDescription(event) {
+	startEditingDescription = event => {
 		event.preventDefault();
 		this.setState({editingDescription: true});
 	}
 	
-	stopEditingDescription(event) {
+	stopEditingDescription = event => {
 		event.preventDefault();
 		this.setState({editingDescription: false});
 		this.saveTask();
 	}
 
-	startEditingTaskName(event) {
+	startEditingTaskName = event => {
 		event.preventDefault();
 		this.setState({editingTaskName: true});
 	}
 	
-	stopEditingTaskName(event) {
+	stopEditingTaskName = event => {
 		event.preventDefault();
 		this.setState({editingTaskName: false});
 		this.saveTask();
 	}
 	
-	test(value) {
-		console.log(value);
-	}
-	
-	updateName = (name) => {
+	updateName = name => {
 		this.setState({ name, task: {...this.state.task, name } });
 	}
 	
 	render() {
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
-		ancestors.unshift(<a href="/tasks/" className="task-link" key="0"><Icon.Home size="16" /> Home</a>); // TODO: Replace with outline icon
+		ancestors.unshift(<a href="/tasks/" className="task-link" key="0"><Icon.Home size="16" /> Home</a>);
 		
 		let children = this.state.children.map((child, index) => 
 			<Draggable draggableId={child.id} key={child.id} index={index}>

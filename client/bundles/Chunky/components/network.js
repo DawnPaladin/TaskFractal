@@ -1,3 +1,6 @@
+// Performs network calls to the Rails backend.
+// Handles errors and pipes success responses to Toastr.
+
 import axios from 'axios';
 import ReactOnRails from 'react-on-rails';
 
