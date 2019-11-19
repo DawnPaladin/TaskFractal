@@ -135,7 +135,6 @@ export default class BackSideTask extends React.Component {
 
 	editTaskName = event => {
 		this.setTaskDetail('name', event.target.value);
-		document.title = event.target.value;
 	}
 	
 	handleAddSubtaskEdit = event => {
@@ -235,6 +234,7 @@ export default class BackSideTask extends React.Component {
 		event.preventDefault();
 		this.setState({editingTaskName: false});
 		this.saveTask();
+		document.title = this.state.task.name;
 	}
 	
 	updateName = name => {
