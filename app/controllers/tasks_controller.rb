@@ -279,7 +279,7 @@ class TasksController < ApplicationController
         id = ar_task.id.to_s
         prop_task = {
           "id" => id,
-          "children" => ar_task.child_ids,
+          "children" => ar_task.children.order(:position).pluck(:id),
           "isExpanded" => ar_task.is_expanded,
           "data" => {
             "id" => id,
