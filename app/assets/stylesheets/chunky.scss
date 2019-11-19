@@ -68,6 +68,9 @@ textarea {
 
 #toast-container {
 	top: 3em;
+	.toast {
+		opacity: 0.95;
+	}
 	.toast.toast-warning {
 		color: black;
 		background-image: none !important;
@@ -288,7 +291,8 @@ textarea {
 		cursor: pointer;
 	}
 	.react-autosuggest__suggestion--highlighted {
-		background: var(--bg-center-color);
+		background: var(--nextup-bg-color);
+		color: var(--nextup-fg-color);
 	}
 	
 	.attachments {
