@@ -8,10 +8,11 @@ class PagesController < ApplicationController
   
   def change_theme
     current_user.theme = params[:theme]
-    if current_user.save
-      redirect_to tasks_url
+    if params[:theme] and current_user.save
+      render json: { "status": "ok" }
     else
       flash[:error] = "Couldn't change theme to #{params[:theme]}"
+      redirect_back(fallback_location: theme_path)
     end
   end
   

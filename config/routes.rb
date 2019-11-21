@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   get 'attachments/:id/rename/:new_name', to: 'tasks#rename_attachment'
   delete 'attachments/:id', to: 'tasks#delete_attachment'
   get '/theme', to: 'pages#theme'
-  post '/theme', to: 'pages#change_theme'
+  patch '/theme', to: 'pages#change_theme'
   patch '/change_show_completed_tasks', to: 'application#change_show_completed_tasks'
   patch '/change_next_up_visible', to: 'application#change_next_up_visible'
 end
