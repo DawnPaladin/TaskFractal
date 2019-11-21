@@ -1,11 +1,12 @@
 body[data-theme="pebbles"] {
 	--text-color: black;
 	--text-inverse-color: white;
+	--text-disabled-color: gray;
 	--text-color-deemphasize: hsl(0, 0%, 30%);
 	--fg-color: #74528c;
 	
 	--button-border-color: black;
-	--button-bg-color: var(--card-bg-color);
+	--button-bg-color: rgb(255, 245, 195);
 	
 	--bg: url(/bg/rocks.jpg);
 	

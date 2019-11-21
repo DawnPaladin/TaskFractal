@@ -1,12 +1,13 @@
-@import 'themes/luna';
-
 @mixin doesnt-look-like-a-button {
-	background:none!important;
-	border: none !important;
-	color:inherit;
-	border:none; 
-	padding:0!important;
+	background: none!important;
+	border: 1px solid transparent !important;
+	color: inherit;
+	border: none; 
+	padding: 0!important;
 	cursor: pointer;
+	&:focus {
+		border: 1px dotted var(--fg-color) !important;
+	}
 }
 .doesnt-look-like-a-button { @include doesnt-look-like-a-button() }
 

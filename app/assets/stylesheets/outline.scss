@@ -14,6 +14,16 @@ header {
 	}
 }
 
+body[data-theme] button:not(.doesnt-look-like-a-button) {
+	&:focus {
+		border-color: var(--fg-color);
+	}
+	&:disabled {
+		color: var(--text-disabled-color);
+		border-color: var(--text-disabled-color);
+	}
+}
+
 .next-up-hidden .next-up { display: none; }
 .next-up {
 	background: var(--nextup-bg-color);

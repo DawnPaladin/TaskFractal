@@ -409,4 +409,7 @@ textarea {
 		top: 0;
 		border-color: var(--text-color) !important;
 	}
+	&.mdc-ripple-upgraded--background-focused .mdc-checkbox__background {
+		border-color: var(--fg-color) !important;
+	}
 }
