@@ -22,4 +22,4 @@ toastr.options.closeButton = true;
 toastr.options.timeOut = 0;
 toastr.options.extendedTimeOut = 0;
 
-document.addEventListener('turbolinks:load', function() { feather.replace(); });
+document.addEventListener('turbolinks:load', function() { feather.replace({ alt: '' }); });
