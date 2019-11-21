@@ -52,6 +52,9 @@ document.querySelectorAll('.page-theme input').forEach(function(element) {
 		const themeName = event.target.value;
 		document.body.dataset.theme = themeName;
 		
+		const faviconElement = document.getElementById('favicon-link');
+		faviconElement.href = themeName+".ico";
+		
 		Rails.ajax({
 			url: "/theme",
 			type: "PATCH",
