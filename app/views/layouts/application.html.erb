@@ -28,7 +28,7 @@
         <% if current_page?('/theme') %>
           <%= link_to "<i data-feather='home'></i>Tasks".html_safe, "/tasks" %>
         <% else %>
-          <%= link_to "<i data-feather='layout'></i>Theme".html_safe, "/theme"%>
+          <%= link_to "<img src='paint-icon.svg' alt='' class='feather' />Theme".html_safe, "/theme"%>
         <% end %>
         <%= link_to "<i data-feather='log-out'></i>Sign out".html_safe, destroy_user_session_path, method: :delete %>
         <% if @show_completed_tasks == true or @show_completed_tasks == false %>
