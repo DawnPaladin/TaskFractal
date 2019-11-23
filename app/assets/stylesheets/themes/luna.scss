@@ -5,6 +5,9 @@ body[data-theme="luna"] {
 	--text-color-deemphasize: hsl(0, 0%, 70%);
 	--fg-color: #844FDE;
 	
+	--button-border-color: rgba(255, 255, 255, .5);
+	--button-bg-color: var(--card-bg-color);
+	
 	--bg-center-color: #091b46;
 	--bg-edge-color: #151135;
 	--bg: radial-gradient(583.50px at 50% 50%, var(--bg-center-color) 0%, var(--bg-edge-color) 100%);
@@ -17,7 +20,7 @@ body[data-theme="luna"] {
 	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 	
-	button:not(.doesnt-look-like-a-button) {
+	button:not(.doesnt-look-like-a-button), input[type=submit] {
 		color: var(--text-color);
 		background: var(--card-bg-color);
 		border: 1px solid rgba(255, 255, 255, .5);
