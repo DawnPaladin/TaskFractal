@@ -6,14 +6,6 @@ body {
 	}
 }
 
-header {
-	@media (max-width: 449px) {
-		position: relative;
-		margin: -1em -1em 0 -1em;
-		border-radius: 0;
-	}
-}
-
 body[data-theme] button:not(.doesnt-look-like-a-button) {
 	&:focus {
 		border-color: var(--fg-color);

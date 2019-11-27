@@ -35,8 +35,8 @@
           <%= react_component("ToggleShowCompleted", props: { showCompletedTasks: @show_completed_tasks, userId: current_user.id }) %>
         <% end %>
       <% else %>
-        <%= link_to "Sign up", new_user_registration_path %>
-        <%= link_to "Sign in", new_user_session_path %>
+        <%= link_to "<i data-feather='user-plus'></i>Sign up".html_safe, new_user_registration_path %>
+        <%= link_to "<i data-feather='log-in'></i>Sign in".html_safe, new_user_session_path %>
       <% end %>
     </header>
     <%= yield %>

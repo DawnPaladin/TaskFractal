@@ -10,7 +10,7 @@ body {
 	background-attachment: fixed;
 }
 
-header {
+body>header {
 	color: var(--text-inverse-color);
 	background: var(--header-bg-color);
 	position: absolute;
