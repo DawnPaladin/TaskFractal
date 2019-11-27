@@ -158,7 +158,9 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	margin-left: -15px;
 	vertical-align: top;
 	line-height: 100%;
-	@include doesnt-look-like-a-button;
+	border: none;
+	padding: 0;
+	cursor: pointer;
 }
 
 .task-card-front {
