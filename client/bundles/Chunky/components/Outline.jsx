@@ -87,6 +87,7 @@ export default class Outline extends React.Component {
 		
 		network.post("/tasks", task)
 		.then(response => {
+			this.updateAncestors(parentId, 'descendant_count', 1, 0);
 			this.setState(state => {
 				var newTask = response.data;
 				var newState = {...state};
@@ -117,7 +118,9 @@ export default class Outline extends React.Component {
 		const newState = update(this.state, {
 			treeData: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
 		});
-		this.setState(newState);
+		this.setState(newState, () => {
+			this.updateAncestors(this.getParentId(task.id), 'completed_descendant_count', task.completed ? 1 : -1, 750);
+		});
 		
 		// Update NextUp
 		const taskIndex = this.state.NextUpTaskIds.findIndex(item => item === Number(task.id));
@@ -150,6 +153,17 @@ export default class Outline extends React.Component {
 			}
 		} else {
 			return <span className="tree-node-icon"></span>;
+		}
+	}
+	
+	getParentId = taskId => {
+		const parentId = Object.keys(this.state.treeData.items).find(id => {
+			return (this.state.treeData.items[id].children.includes(Number(taskId)) || this.state.treeData.items[id].children.includes(String(taskId)));
+		});
+		if (parentId === undefined || parentId === 'root') {
+			return null;
+		} else {
+			return Number(parentId); // IDs are stored as strings sometimes, which is undesirable but changing it breaks @atlaskit/tree
 		}
 	}
 	
@@ -255,6 +269,16 @@ export default class Outline extends React.Component {
 		const newState = !this.state.NextUpVisible;
 		network.patch('/change_next_up_visible.json', { next_up_visible: newState });
 		this.setState({ NextUpVisible : newState });
+	}
+	
+	updateAncestors = (parentId, property, change, delay) => {
+		const newState = update(this.state, {
+			treeData: {items: {[parentId]: {data: {[property]: {$apply: value => value + change}}}}}
+		})
+		this.setState(newState);
+		
+		const grandparentId = this.getParentId(parentId);
+		if (grandparentId) window.setTimeout(this.updateAncestors, delay, grandparentId, property, change, delay);
 	}
 	
 	// EVENTS
