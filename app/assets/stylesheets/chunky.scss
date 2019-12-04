@@ -375,7 +375,8 @@ textarea {
 	}
 	.details {
 		@include deemphasize;
-		margin-top: 2px;
+		margin-top: 3px;
+		margin-left: 1.25em;
 		cursor: default;
 		& > * {
 			display: inline-block;
