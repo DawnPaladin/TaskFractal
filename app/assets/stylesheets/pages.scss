@@ -181,6 +181,7 @@
 	}
 	input[type=text], input[type=email], input[type=password] {
 		border: 1px solid var(--text-color);
+		padding: .25em;
 	}
 	.field {
 		display: flex;
