@@ -258,11 +258,17 @@ export default class Outline extends React.Component {
 		})
 	}
 	
-	showAddSubtask = item => {
+	showAddSubtask = (item, event) => {
 		const newState = update(this.state, {
 			treeData: {items: {[item.id]: {data: {addSubtaskHere: {$set: !item.data.addSubtaskHere}}}}},
 		});
 		this.setState(newState);
+		
+		// Focus the Add Subtask field after showing it
+		event.persist();
+		window.setTimeout(function() {
+			event.target.closest('.tree-node').querySelector('.add-subtask').focus();
+		}, 15)
 	}
 	
 	toggleNextUpVisibility = () => {
@@ -309,7 +315,7 @@ export default class Outline extends React.Component {
 		return <div className="tree-node" ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} data-item-number={item.id}>
 			{icon}
 			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxChange={this.checkboxChange} />
-			<button title="Add subtask" className="add-subtask-button" onClick={() => {this.showAddSubtask(item)}}><Icon.Plus size="16"/></button>
+			<button title="Add subtask" className="add-subtask-button" onClick={event => {this.showAddSubtask(item, event)}}><Icon.Plus size="16"/></button>
 			{ addSubtaskIsHere ? addSubtaskField : null}
 		</div>
 	}
