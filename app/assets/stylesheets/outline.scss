@@ -159,6 +159,7 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	vertical-align: top;
 	line-height: 100%;
 	border: none;
+	background: transparent;
 	padding: 0;
 	cursor: pointer;
 }
@@ -182,10 +183,10 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	opacity: 0;
 	color: var(--text-color);
 }
-.tree-node:hover .add-subtask-button {
+.tree-node:hover .add-subtask-button, .tree-node:focus .add-subtask-button {
 	opacity: 0.5;
 }
-.tree-node:hover .add-subtask-button:hover {
+.tree-node:hover .add-subtask-button:hover, .tree-node .add-subtask-button:focus {
 	opacity: 1;
 }
 

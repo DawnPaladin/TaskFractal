@@ -18,5 +18,8 @@ body[data-theme='jeans'] {
 	--nextup-fg-color: var(--text-inverse-color);
 	--nextup-card-bg-color: white;
 	
+	--underline-incomplete-color: #d0b0b0;
+	--underline-complete-color: #a60000;
+	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 }

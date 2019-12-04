@@ -18,5 +18,8 @@ body[data-theme='twilight-sparkle'] {
 	--nextup-fg-color: var(--text-inverse-color);
 	--nextup-card-bg-color: white;
 	
+	--underline-incomplete-color: #CCB2D3;
+	--underline-complete-color: #652D87;
+	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 }

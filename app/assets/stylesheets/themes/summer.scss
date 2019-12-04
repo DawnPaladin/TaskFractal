@@ -18,6 +18,9 @@ body[data-theme='summer'] {
 	--nextup-fg-color: var(--text-color);
 	--nextup-card-bg-color: white;
 	
+	--underline-incomplete-color: #aeeeed;
+	--underline-complete-color: #2FB17B;
+	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 	
 	.next-up-card { border: none; }

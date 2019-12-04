@@ -26,11 +26,11 @@ a.task-link {
 .task-underline-incomplete {
 	@include task-underline();
 	width: 100%;
-	background: #CCB2D3;
+	background: var(--underline-incomplete-color);
 }
 .task-underline-complete {
 	@include task-underline();
-	background: #652D87;
+	background: var(--underline-complete-color);
 	// transition-delay: 1s;
 }
 // .task-underline-changing {

@@ -18,9 +18,12 @@ body[data-theme="luna"] {
 	--nextup-fg-color: var(--text-color);
 	--nextup-card-bg-color: #282D5A;
 	
+	--underline-incomplete-color: rgb(89, 59, 129);
+	--underline-complete-color: #844FDE;
+	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 	
-	button:not(.doesnt-look-like-a-button), input[type=submit] {
+	button:not(.doesnt-look-like-a-button, .tree-node-icon), input[type=submit] {
 		color: var(--text-color);
 		background: var(--card-bg-color);
 		border: 1px solid rgba(255, 255, 255, .5);

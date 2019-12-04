@@ -16,6 +16,9 @@ body[data-theme="pebbles"] {
 	--nextup-fg-color: var(--text-color);
 	--nextup-card-bg-color: #fddd86;
 	
+	--underline-incomplete-color: #fddd86;
+	--underline-complete-color: #652D87;
+	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 	.completion-bar-cover {
 		background: rgba(255, 245, 195, 1) !important;
