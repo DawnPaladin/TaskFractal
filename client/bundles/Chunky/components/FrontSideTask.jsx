@@ -40,11 +40,18 @@ export default class FrontSideTask extends React.Component {
 		var task = this.props.task;
 		var url = "/tasks/" + task.id;
 		var attachmentTitle = task.attachment_count > 1 ? task.attachment_count + " attachments" : "1 attachment";
-
-		var underlineWidth;
-		if (task.completed === true) underlineWidth = "100%";
-		else if (this.getDescendantCount() === 0) underlineWidth = "0%"; 
-		else underlineWidth = this.getCompletedDescendantCount()/this.getDescendantCount()*100+"%"
+		
+		var underlineWidth, underline = null;
+		if (this.getDescendantCount() > 0) {
+			if (task.completed === true) underlineWidth = "100%";
+			else if (this.getDescendantCount() === 0) underlineWidth = "0%"; 
+			else underlineWidth = this.getCompletedDescendantCount()/this.getDescendantCount()*100+"%";
+			underline = <div>
+				<div className="task-underline-incomplete"></div>
+				{/* <div className="task-underline-changing" style={{ width: underlineWidth }}></div> */}
+				<div className="task-underline-complete" style={{ width: underlineWidth }}></div>
+			</div>
+		}
 		
 		return (
 			<div className="task-card-front" ref={this.props.innerRef}>
@@ -52,9 +59,7 @@ export default class FrontSideTask extends React.Component {
 				<Checkbox checked={task.completed} handleChange={this.handleCheckbox} />
 				<a className={classNames('task-link', { "deemphasize": task.blocked_by_count > 0 })} href={url}>
 					{ task.name }
-					<div className="task-underline-incomplete"></div>
-					{/* <div className="task-underline-changing" style={{ width: underlineWidth }}></div> */}
-					<div className="task-underline-complete" style={{ width: underlineWidth }}></div>
+					{ underline }
 				</a>
 				<div className="details">
 					{ task.blocked_by_count ? 

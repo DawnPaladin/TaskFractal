@@ -375,11 +375,11 @@ textarea {
 	}
 	.details {
 		@include deemphasize;
-		margin-top: 3px;
 		margin-left: 1.25em;
 		cursor: default;
 		& > * {
 			display: inline-block;
+			margin-top: 3px;
 			margin-right: 10px;
 		}
 	}
