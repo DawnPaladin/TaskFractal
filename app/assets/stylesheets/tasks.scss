@@ -4,6 +4,7 @@ a.task-link {
 	&:link, &:visited, &:hover, &:active {
 		text-decoration: none;
 		color: var(--text-color);
+		position: relative;
 		&.deemphasize {
 			@include deemphasize;
 		}
@@ -13,3 +14,26 @@ a.task-link {
 .ancestors {
 	font-size: 0.8em;
 }
+
+@mixin task-underline {
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	top: 100%;
+	left: 0;
+	transition: width .25s;
+}
+.task-underline-incomplete {
+	@include task-underline();
+	width: 100%;
+	background: #CCB2D3;
+}
+.task-underline-complete {
+	@include task-underline();
+	background: #652D87;
+	// transition-delay: 1s;
+}
+// .task-underline-changing {
+// 	@include task-underline();
+// 	background: #EA428B;
+// }

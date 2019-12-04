@@ -272,13 +272,16 @@ export default class Outline extends React.Component {
 	}
 	
 	updateAncestors = (parentId, property, change, delay) => {
-		const newState = update(this.state, {
-			treeData: {items: {[parentId]: {data: {[property]: {$apply: value => value + change}}}}}
-		})
-		this.setState(newState);
-		
-		const grandparentId = this.getParentId(parentId);
-		if (grandparentId) window.setTimeout(this.updateAncestors, delay, grandparentId, property, change, delay);
+		var that = this;
+		window.setTimeout(function() {
+			const newState = update(that.state, {
+				treeData: {items: {[parentId]: {data: {[property]: {$apply: value => value + change}}}}}
+			})
+			that.setState(newState);
+			
+			const grandparentId = that.getParentId(parentId);
+			if (grandparentId) that.updateAncestors(grandparentId, property, change, delay);
+		}, delay)
 	}
 	
 	// EVENTS
