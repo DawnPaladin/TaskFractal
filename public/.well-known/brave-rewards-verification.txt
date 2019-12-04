@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: taskfractal.com
+Token: d8b83570fec7543068d3c81b432cc0be976296e93f514fd59f3cc792b931a240
