@@ -266,7 +266,7 @@ class TasksController < ApplicationController
       #     },
       #   }
       # }
-      logger.info "Start normalize_user_tasks_for_outline for" + current_user.email
+      logger.info "Start normalize_user_tasks_for_outline for " + current_user.email
       ar_tasks = Task.where(user: current_user).order(:position).includes(:blocking, :blocked_by) # ActiveRecord tasks
       logger.info "Got user tasks"
       prop_tasks = {
