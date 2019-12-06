@@ -42,6 +42,8 @@ gem 'azure-storage', require: false
 gem 'figaro'
 # Better logging and error-catching than Heroku
 gem 'rollbar'
+# Monitor performance
+gem 'newrelic_rpm'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
@@ -72,10 +74,6 @@ group :test do
   # Testing
   gem 'faker'
   gem 'factory_bot_rails'
-end
-
-group :production do
-  gem 'newrelic_rpm'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

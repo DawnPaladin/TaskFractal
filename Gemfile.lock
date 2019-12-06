@@ -142,6 +142,7 @@ GEM
     msgpack (1.2.4-x64-mingw32)
     multi_json (1.13.1)
     multipart-post (2.0.0)
+    newrelic_rpm (6.7.0.359)
     nio4r (2.3.1)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
@@ -272,6 +273,7 @@ DEPENDENCIES
   hirb
   jbuilder (~> 2.5)
   mini_racer
+  newrelic_rpm
   pg
   puma (~> 3.11)
   rails (~> 5.2.2)
