@@ -1,13 +1,13 @@
 // Performs network calls to the Rails backend.
-// Handles errors and pipes success responses to Toastr.
+// Pipes success and error responses to Toastr.
 
 import axios from 'axios';
-import ReactOnRails from 'react-on-rails';
+import toastr from 'toastr';
 
-let headers = ReactOnRails.authenticityHeaders();
-headers["Content-Type"] = "application/json";
+const csrfToken = document.querySelector('[name="csrf-token"]').content;
 
-const network = axios.create({ headers });
+const network = axios.create();
+network.defaults.headers.common['X-CSRF-Token'] = csrfToken;
 
 network.interceptors.response.use(response => {
 	// console.log(response);

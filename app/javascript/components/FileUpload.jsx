@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Attachment from './Attachment';
 import Dropzone from 'react-dropzone';
-import { DirectUpload } from "activestorage";
+import { DirectUpload } from "@rails/activestorage";
 import classNames from 'classnames';
 import * as Icon from 'react-feather';
 import network from './network';
