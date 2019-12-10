@@ -24,6 +24,9 @@ gem 'jbuilder', '~> 2.7'
 
 gem 'react-rails'
 
+# Securely store authentication keys
+gem 'figaro'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
