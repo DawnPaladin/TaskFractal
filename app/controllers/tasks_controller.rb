@@ -22,16 +22,13 @@ class TasksController < ApplicationController
   def show
     respond_to do |format|
       format.html {
-        @back_side_task_props = {
-          task: @task,
-          children: @task.children.order(:position),
-          blocked_by: @task.blocked_by.order(:name),
-          blocking: @task.blocking.order(:name),
-          attachments: list_attachments(@task),
-          count_descendants: @task.descendants.count,
-          count_completed_descendants: @task.completed_descendants.count,
-          ancestors: @task.ancestors.order(:name)
-        }
+        @children = @task.children.order(:position)
+        @blocked_by = @task.blocked_by.order(:name)
+        @blocking = @task.blocking.order(:name)
+        @attachments = list_attachments(@task)
+        @count_descendants = @task.descendants.count
+        @count_completed_descendants = @task.completed_descendants.count
+        @ancestors = @task.ancestors.order(:name)
         @show_completed_tasks = current_user.show_completed_tasks
       }
       format.json {

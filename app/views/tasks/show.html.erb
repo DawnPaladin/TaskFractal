@@ -1,1 +1,1 @@
-<%= react_component("BackSideTask", props: @back_side_task_props, prerender: false) %>
+<%= react_component("BackSideTask", task: @task, children: @children, blocked_by: @blocked_by, blocking: @blocking, attachments: @attachments, count_descendants: @count_descendants, count_completed_descendants: @count_completed_descendants, ancestors: @ancestors, show_completed_tasks: @show_completed_tasks, prerender: false) %>
