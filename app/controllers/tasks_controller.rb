@@ -7,12 +7,9 @@ class TasksController < ApplicationController
   def index
     respond_to do |format|
       format.html { 
-        @outline_props = { 
-          tasks: normalize_user_tasks_for_outline,
-          next_up: next_up,
-          next_up_visible: current_user.next_up_visible,
-          show_completed_tasks: current_user.show_completed_tasks,
-        }
+        @tasks = normalize_user_tasks_for_outline
+        @next_up = next_up
+        @next_up_visible = current_user.next_up_visible
         @show_completed_tasks = current_user.show_completed_tasks
         render :index 
       }
