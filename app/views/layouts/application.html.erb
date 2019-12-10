@@ -4,12 +4,51 @@
     <title>TaskFractal</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%# <%= javascript_pack_tag 'bundles' %> %>
+    <% if signed_in? %>
+      <link id="favicon-link" rel="icon" type="image/x-icon" href="/<%= current_user.theme %>.ico">
+    <% else %>
+      <link id="favicon-link" rel="icon" type="image/x-icon" href="/jeans.ico">
+    <% end %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700,700i&display=swap" rel="stylesheet"> 
   </head>
 
   <body>
+    <header>
+      <% if signed_in? %>
+        <% if current_user.email == "guest@taskfractal.com" %>
+          <i data-feather='user'></i> Guest
+        <% else %>
+          <%= link_to "<i data-feather='user'></i>#{current_user.nickname}".html_safe, edit_user_registration_path %>
+        <% end %>
+        <% if current_page?('/theme') %>
+          <%= link_to "<i data-feather='home'></i>Tasks".html_safe, "/tasks" %>
+        <% else %>
+          <%= link_to "<img src='/paint-icon.svg' alt='' class='feather' />Theme".html_safe, "/theme"%>
+        <% end %>
+        <%= link_to "<i data-feather='log-out'></i>Sign out".html_safe, destroy_user_session_path, method: :delete %>
+        <% if @show_completed_tasks == true or @show_completed_tasks == false %>
+          <%= react_component("ToggleShowCompleted", props: { showCompletedTasks: @show_completed_tasks, userId: current_user.id }) %>
+        <% end %>
+      <% else %>
+        <%= link_to "<i data-feather='user-plus'></i>Sign up".html_safe, new_user_registration_path %>
+        <%= link_to "<i data-feather='log-in'></i>Sign in".html_safe, new_user_session_path %>
+      <% end %>
+    </header>
     <%= yield %>
+    <%= toastr_flash %>
+    <% if signed_in? %>
+      <script>
+      document.body.dataset.theme = "<%= current_user.theme %>";
+      </script>
+    <% else %>
+      <script>
+      document.body.dataset.theme = "jeans";
+      </script>
+    <% end %>
   </body>
 </html>

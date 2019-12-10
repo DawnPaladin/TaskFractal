@@ -1,0 +1,416 @@
+@import 'partials';
+@import 'themes/luna';
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	margin: 1em;
+	color: var(--text-color);
+	background: var(--bg);
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+body>header {
+	color: var(--text-inverse-color);
+	background: var(--header-bg-color);
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align: right;
+	padding: .5em;
+	border-radius: 0 0 0 5px;
+	z-index: 1;
+	a {
+		color: var(--text-inverse-color);
+	}
+	.feather {
+		width: 1em;
+		height: 1em;
+		margin: 0 .25em -.1em .25em;
+	}
+}
+
+button {
+	font-family: 'Open Sans', sans-serif;
+	-webkit-appearance: none;
+	border-radius: 3px;
+	border: 2px solid var(--button-border-color);
+	background: var(--button-bg-color);
+	color: var(--text-color);
+}
+
+input[type=text] {
+	border: none;
+	border-bottom: 1px solid silver;
+	background: var(--card-bg-color);
+	color: var(--text-color);
+}
+
+a {
+	color: var(--text-color);
+}
+
+textarea {
+	background: var(--card-bg-color);
+	color: var(--text-color);
+}
+
+.toggle-show-completed-button {
+	@include doesnt-look-like-a-button();
+	font-size: inherit;
+	margin-top: .2em;
+}
+.switch-on {
+	rect {
+		fill: var(--fg-color);
+	}
+}
+
+#toast-container {
+	top: 3em;
+	.toast {
+		opacity: 0.95;
+	}
+	.toast.toast-warning {
+		color: black;
+		background-image: none !important;
+		padding-left: 15px;
+		width: 335px;
+	}
+}
+
+.task-card-back {
+	background: var(--card-bg-color);
+	color: var(--text-color);
+	max-width: 35em;
+	font-size: 16px;
+	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
+	border-radius: 3px;
+	padding: 10px 20px 0 20px;
+	position: relative;
+	margin: auto;
+	@media (max-width: 450px) {
+		margin-top: 1em;
+	}
+	.delete-task-button {
+		@include doesnt-look-like-a-button;
+		float: right;
+	}
+	.completion-bar {
+		height: 20px;
+		position: relative;
+		margin: 0 -20px;
+		table {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			border-collapse: collapse;
+			background-image: var(--task-progress-gradient);
+			td {
+				height: 6px;
+				position: relative;
+			}
+			td:not(:last-child)::after {
+				content: '';
+				width: 0;
+				height: 0;
+				border-top: 6px solid var(--card-bg-color);
+				border-left: 4px solid transparent;
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
+			td:not(:first-child)::before {
+				content: '';
+				width: 0;
+				height: 0;
+				border-top: 6px solid var(--card-bg-color);
+				border-right: 4px solid transparent;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		}
+		.completion-bar-cover {
+			position: absolute;
+			bottom: 0;
+			height: 8px;
+			right: 0;
+			background: var(--card-bg-color);
+			transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1); // https://easings.net/#easeOutQuint
+		}
+	}
+	
+	.box {
+		border: 1px solid silver;
+		padding: 5px;
+	}
+
+	.field-name {
+		font-variant: small-caps;
+		font-weight: 600;
+		vertical-align: 3px;
+	}
+
+	h1 {
+		font-weight: 600;
+		font-size: 1.75em;
+		form {
+			display: inline-flex;
+			flex-direction: row;
+			align-items: stretch;
+			width: 90%;
+		}
+		input[type=checkbox] {
+			transform: scale(1.75) translateY(-2.5px);
+		}
+		input[type=text] {
+			font-size: inherit;
+			width: 75%;
+		}
+		label {
+			cursor: text;
+		}
+		label .edit-icon {
+			display: none;
+		}
+		label:hover .edit-icon {
+			display: inline-block;
+		}
+		.edit-icon {
+			stroke: gray;
+		}
+	}
+	
+	.row {
+		display: flex;
+		@media (min-width: 400px) {
+			flex-direction: row;
+			& > * {
+				margin-left: 1em;
+				flex-basis: 50%;
+			}
+			& > *:first-child {
+				margin-left: 0;
+			}
+		}
+		@media (max-width: 399px) {
+			flex-direction: column;
+		}
+	}
+	
+	.row .field {
+		// min-height: 100px;
+		margin-bottom: 1em;
+	}
+	
+	.task-picker .react-autosuggest__input {
+		width: 97%;
+		border-radius: 0;
+		font-style: italic;
+	}
+	
+	.blocked-task {
+		position: relative;
+		.remove-blocked-task-button {
+			@include doesnt-look-like-a-button();
+			position: absolute;
+			right: 0;
+			z-index: 2;
+		}
+	}
+
+	.subtasks {
+		padding-top: 5px;
+	}
+
+	h1 input[type=checkbox] {
+		margin-right: 10px;
+	}
+
+	.due-date {
+		margin-bottom: 15px;
+		height: 1.4em;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		button {
+			font-size: .9em;
+		}
+		input {
+			font-family: inherit;
+			margin: 0 4px;
+		}
+	}
+	
+	.description-field {
+		margin-bottom: 15px;
+		.block, .box {
+			width: 100%;
+			max-width: 100%;
+			box-sizing: border-box;
+			text-align: left;
+		}
+		textarea {
+			width: 99%;
+			min-height: 8em;
+			border: none;
+			resize: vertical;
+		}
+		.description {
+			// user-entered Markdown elements
+			:first-child {
+				margin-top: 0;
+			}
+			:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+	
+	// Full list of Autosuggest classes under the default theme:
+	// 'react-autosuggest__container',
+	// 'react-autosuggest__container--open',
+	// 'react-autosuggest__input',
+	// 'react-autosuggest__input--open',
+	// 'react-autosuggest__input--focused',
+	// 'react-autosuggest__suggestions-container',
+	// 'react-autosuggest__suggestions-container--open',
+	// 'react-autosuggest__suggestions-list',
+	// 'react-autosuggest__suggestion',
+	// 'react-autosuggest__suggestion--first',
+	// 'react-autosuggest__suggestion--highlighted',
+	// 'react-autosuggest__section-container',
+	// 'react-autosuggest__section-container--first',
+	// 'react-autosuggest__section-title'
+	.react-autosuggest__suggestions-list {
+		list-style: none;
+		padding-left: 0;
+	}
+	.react-autosuggest__suggestion {
+		cursor: pointer;
+	}
+	.react-autosuggest__suggestion--highlighted {
+		background: var(--nextup-bg-color);
+		color: var(--nextup-fg-color);
+	}
+	
+	.attachments {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		.attachment {
+			display: flex;
+			align-items: center;
+			margin: 5px;
+			.file-graphic {
+				width: 75px;
+				height: 75px;
+				border: 1px dotted silver;
+				border-radius: 5px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background: var(--bg-center-color);
+				img {
+					max-width: 100%;
+				}
+			}
+			.right-side {
+				margin-left: 10px;
+			}
+			.file-name a {
+				color: var(--text-color);
+				text-decoration: none;
+			}
+			.attachment-action-links {
+				display: flex;
+				flex-wrap: wrap;
+				margin-top: .25em;
+				div {
+					margin-left: .25em;
+				}
+				svg {
+					margin-right: .25em;
+				}
+				a {
+					@include deemphasize;
+					font-size: 0.8em;
+					text-decoration: none;
+				}
+				button {
+					@include doesnt-look-like-a-button();
+					color: gray;
+				}
+			}
+		}
+	}
+	.attach-file {
+		margin-left: 5px;
+	}
+	.dropzone {
+		outline: 0;
+	}
+	.dropzone--isActive::before {
+		content: '';
+		position: absolute;
+		top: 10px;
+		right: 10px;
+		bottom: 10px;
+		left: 10px;
+		border: 5px dashed var(--fg-color);
+		border-radius: 20px;
+		background: var(--bg-center-color);
+	}
+
+}
+
+.task-card-front {
+	position: relative;
+	input[type=checkbox] {
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: scale(1.25) translateY(0px);
+	}
+	.details {
+		@include deemphasize;
+		margin-left: 1.25em;
+		cursor: default;
+		& > * {
+			display: inline-block;
+			margin-top: 3px;
+			margin-right: 10px;
+		}
+	}
+}
+
+.hidden {
+	display: none;
+}
+.block {
+	display: block;
+}
+.mdc-checkbox {
+	padding: 0;
+	margin-right: 0.35em;
+	margin-bottom: .2em;
+	width: 1em;
+	height: 1em;
+	color: var(--text-color);
+	--mdc-theme-secondary: var(--fg-color);
+	background: var(--card-bg-color);
+	&::before, &::after {
+		display: none;
+	}
+	.mdc-checkbox__background {
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		border-color: var(--text-color) !important;
+	}
+	&.mdc-ripple-upgraded--background-focused .mdc-checkbox__background {
+		border-color: var(--fg-color) !important;
+	}
+}

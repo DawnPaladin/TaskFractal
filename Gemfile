@@ -26,6 +26,21 @@ gem 'react-rails'
 
 # Securely store authentication keys
 gem 'figaro'
+# Parent-child-grandchild relationships
+gem 'ancestry'
+# Reorder subtasks
+gem 'acts_as_list'
+# Users and authentication
+gem 'devise'
+# Toast notifications
+gem 'toastr-rails'
+# Store attachments in Azure
+gem 'azure-storage', require: false
+# Better logging and error-catching than Heroku
+gem 'rollbar'
+# Monitor performance
+gem 'newrelic_rpm'
+
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
