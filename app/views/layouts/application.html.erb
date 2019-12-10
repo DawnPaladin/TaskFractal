@@ -8,7 +8,6 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <%# <%= javascript_pack_tag 'bundles' %> %>
     <% if signed_in? %>
       <link id="favicon-link" rel="icon" type="image/x-icon" href="/<%= current_user.theme %>.ico">
     <% else %>

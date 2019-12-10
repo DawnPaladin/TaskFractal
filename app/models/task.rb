@@ -1,7 +1,7 @@
 class Task < ApplicationRecord
 	validates :name, :presence => true
 	
-	# belongs_to :user
+	belongs_to :user
 	
 	has_many :children, class_name: "Task", foreign_key: "parent_id"
 	belongs_to :parent, class_name: "Task", optional: true
