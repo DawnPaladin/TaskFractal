@@ -40,7 +40,7 @@ export default class FileUpload extends React.Component {
 	attachToModel(blob, callback) {
 		const id = this.props.task.id;
 		
-		network.put(`/tasks/${id}.json`, { task: { attachments: blob.signed_id }} )
+		network.put(`/tasks/${id}.json`, { task: { attachments: [blob.signed_id] }} )
 		.then(callback);
 	}
 	
@@ -49,7 +49,7 @@ export default class FileUpload extends React.Component {
 			<Attachment attachment={attachment} key={attachment.id} afterDelete={this.props.refreshAttachments} />
 		);
 		return (
-			<Dropzone onDrop={this.onDrop} disableClick={true} ref={ref => this.dropzoneRef = ref}>
+			<Dropzone onDrop={this.onDrop} noClick={true} ref={ref => this.dropzoneRef = ref}>
 				{({ getRootProps, getInputProps, isDragActive}) => {
 					return (
 						<div
