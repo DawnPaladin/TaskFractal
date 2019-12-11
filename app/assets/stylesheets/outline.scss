@@ -23,7 +23,7 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	margin: -1em -1em 1em -1em;
 	padding: 1em;
 	min-height: 40px;
-	box-shadow: 0 3px 3px rgba(0, 0, 0, 10%);
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -88,7 +88,7 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	background: var(--nextup-card-bg-color);
 	color: var(--text-color);
 	border: 1px solid black;
-	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
+	box-shadow: 3px 3px 10px rgba(51, 51, 51, 0.2);
 	border-radius: 3px;
 	padding: 10px 20px;
 	text-align: left;
@@ -135,7 +135,7 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 .outline {
 	max-width: 50em;
 	background: var(--card-bg-color);
-	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 20%);
+	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 0.2);
 	padding: 10px 20px;
 	@media (min-width: 875px) {
 		margin: auto;
