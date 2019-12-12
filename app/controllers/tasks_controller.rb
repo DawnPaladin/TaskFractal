@@ -40,7 +40,7 @@ class TasksController < ApplicationController
   def next_up
     timer = Time.now
     logger.info "Start next_up"
-    user_tasks = Task.where(user: current_user)
+    user_tasks = Task.where(user: current_user).includes(:children, :blocking, :blocked_by)
     logger.info "user_tasks: #{(Time.now - timer).to_s}"
     
     candidates = user_tasks.select do |task|
@@ -64,7 +64,7 @@ class TasksController < ApplicationController
     candidates.each do |candidate|
       reasons = []
       score = 0
-      ancestors = candidate.ancestors
+      ancestors = candidate.ancestors.select(:id, :name)
       
       blocking_high_priority_ids = candidate.blocking_ids & high_priority.keys
       blocking_high_priority_ids.each do |id|
