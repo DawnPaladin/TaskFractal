@@ -40,7 +40,8 @@ gem 'azure-storage', require: false
 gem 'rollbar'
 # Monitor performance
 gem 'newrelic_rpm'
-
+# Serializer
+gem 'active_model_serializers', '~> 0.10.0'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

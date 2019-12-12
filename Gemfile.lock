@@ -37,6 +37,11 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_model_serializers (0.10.10)
+      actionpack (>= 4.1, < 6.1)
+      activemodel (>= 4.1, < 6.1)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (6.0.1)
       activesupport (= 6.0.1)
       globalid (>= 0.3.6)
@@ -88,6 +93,8 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
+    case_transform (0.2)
+      activesupport
     childprocess (3.0.0)
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
@@ -113,6 +120,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
+    jsonapi-renderer (0.2.2)
     loofah (2.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -238,6 +246,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  active_model_serializers (~> 0.10.0)
   acts_as_list
   ancestry
   azure-storage
