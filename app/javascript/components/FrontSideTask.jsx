@@ -77,8 +77,8 @@ export default class FrontSideTask extends React.Component {
 					{ task.attachment_count ?
 						<div title={attachmentTitle}><Icon.Paperclip size="16" /> {task.attachment_count}</div> : ""
 					}
-					{ !this.props.disableDescendantCount && parseInt(task.descendants.length) > 0 ? 
-						<div><Icon.CheckSquare size="16" /> {task.completed_descendants.length}/{task.descendants.length}</div> : ""
+					{ !this.props.disableDescendantCount && this.getDescendantCount() > 0 ? 
+						<div><Icon.CheckSquare size="16" /> {this.getCompletedDescendantCount()}/{this.getDescendantCount()}</div> : ""
 					}
 				</div>
 			</div>
