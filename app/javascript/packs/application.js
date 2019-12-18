@@ -24,3 +24,6 @@ global.Rails = rails;
 var componentRequireContext = require.context("components", true);
 var ReactRailsUJS = require("react_ujs");
 ReactRailsUJS.useContext(componentRequireContext);
+
+import feather from 'feather-icons';
+document.addEventListener('turbolinks:load', function() { feather.replace(); });
