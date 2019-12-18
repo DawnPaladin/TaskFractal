@@ -1,6 +1,9 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
+  
+  # Force HTTPS
+  config.force_ssl = true
+  
   # Required by Devise
   config.action_mailer.default_url_options = { host: 'taskfractal.com', port: 3000 }
 
