@@ -34,14 +34,14 @@ gem 'acts_as_list'
 gem 'devise'
 # Toast notifications
 gem 'toastr-rails'
-# Store attachments in Azure
-gem 'azure-storage', require: false
 # Better logging and error-catching than Heroku
 gem 'rollbar'
 # Monitor performance
 gem 'newrelic_rpm'
 # Serializer
 gem 'active_model_serializers', '~> 0.10.0'
+# Store attachments in Azure
+gem 'azure-storage', require: false
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
