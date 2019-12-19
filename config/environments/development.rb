@@ -3,6 +3,9 @@ Rails.application.configure do
 
 	# Required by Devise
 	config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+	
+	# https://stackoverflow.com/questions/23716397/rails-4-1-mailer-previews-and-devise-custom-emails
+	config.action_mailer.preview_path = "#{Rails.root}/lib/mailer_previews"
 
 	# In the development environment your application's code is reloaded on
 	# every request. This slows down response time but is perfect for development
