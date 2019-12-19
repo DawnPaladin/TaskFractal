@@ -6,6 +6,13 @@ Rails.application.configure do
   
   # Required by Devise
   config.action_mailer.default_url_options = { host: 'taskfractal.com', port: 3000 }
+  
+  # https://github.com/jorgemanrubia/mailgun_rails
+  config.action_mailer.delivery_method = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_key: ENV['MAILGUN_API_KEY'],
+    domain: ENV['MAILGUN_DOMAIN']
+  }
 
   # Code is not reloaded between requests.
   config.cache_classes = true
