@@ -30,7 +30,10 @@
     <p class="small">Password must be at least 6 characters long. Don’t reuse a password from another site.</p>
 
     <div class="actions">
-      <%= f.submit "Sign up", class: "submit-button" %>
+      <%= f.button class: "submit-button" do %>
+        <i data-feather='user-plus'></i>
+        Sign up
+      <% end %>
       <a href="/" class="button-link">Cancel</a>
     </div>
   <% end %>

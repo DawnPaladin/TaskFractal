@@ -23,7 +23,11 @@
     <% end %>
 
     <div class="actions">
-      <%= f.submit "Log in", class: "submit-button" %>
+      <%= f.button class: "submit-button" do %>
+        <i data-feather='key'></i>
+        Log in
+      <% end %>
+      <a href="/" class="button-link"><i data-feather="mail"></i>Reset password</a>
       <a href="/" class="button-link">Cancel</a>
     </div>
   <% end %>
