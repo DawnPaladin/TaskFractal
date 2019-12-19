@@ -1,4 +1,4 @@
-<div class="page-log-in">
+<div class="devise-page log-in">
 	<header>
 		<img src="/jeans.svg" alt="" class="logo" />
 		<h1>TaskFractal</h1>
@@ -27,8 +27,8 @@
 				<i data-feather='key'></i>
 				Log in
 			<% end %>
-			<a href="/" class="button-link"><i data-feather="mail"></i>Reset password</a>
-			<a href="/" class="button-link">Cancel</a>
+			<%= link_to "<i data-feather='mail'></i> Reset password".html_safe, new_user_password_path, class: 'button-link' %>
+			<%= link_to "Cancel", root_path, class: 'button-link' %>
 		</div>
 	<% end %>
 </div>

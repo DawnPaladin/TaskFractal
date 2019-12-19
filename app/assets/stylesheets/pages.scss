@@ -139,7 +139,7 @@
 	}
 }
 
-.page-register-user, .page-edit-user, .page-log-in {
+.devise-page {
 	border-radius: 3px;
 	max-width: 535px;
 	margin: auto;
@@ -251,10 +251,15 @@
 	}
 }
 
-.page-log-in form .field {
+.devise-page.log-in form .field {
 	font-size: 1.25em;
 	input {
 		width: 15em;
+	}
+}
+.devise-page.reset-password {
+	input[type=email] {
+		width: 100%;
 	}
 }
 
