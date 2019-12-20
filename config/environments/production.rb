@@ -5,7 +5,7 @@ Rails.application.configure do
   config.force_ssl = true
   
   # Required by Devise
-  config.action_mailer.default_url_options = { host: 'taskfractal.com', port: 3000 }
+  config.action_mailer.default_url_options = { host: 'taskfractal.com' }
   
   # https://github.com/jorgemanrubia/mailgun_rails
   # config.action_mailer.delivery_method = :mailgun
