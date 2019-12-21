@@ -88,8 +88,7 @@ class TasksController < ApplicationController
 			tagged_candidates << { "task" => candidate, "score" => score, "reasons" => reasons, "ancestors" => ancestors }
 		end # result: { 0: { score: 120, reasons: [ "blocking \"Important Task\"" ], task: <task> }, etc.}
 		logger.info "tagged_candidates: #{(Time.now - timer).to_s}"
-		tagged_candidates = tagged_candidates.sort_by {|obj| obj["score"]}.reverse!
-		# render json: tagged_candidates
+		@tagged_candidates = tagged_candidates.sort_by {|obj| obj["score"]}.reverse!
 	end
 	
 	def attachments

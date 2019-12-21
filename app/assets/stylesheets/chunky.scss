@@ -414,3 +414,15 @@ textarea {
 		border-color: var(--fg-color) !important;
 	}
 }
+
+.next-up-all {
+	@media (max-width: 500px) {
+		font-size: 20px;
+	}
+	h1 {
+		color: var(--nextup-fg-color);
+	}
+	.next-up-card {
+		margin: .5em 0;
+	}
+}
