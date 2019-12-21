@@ -5,6 +5,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="TaskFractal">
+    <meta property="og:description" content="The infinitely nesting task tracker">
+    <meta property="og:image" content="https://taskfractal.com/jeans.png">
+    <meta property="og:url" content="<%= request.original_url %>">
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
