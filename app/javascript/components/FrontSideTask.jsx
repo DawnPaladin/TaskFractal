@@ -4,7 +4,6 @@ import * as Icon from 'react-feather';
 import classNames from 'classnames';
 
 import Checkbox from './Checkbox';
-import deleteTask from './deleteTask';
 
 // This component is placed either on a BackSideTask component, in an Outline, or in NextUp.
 // The checked/unchecked state must be controlled by the parent.
@@ -55,7 +54,6 @@ export default class FrontSideTask extends React.Component {
 		
 		return (
 			<div className="task-card-front" ref={this.props.innerRef}>
-				{/* <button className="delete-attachment-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button> */}
 				<Checkbox checked={task.completed} handleChange={this.handleCheckbox} />
 				<a className={classNames('task-link', { "deemphasize": task.blocked_by_count > 0 })} href={url}>
 					{ task.name }
