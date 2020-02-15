@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import MtlCheckbox from '@material/react-checkbox';
+import ErrorBoundary from './ErrorBoundary';
 
 export default class Checkbox extends React.Component {
 	static propTypes = {
@@ -9,10 +10,11 @@ export default class Checkbox extends React.Component {
 	};
 	render() {
 		// return <input type="checkbox" onChange={this.props.handleChange} checked={!!this.props.checked} />
-		return <MtlCheckbox
+		return <ErrorBoundary>
+			<MtlCheckbox
 				checked={this.props.checked}
 				onChange={this.props.handleChange}
 			/>
-		// </React.Fragment>
+		</ErrorBoundary>
 	}
 }
