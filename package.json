@@ -3,7 +3,7 @@
 	"private": true,
 	"dependencies": {
 		"@atlaskit/tree": "^7.0.2",
-		"@babel/preset-react": "^7.7.4",
+		"@babel/preset-react": "^7.8.3",
 		"@material/react-checkbox": "^0.15.0",
 		"@rails/actioncable": "^6.0.0",
 		"@rails/activestorage": "^6.0.0",
@@ -32,9 +32,13 @@
 	},
 	"version": "0.1.0",
 	"devDependencies": {
+		"@babel/preset-env": "^7.8.4",
+		"babel-jest": "^25.1.0",
+		"jest": "^25.1.0",
 		"webpack-dev-server": "^3.9.0"
 	},
 	"scripts": {
-		"dev": "rails server"
+		"dev": "rails server",
+		"test": "jest"
 	}
 }
