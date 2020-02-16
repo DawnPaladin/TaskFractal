@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FrontSideTask snapshot 1`] = `
+<div
+  className="task-card-front"
+>
+  <a
+    className="task-link"
+    href="/tasks/0"
+  >
+    Test task
+    <div>
+      <div
+        className="task-underline-incomplete"
+      />
+      <div
+        className="task-underline-complete"
+        style={
+          Object {
+            "width": "100%",
+          }
+        }
+      />
+    </div>
+  </a>
+  <div
+    className="details"
+  >
+    
+    
+    
+    <div
+      className="descendants"
+    >
+      <svg
+        fill="none"
+        height="16"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+        width="16"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <polyline
+          points="9 11 12 14 22 4"
+        />
+        <path
+          d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+        />
+      </svg>
+       
+      /
+      2
+    </div>
+  </div>
+</div>
+`;
