@@ -33,16 +33,10 @@ This shows the details of a particular task and its immediate children. You add 
 
 TaskFractal offers six different themes to display your work. Click one, then click "save" at the bottom.
 
-## Structure
+## Important files
 
-- /app: Ruby on Rails models, controllers, and views
-- /client: React components
-- /db: Database schema, migrations, seeds
-
-### Important files
-
-- [/client/bundles/Chunky/components/Outline.jsx](client/bundles/Chunky/components/Outline.jsx): React code that renders the Outline page
-- [/client/bundles/Chunky/components/BackSideTask.jsx](client/bundles/Chunky/components/BackSideTask.jsx): React code that renders the Task page. The metaphor is that each task has a "front side" (the little card summarizing how many attachments, children, etc. it has) and a "back side" that has all the details on it.
+- [/app/javascript/components/Outline.jsx](app/javascript/components/Outline.jsx): React code that renders the Outline page
+- [/app/javascript/components/BackSideTask.jsx](app/javascript/components/BackSideTask.jsx): React code that renders the Task page. The metaphor is that each task has a "front side" (the little card summarizing how many attachments, children, etc. it has) and a "back side" that has all the details on it.
 
 ## Setup
 
