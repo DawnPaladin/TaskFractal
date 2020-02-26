@@ -29,7 +29,6 @@ export default class NextUp extends React.Component {
 		}
 
 		return <div className="next-up">
-			<div className="next-up-label">Next Up</div>
 			<div className="next-up-cards">
 				<div className="column">
 					<div className="card-and-buttons">

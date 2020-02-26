@@ -18,7 +18,7 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 
 .next-up-hidden .next-up { display: none; }
 .next-up {
-	background: var(--nextup-bg-color);
+	background: var(--header-bg-color);
 	color: var(--nextup-fg-color);
 	margin: -1em -1em 1em -1em;
 	padding: 1em;
@@ -27,30 +27,6 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-	.next-up-label {
-		color: var(--nextup-label-color);
-		position: absolute;
-		left: .75em;
-		font-weight: 600;
-		font-size: 24px;
-		@media (max-width: 449px) {
-			display: none;
-		}
-	}
-}
-
-.next-up-visible .next-up-toggle {
-	position: absolute;
-	margin-top: -2.1em;
-}
-.next-up-hidden .next-up-toggle {
-	@media (min-width: 1040px) {
-		position: absolute;
-	}
-	@media (max-width: 1039px) {
-		margin-top: .5em;
-		margin-bottom: .5em;
-	}
 }
 
 .next-up-cards {
