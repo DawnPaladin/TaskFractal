@@ -13,13 +13,15 @@ body {
 body>header {
 	color: var(--text-inverse-color);
 	background: var(--header-bg-color);
-	position: absolute;
-	top: 0;
-	right: 0;
-	text-align: right;
+	margin: -1em -1em 1em -1em;
 	padding: .5em;
-	border-radius: 0 0 0 5px;
-	z-index: 1;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	.task-controls, .user-controls {
+		display: flex;
+		flex-direction: row;
+	}
 	a {
 		color: var(--text-inverse-color);
 	}
@@ -55,7 +57,7 @@ textarea {
 	color: var(--text-color);
 }
 
-.toggle-show-completed-button {
+.toggle-show-completed-button, .toggle-user-property-button {
 	@include doesnt-look-like-a-button();
 	font-size: inherit;
 	margin-top: .2em;

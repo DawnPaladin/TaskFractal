@@ -22,25 +22,38 @@
 
   <body>
     <header>
-      <% if signed_in? %>
-        <% if current_user.email == "guest@taskfractal.com" %>
-          <i data-feather='user'></i> Guest
+      <div class="task-controls">
+        <% if signed_in? %>
+          <% if @show_completed_tasks == true or @show_completed_tasks == false %>
+            <%= react_component("ToggleShowCompleted", showCompletedTasks: @show_completed_tasks, userId: current_user.id) %>
+          <% end %>
+          <%= react_component("ToggleUserProperty", 
+            property: "show_next_tasks",
+            label: "Show next tasks",
+            initialState: current_user.show_next_tasks,
+            userId: current_user.id,
+            networkPath: "/change_next_tasks_visible.json",
+          ) %>
+        <% end %>
+      </div>
+      <div class="user-controls">
+        <% if signed_in? %>
+          <% if current_user.email == "guest@taskfractal.com" %>
+            <i data-feather='user'></i> Guest
+          <% else %>
+            <%= link_to "<i data-feather='user'></i>#{current_user.nickname}".html_safe, edit_user_registration_path %>
+          <% end %>
+          <% if current_page?('/theme') %>
+            <%= link_to "<i data-feather='home'></i>Tasks".html_safe, "/tasks" %>
+          <% else %>
+            <%= link_to "<img src='/paint-icon.svg' alt='' class='feather' />Theme".html_safe, "/theme"%>
+          <% end %>
+          <%= link_to "<i data-feather='log-out'></i>Sign out".html_safe, destroy_user_session_path, method: :delete %>
         <% else %>
-          <%= link_to "<i data-feather='user'></i>#{current_user.nickname}".html_safe, edit_user_registration_path %>
+          <%= link_to "<i data-feather='user-plus'></i>Sign up".html_safe, new_user_registration_path %>
+          <%= link_to "<i data-feather='log-in'></i>Sign in".html_safe, new_user_session_path %>
         <% end %>
-        <% if current_page?('/theme') %>
-          <%= link_to "<i data-feather='home'></i>Tasks".html_safe, "/tasks" %>
-        <% else %>
-          <%= link_to "<img src='/paint-icon.svg' alt='' class='feather' />Theme".html_safe, "/theme"%>
-        <% end %>
-        <%= link_to "<i data-feather='log-out'></i>Sign out".html_safe, destroy_user_session_path, method: :delete %>
-        <% if @show_completed_tasks == true or @show_completed_tasks == false %>
-          <%= react_component("ToggleShowCompleted", showCompletedTasks: @show_completed_tasks, userId: current_user.id) %>
-        <% end %>
-      <% else %>
-        <%= link_to "<i data-feather='user-plus'></i>Sign up".html_safe, new_user_registration_path %>
-        <%= link_to "<i data-feather='log-in'></i>Sign in".html_safe, new_user_session_path %>
-      <% end %>
+      </div>
     </header>
     <%= yield %>
     <%= toastr_flash %>

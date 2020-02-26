@@ -13,8 +13,8 @@ class ApplicationController < ActionController::Base
 			render json: { error: "Couldn't change show_completed_tasks" }
 		end
 	end
-	def change_next_up_visible
-		current_user.next_up_visible = params[:next_up_visible]
+	def change_next_tasks_visible
+		current_user.show_next_tasks = params[:show_next_tasks]
 		if current_user.save
 			render json: { message: "Success" }
 		else
