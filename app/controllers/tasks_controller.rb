@@ -8,7 +8,7 @@ class TasksController < ApplicationController
 		respond_to do |format|
 			format.html { 
 				@tasks = normalize_user_tasks_for_outline
-				@next_up = next_up
+				@next_tasks = next_tasks
 				@show_next_tasks = current_user.show_next_tasks
 				@show_completed_tasks = current_user.show_completed_tasks
 				render :index 
@@ -37,13 +37,18 @@ class TasksController < ApplicationController
 		end
 	end
 	
-	def next_up
+	def next_tasks(root_task = nil)
 		timer = Time.now
-		logger.info "Start next_up"
-		user_tasks = Task.where(user: current_user).includes(:children, :blocking, :blocked_by)
-		logger.info "user_tasks: #{(Time.now - timer).to_s}"
+		logger.info "Start next_tasks"
 		
-		candidates = user_tasks.select do |task|
+		if root_task.nil?
+			child_tasks = Task.where(user: current_user).includes(:children, :blocking, :blocked_by)
+		else
+			child_tasks = root_task.children.includes(:children, :blocking, :blocked_by)
+		end
+		logger.info "child_tasks: #{(Time.now - timer).to_s}"
+		
+		candidates = child_tasks.select do |task|
 			task.completed == false and 
 			(task.has_children? == false or task.children.all? { |task| task.completed == true }) and 
 			(task.blocked_by.length == 0 or task.blocked_by.all? { |task| task.completed == true })
@@ -52,7 +57,7 @@ class TasksController < ApplicationController
 		
 		# High-priority tasks whose children and blockers should be completed first
 		high_priority = {}
-		user_tasks.each do |task|
+		candidates.each do |task|
 			if task.completed == false and task.descendants.length > 0 or task.blocking.length > 0
 				score = task.descendants.length + task.blocking.length
 				high_priority[task.id] = { score: score, task: task }
