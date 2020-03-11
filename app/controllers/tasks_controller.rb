@@ -7,7 +7,7 @@ class TasksController < ApplicationController
 	def index
 		respond_to do |format|
 			format.html { 
-				@tasks = normalize_user_tasks_for_outline
+				@tasks = normalize_tasks_for_outline
 				@next_tasks = next_tasks
 				@show_next_tasks = current_user.show_next_tasks
 				@show_completed_tasks = current_user.show_completed_tasks
@@ -22,7 +22,7 @@ class TasksController < ApplicationController
 	def show
 		respond_to do |format|
 			format.html {
-				@children = @task.children.order(:position)
+				@descendants = normalize_tasks_for_outline(@task)
 				@blocked_by = @task.blocked_by.order(:name)
 				@blocking = @task.blocking.order(:name)
 				@attachments = list_attachments(@task)
@@ -242,7 +242,7 @@ class TasksController < ApplicationController
 	end
 	
 	private
-		def normalize_user_tasks_for_outline
+		def normalize_tasks_for_outline(root_ar_task = nil) # ar = ActiveRecord
 			# sample_output = {
 			#   rootId: 'root',
 			#   items: {
@@ -264,16 +264,21 @@ class TasksController < ApplicationController
 			#     },
 			#   }
 			# }
-			logger.info "Start normalize_user_tasks_for_outline for " + current_user.email
-			ar_tasks = Task.where(user: current_user).order(:position).includes(:blocking, :blocked_by) # ActiveRecord tasks
+			logger.info "Start normalize_tasks_for_outline for " + current_user.email
+			if (root_ar_task.nil?)
+				ar_tasks = Task.where(user: current_user).order(:position).includes(:blocking, :blocked_by) # ar = ActiveRecord
+			else
+				ar_tasks = root_ar_task.descendants.order(:position).includes(:blocking, :blocked_by) # ar = ActiveRecord
+			end
 			logger.info "Got user tasks"
+			
 			prop_tasks = {
 				"rootId" => 'root',
 				"items" => {}
 			}
 			root_task = {
 				"id" => 'root',
-				"children" => [],
+				"children" => root_ar_task.nil? ? [] : root_ar_task.children.order(:position).pluck(:id)
 			}
 			ar_tasks.each do |ar_task|
 				id = ar_task.id.to_s

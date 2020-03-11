@@ -9,6 +9,11 @@ import sendTaskMovement from './sendTaskMovement'; // Tells the Rails backend th
 import FrontSideTask from './FrontSideTask';
 
 export default class Outline extends React.Component {
+	static propTypes = {
+		tasks: PropTypes.object.isRequired,
+		showCompletedTasks: PropTypes.bool.isRequired,
+		checkboxChange: PropTypes.func,
+	}
 	constructor(props) {
 		super(props);
 		this.state = {

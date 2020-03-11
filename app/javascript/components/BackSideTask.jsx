@@ -3,12 +3,12 @@ import React from 'react';
 import * as Icon from 'react-feather';
 import WithSeparator from 'react-with-separator';
 import Markdown from 'react-markdown';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import FileUpload from './FileUpload';
 import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
 import TaskPicker from './TaskPicker'; // Type to select a task (autocomplete)
+import Outline from './Outline';
 import network from './network'; // Performs network calls to the Rails backend
 import send from './send'; // Sends task updates to the Rails backend
 import deleteTask from './deleteTask';
@@ -28,7 +28,7 @@ const moveItemInArray = (array, sourceIndex, destinationIndex) => {
 export default class BackSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
-		children: PropTypes.array.isRequired,
+		descendants: PropTypes.object.isRequired,
 		blocked_by: PropTypes.array.isRequired,
 		blocking: PropTypes.array.isRequired,
 		attachments: PropTypes.array.isRequired,
@@ -245,15 +245,6 @@ export default class BackSideTask extends React.Component {
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
 		ancestors.unshift(<a href="/tasks/" className="task-link" key="0"><Icon.Home size="16" /> Home</a>);
 		
-		let children = this.state.children.map((child, index) => 
-			<Draggable draggableId={child.id} key={child.id} index={index}>
-				{(provided) => (
-					<div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-						<FrontSideTask task={child} checkboxChange={this.subtaskCheckboxChange} />
-					</div>
-				)}
-			</Draggable>
-		);
 		let blocked_by = this.state.blocked_by.map(blocked_by => (
 			<div className="blocked-task" key={blocked_by.id}>
 				<button className="remove-blocked-task-button" onClick={e => this.removeBlockingTask(blocked_by, 'blocked_by')}>
@@ -378,20 +369,7 @@ export default class BackSideTask extends React.Component {
 					<div className="field">
 						<div className="field-name">subtasks</div>
 						<div className="subtasks">
-							<DragDropContext onDragEnd={this.onDragEnd}>
-								<Droppable droppableId="1">
-									{provided => (
-										<div {...provided.droppableProps} ref={provided.innerRef}>
-											{children}
-											<form className="task-adder" onSubmit={this.addSubtask} >
-												<input type="text" placeholder="Add subtask" value={this.state.new_task_name} onChange={this.handleAddSubtaskEdit} />
-												<button>Add</button>
-											</form>
-											{provided.placeholder}
-										</div>
-									)}
-								</Droppable>
-							</DragDropContext>
+							<Outline tasks={this.props.descendants} showCompletedTasks={this.props.show_completed_tasks} />
 						</div>
 					</div>
 				
