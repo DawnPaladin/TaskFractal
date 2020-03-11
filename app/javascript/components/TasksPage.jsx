@@ -11,7 +11,7 @@ import network from './network'; // Performs network calls to the Rails backend
 import send from './send'; // Sends task updates to the Rails backend
 import sendTaskMovement from './sendTaskMovement'; // Tells the Rails backend that a task has a new parent and/or a new position in a list
 
-export default class OldOutline extends React.Component {
+export default class TasksPage extends React.Component {
 	constructor(props) {
 		super(props);
 		var NextUpTaskIds = []; // make it easy to look up tasks in NextUpTasks by their id
