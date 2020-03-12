@@ -8,9 +8,9 @@ class TasksController < ApplicationController
 		respond_to do |format|
 			format.html { 
 				@tasks = normalize_tasks_for_outline
-				@next_tasks = next_tasks
-				@show_next_tasks = current_user.show_next_tasks
-				@show_completed_tasks = current_user.show_completed_tasks
+				@next_up_tasks = next_up_tasks
+				@next_up_visible = current_user.next_up_visible
+				@completed_tasks_visible = current_user.completed_tasks_visible
 				render :index 
 			}
 			format.json { render json: Task.where(user: current_user).order(:position) }
@@ -29,7 +29,7 @@ class TasksController < ApplicationController
 				@count_descendants = @task.descendants.count
 				@count_completed_descendants = @task.completed_descendants.count
 				@ancestors = @task.ancestors.order(:name)
-				@show_completed_tasks = current_user.show_completed_tasks
+				@completed_tasks_visible = current_user.completed_tasks_visible
 			}
 			format.json {
 				render json: @task.to_json(include: [:children])
@@ -37,9 +37,9 @@ class TasksController < ApplicationController
 		end
 	end
 	
-	def next_tasks(root_task = nil)
+	def next_up_tasks(root_task = nil)
 		timer = Time.now
-		logger.info "Start next_tasks"
+		logger.info "Start next_up_tasks"
 		
 		if root_task.nil?
 			child_tasks = Task.where(user: current_user).includes(:children, :blocking, :blocked_by)

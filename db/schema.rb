@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_26_040500) do
+ActiveRecord::Schema.define(version: 2020_03_12_220229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,16 +77,8 @@ ActiveRecord::Schema.define(version: 2020_02_26_040500) do
     t.string "nickname"
     t.string "theme", default: "jeans"
     t.integer "storage_quota", default: 100000000
-    t.boolean "show_completed_tasks", default: true
-<<<<<<< Updated upstream
-<<<<<<< HEAD
+    t.boolean "completed_tasks_visible", default: true
     t.boolean "next_up_visible", default: true
-=======
-    t.boolean "show_next_tasks", default: true
->>>>>>> 36a9920... Rename "next up visible" to "show next tasks"
-=======
-    t.boolean "show_next_tasks", default: true
->>>>>>> Stashed changes
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

@@ -24,15 +24,15 @@
     <header>
       <div class="task-controls">
         <% if signed_in? %>
-          <% if @show_completed_tasks == true or @show_completed_tasks == false %>
-            <%= react_component("ToggleShowCompleted", showCompletedTasks: @show_completed_tasks, userId: current_user.id) %>
+          <% if @completed_tasks_visible == true or @completed_tasks_visible == false %>
+            <%= react_component("ToggleShowCompleted", completedTasksVisible: @completed_tasks_visible, userId: current_user.id) %>
           <% end %>
           <%= react_component("ToggleUserProperty", 
-            property: "show_next_tasks",
+            property: "next_up_visible",
             label: "Show next tasks",
-            initialState: current_user.show_next_tasks,
+            initialState: current_user.next_up_visible,
             userId: current_user.id,
-            networkPath: "/change_next_tasks_visible.json",
+            networkPath: "/change_next_up_visible.json",
           ) %>
         <% end %>
       </div>

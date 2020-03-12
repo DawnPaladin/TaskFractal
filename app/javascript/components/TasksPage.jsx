@@ -11,7 +11,7 @@ export default class TasksPage extends React.Component {
 	constructor(props) {
 		super(props);
 		var NextUpTaskIds = []; // make it easy to look up tasks in NextUpTasks by their id
-		var NextUpTasks = props.next_tasks.map(taggedTask => {
+		var NextUpTasks = props.next_up_tasks.map(taggedTask => {
 			var task = taggedTask.task;
 			task.score = taggedTask.score;
 			task.reasons = taggedTask.reasons;
@@ -21,7 +21,7 @@ export default class TasksPage extends React.Component {
 		})
 		this.state = {
 			new_task_name: '',
-			NextUpVisible: this.props.show_next_tasks,
+			NextUpVisible: this.props.next_up_visible,
 			NextUpTasks, // array of tasks to be displayed by NextUp
 			NextUpTaskIds,
 			leftCardIndex: 0, // In NextUp, the left card starts out displaying the first task...
@@ -57,13 +57,13 @@ export default class TasksPage extends React.Component {
 		network.patch('/change_next_up_visible.json', { next_up_visible: newState });
 		this.setState({ NextUpVisible : newState });
 	}
-		
+	
 	// RENDERING
-		
+	
 	render() {
 		return <div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
 			<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxChange={this.checkboxChange} />
-			<Outline tasks={this.props.tasks} showCompletedTasks={this.props.show_completed_tasks} checkboxChange={this.checkboxChange} />
+			<Outline tasks={this.props.tasks} completedTasksVisible={this.props.completed_tasks_visible} checkboxChange={this.checkboxChange} />
 		</div>
 	}
 }

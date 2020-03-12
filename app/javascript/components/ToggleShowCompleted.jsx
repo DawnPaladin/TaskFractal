@@ -5,19 +5,19 @@ import network from './network';
 
 export default class ToggleShowCompleted extends React.Component {
 	static propTypes = {
-		showCompletedTasks: PropTypes.bool.isRequired,
+		completedTasksVisible: PropTypes.bool.isRequired,
 		userId: PropTypes.number.isRequired,
 	};
 	constructor(props) {
 		super(props);
-		this.state = { showCompletedTasks: this.props.showCompletedTasks }
+		this.state = { completedTasksVisible: this.props.completedTasksVisible }
 		this.handleChange = this.handleChange.bind(this);
 	}
 	handleChange = () => {
-		const newState = !this.state.showCompletedTasks;
-		this.setState({ showCompletedTasks: newState });
-		network.patch('/change_show_completed_tasks.json', { show_completed_tasks: newState });
-		const event = new CustomEvent('toggleShowCompleted', { detail: { showCompletedTasks: newState }});
+		const newState = !this.state.completedTasksVisible;
+		this.setState({ completedTasksVisible: newState });
+		network.patch('/change_completed_tasks_visible.json', { completed_tasks_visible: newState });
+		const event = new CustomEvent('toggleShowCompleted', { detail: { completedTasksVisible: newState }});
 		document.dispatchEvent(event);
 	}
 	keyboardShortcut = event => {
@@ -30,8 +30,8 @@ export default class ToggleShowCompleted extends React.Component {
 	}
 	render() {
 		return <button className="toggle-show-completed-button" onClick={this.handleChange}>
-			{ this.state.showCompletedTasks === true && <Icon.ToggleRight size="16" className="feather switch-on"  /> }
-			{ this.state.showCompletedTasks === false && <Icon.ToggleLeft size="16" className="feather switch-off" /> }
+			{ this.state.completedTasksVisible === true && <Icon.ToggleRight size="16" className="feather switch-on"  /> }
+			{ this.state.completedTasksVisible === false && <Icon.ToggleLeft size="16" className="feather switch-off" /> }
 			Show Completed <small>(Alt-C)</small>
 		</button>
 	}

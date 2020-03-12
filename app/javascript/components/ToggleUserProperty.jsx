@@ -5,11 +5,11 @@ import network from './network';
 
 export default class ToggleUserProperty extends React.Component {
 	static propTypes = {
-		property: PropTypes.string.isRequired, // example: 'show_completed_tasks'
+		property: PropTypes.string.isRequired, // example: 'completed_tasks_visible'
 		label: PropTypes.string.isRequired,
 		initialState: PropTypes.bool.isRequired,
 		userId: PropTypes.number.isRequired,
-		networkPath: PropTypes.string.isRequired, // API endpoint to hit. Example: '/change_show_completed_tasks.json'
+		networkPath: PropTypes.string.isRequired, // API endpoint to hit. Example: '/change_completed_tasks_visible.json'
 		eventName: PropTypes.string, // Event to broadcast on toggle. Example: 'toggleShowCompleted'
 		altKey: PropTypes.string // example: "c" for alt-C
 	};

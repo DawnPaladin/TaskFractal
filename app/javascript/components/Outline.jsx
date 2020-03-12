@@ -11,14 +11,14 @@ import FrontSideTask from './FrontSideTask';
 export default class Outline extends React.Component {
 	static propTypes = {
 		tasks: PropTypes.object.isRequired,
-		showCompletedTasks: PropTypes.bool.isRequired,
+		completedTasksVisible: PropTypes.bool.isRequired,
 		checkboxChange: PropTypes.func,
 	}
 	constructor(props) {
 		super(props);
 		this.state = {
 			treeData: this.props.tasks,
-			showCompletedTasks: this.props.showCompletedTasks,
+			completedTasksVisible: this.props.completedTasksVisible,
 		}
 		
 		// data structure for adding new subtasks to tree items
@@ -151,7 +151,7 @@ export default class Outline extends React.Component {
 	}
 	
 	handleToggleShowCompleted = event => {
-		this.setState({ showCompletedTasks: event.detail.showCompletedTasks },
+		this.setState({ completedTasksVisible: event.detail.completedTasksVisible },
 			() => { this.setHiddenOnTasks(); }
 		);
 	}
@@ -209,7 +209,7 @@ export default class Outline extends React.Component {
 			treeData.items[key].hidden = false;
 		});
 		
-		if (this.state.showCompletedTasks === false) {
+		if (this.state.completedTasksVisible === false) {
 			Object.entries(treeData.items).forEach(([key, item]) => {
 				if (key === "root") return;
 				if (item.data && item.data.completed === true) {
