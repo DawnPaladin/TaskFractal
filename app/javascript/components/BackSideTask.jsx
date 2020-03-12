@@ -9,6 +9,7 @@ import Checkbox from './Checkbox';
 import FrontSideTask from './FrontSideTask';
 import TaskPicker from './TaskPicker'; // Type to select a task (autocomplete)
 import Outline from './Outline';
+import NextUp from './NextUp';
 import network from './network'; // Performs network calls to the Rails backend
 import send from './send'; // Sends task updates to the Rails backend
 import deleteTask from './deleteTask';
@@ -40,6 +41,16 @@ export default class BackSideTask extends React.Component {
 	constructor(props) {
 		super(props);
 		
+		var NextUpTaskIds = []; // make it easy to look up tasks in NextUpTasks by their id
+		var NextUpTasks = props.next_up_tasks.map(taggedTask => {
+			var task = taggedTask.task;
+			task.score = taggedTask.score;
+			task.reasons = taggedTask.reasons;
+			task.ancestors = taggedTask.ancestors;
+			NextUpTaskIds.push(task.id);
+			return task;
+		})
+
 		this.state = { 
 			task: this.props.task,
 			children: this.props.children,
@@ -53,6 +64,11 @@ export default class BackSideTask extends React.Component {
 			editingDueDate: false,
 			editingDescription: false,
 			editingTaskName: false,
+			NextUpVisible: this.props.next_up_visible,
+			NextUpTasks, // array of tasks to be displayed by NextUp
+			NextUpTaskIds,
+			leftCardIndex: 0, // In NextUp, the left card starts out displaying the first task...
+			rightCardIndex: NextUpTasks.length - 1, // ...and the right card displays the last task.
 		};
 		
 		document.title = this.state.task.name;
@@ -104,6 +120,14 @@ export default class BackSideTask extends React.Component {
 		this.setState({task});
 		send(task);
 	}
+	// NextUpTasks is an array of tasks. Think of it as a pile of cards. We start out pulling one card from the top and one card from the bottom of the pile. When the user clicks "Not now" on one pile, we cycle to a different card in the pile and display that instead.
+	cycleCardPile = (pileName, cycleAmount) => {
+		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
+		var key = pileName + "CardIndex";
+		var currentValue = this.state[key];
+		this.setState({ [key]: currentValue + cycleAmount });
+	}
+	
 	// for FrontSideTasks in list of subtasks
 	subtaskCheckboxChange = task => {
 		const childIndex = this.state.children.findIndex(object => object.id == task.id);
@@ -241,6 +265,16 @@ export default class BackSideTask extends React.Component {
 		this.setState({ name, task: {...this.state.task, name } });
 	}
 	
+	toggleNextUpVisibility = () => {
+		const newState = !this.state.NextUpVisible;
+		network.patch('/change_next_up_visible.json', { next_up_visible: newState });
+		this.setState({ NextUpVisible : newState });
+	}
+	
+	componentDidMount() {
+		document.addEventListener('toggleNextUpVisible', this.toggleNextUpVisibility);
+	}
+	
 	render() {
 		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
 		ancestors.unshift(<a href="/tasks/" className="task-link" key="0"><Icon.Home size="16" /> Home</a>);
@@ -284,99 +318,104 @@ export default class BackSideTask extends React.Component {
 		)
 		
 		return (
-			<div className="task-card-back">
-				<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
-					<button className="delete-task-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button>
-					<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
-					<h1>
-						<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
-						{!this.state.editingTaskName && 
-							<label onClick={this.startEditingTaskName}>{this.state.task.name}<Icon.Edit2 size="20" className="edit-icon"/></label>
-						}
-						{ this.state.editingTaskName && 
-							<form onSubmit={this.stopEditingTaskName}>
-								<input type="text" value={this.state.task.name} onChange={this.editTaskName} />
-								<button><Icon.Check/></button>
-							</form>
-						}
-					</h1>
-					
-					<div className="field box due-date">
-						<button onClick={this.startEditingDueDate} className={this.state.editingDueDate ? "hidden doesnt-look-like-a-button" : "doesnt-look-like-a-button"}>
-							<Icon.Calendar size="16" />
-							{!this.state.task.due_date && <em className="deemphasize"> Add due date</em> }
-							{ this.state.task.due_date && " Due: " + this.state.task.due_date }
-						</button>
-						<div className={this.state.editingDueDate ? "" : "hidden"}>
-							<Icon.Calendar size="16" />
-							<input type="date" value={this.state.task.due_date || ""} onChange={this.editDueDate} />
-							<button onClick={this.stopEditingDueDate}><Icon.Check size="16"/></button>
-						</div>
-					</div>
-					
-					<Icon.AlignLeft size="16" />
-					<span className="field-name"> notes</span>
-					<div className="description-field">
-						{ this.state.editingDescription ? (
-							<div>
-								<div className="field box">
-									<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
-								</div>
-								<button className="save-notes" onClick={this.stopEditingDescription}>Save</button>
-							</div>
-						) : (
-							<button onClick={this.startEditingDescription} className="block doesnt-look-like-a-button">
-								<div className="field box">
-									{ this.state.task.description ? (
-										<Markdown source={this.state.task.description} className="description" />
-									) : (
-										<em className="deemphasize">Add a description</em>
-									) }
-								</div>
+			<div className="back-side-task-page">
+				<div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
+					<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxChange={this.checkboxChange} />
+				</div>
+				<div className="task-card-back">
+					<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
+						<button className="delete-task-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button>
+						<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
+						<h1>
+							<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
+							{!this.state.editingTaskName && 
+								<label onClick={this.startEditingTaskName}>{this.state.task.name}<Icon.Edit2 size="20" className="edit-icon"/></label>
+							}
+							{ this.state.editingTaskName && 
+								<form onSubmit={this.stopEditingTaskName}>
+									<input type="text" value={this.state.task.name} onChange={this.editTaskName} />
+									<button><Icon.Check/></button>
+								</form>
+							}
+						</h1>
+						
+						<div className="field box due-date">
+							<button onClick={this.startEditingDueDate} className={this.state.editingDueDate ? "hidden doesnt-look-like-a-button" : "doesnt-look-like-a-button"}>
+								<Icon.Calendar size="16" />
+								{!this.state.task.due_date && <em className="deemphasize"> Add due date</em> }
+								{ this.state.task.due_date && " Due: " + this.state.task.due_date }
 							</button>
-						) }
-					</div>
+							<div className={this.state.editingDueDate ? "" : "hidden"}>
+								<Icon.Calendar size="16" />
+								<input type="date" value={this.state.task.due_date || ""} onChange={this.editDueDate} />
+								<button onClick={this.stopEditingDueDate}><Icon.Check size="16"/></button>
+							</div>
+						</div>
+						
+						<Icon.AlignLeft size="16" />
+						<span className="field-name"> notes</span>
+						<div className="description-field">
+							{ this.state.editingDescription ? (
+								<div>
+									<div className="field box">
+										<textarea value={this.state.task.description} onChange={e => this.setTaskDetail('description', e.target.value)} />
+									</div>
+									<button className="save-notes" onClick={this.stopEditingDescription}>Save</button>
+								</div>
+							) : (
+								<button onClick={this.startEditingDescription} className="block doesnt-look-like-a-button">
+									<div className="field box">
+										{ this.state.task.description ? (
+											<Markdown source={this.state.task.description} className="description" />
+										) : (
+											<em className="deemphasize">Add a description</em>
+										) }
+									</div>
+								</button>
+							) }
+						</div>
 
-					<div className="row">
-						<div className="field">
-							<Icon.PauseCircle size="16" />
-							<span className="field-name"> waiting on</span>
-							<div className="box">
-								{blocked_by}
-								<TaskPicker 
-									allTasks={this.state.allTasks} 
-									refreshAllTasks={this.refreshAllTasks} 
-									addBlockingTask={this.addBlockingTask}
-									relationship="blocked_by"
-								/>
+						<div className="row">
+							<div className="field">
+								<Icon.PauseCircle size="16" />
+								<span className="field-name"> waiting on</span>
+								<div className="box">
+									{blocked_by}
+									<TaskPicker 
+										allTasks={this.state.allTasks} 
+										refreshAllTasks={this.refreshAllTasks} 
+										addBlockingTask={this.addBlockingTask}
+										relationship="blocked_by"
+									/>
+								</div>
+							</div>
+							<div className="field">
+								<Icon.AlertCircle size="16" />
+								<span className="field-name"> blocking</span>
+								<div className="box">
+									{blocking}
+									<TaskPicker 
+										allTasks={this.state.allTasks} 
+										refreshAllTasks={this.refreshAllTasks} 
+										addBlockingTask={this.addBlockingTask}
+										relationship="blocking"
+									/>
+								</div>
 							</div>
 						</div>
+						
 						<div className="field">
-							<Icon.AlertCircle size="16" />
-							<span className="field-name"> blocking</span>
-							<div className="box">
-								{blocking}
-								<TaskPicker 
-									allTasks={this.state.allTasks} 
-									refreshAllTasks={this.refreshAllTasks} 
-									addBlockingTask={this.addBlockingTask}
-									relationship="blocking"
-								/>
+							<div className="field-name">subtasks</div>
+							<div className="subtasks">
+								<Outline tasks={this.props.descendants} completedTasksVisible={this.props.completed_tasks_visible} />
 							</div>
 						</div>
-					</div>
 					
-					<div className="field">
-						<div className="field-name">subtasks</div>
-						<div className="subtasks">
-							<Outline tasks={this.props.descendants} completedTasksVisible={this.props.completed_tasks_visible} />
-						</div>
-					</div>
-				
-				</FileUpload>
-				
-				{completionBar}
-				
+					</FileUpload>
+					
+					{completionBar}
+					
+				</div>
 			</div>
 		);
 	}

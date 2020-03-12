@@ -23,7 +23,7 @@ export default class ToggleUserProperty extends React.Component {
 		this.setState({ enabled: newState });
 		network.patch(this.props.networkPath, { [this.props.property]: newState });
 		if (this.props.eventName) {
-			const event = new CustomEvent(this.props.eventName, { newState: newState });
+			const event = new CustomEvent(this.props.eventName, { detail: newState });
 			document.dispatchEvent(event);
 		}
 	}

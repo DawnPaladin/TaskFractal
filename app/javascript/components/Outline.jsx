@@ -18,7 +18,7 @@ export default class Outline extends React.Component {
 		super(props);
 		this.state = {
 			treeData: this.props.tasks,
-			completedTasksVisible: this.props.completedTasksVisible,
+			// completedTasksVisible: this.props.completedTasksVisible,
 		}
 		
 		// data structure for adding new subtasks to tree items
@@ -150,11 +150,11 @@ export default class Outline extends React.Component {
 		this.setState(newState);
 	}
 	
-	handleToggleShowCompleted = event => {
-		this.setState({ completedTasksVisible: event.detail.completedTasksVisible },
-			() => { this.setHiddenOnTasks(); }
-		);
-	}
+	// handleToggleShowCompleted = event => {
+	// 	this.setState({ completedTasksVisible: event.detail.completedTasksVisible },
+	// 		() => { this.setHiddenOnTasks(); }
+	// 	);
+	// }
 	
 	onDragStart = itemId => {
 		// work around bug where New Task field at the bottom pops up and covers last list item
@@ -209,7 +209,7 @@ export default class Outline extends React.Component {
 			treeData.items[key].hidden = false;
 		});
 		
-		if (this.state.completedTasksVisible === false) {
+		if (this.props.completedTasksVisible === false) {
 			Object.entries(treeData.items).forEach(([key, item]) => {
 				if (key === "root") return;
 				if (item.data && item.data.completed === true) {
@@ -265,7 +265,9 @@ export default class Outline extends React.Component {
 		this.treeElement = tree;
 		
 		this.setHiddenOnTasks();
-		document.addEventListener('toggleShowCompleted', this.handleToggleShowCompleted);
+		document.addEventListener('toggleCompletedTasksVisible', () => {
+			window.setTimeout(() => { this.setHiddenOnTasks() }, 10);
+		});
 	}
 	
 	// RENDERING

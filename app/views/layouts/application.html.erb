@@ -25,13 +25,22 @@
       <div class="task-controls">
         <% if signed_in? %>
           <% if @completed_tasks_visible == true or @completed_tasks_visible == false %>
-            <%= react_component("ToggleShowCompleted", completedTasksVisible: @completed_tasks_visible, userId: current_user.id) %>
+            <%= react_component("ToggleUserProperty", 
+              property: "completed_tasks_visible",
+              label: "Show Completed",
+              initialState: current_user.completed_tasks_visible,
+              userId: current_user.id,
+              eventName: "toggleCompletedTasksVisible",
+              networkPath: "/change_completed_tasks_visible.json",
+              altKey: "c",
+            ) %>
           <% end %>
           <%= react_component("ToggleUserProperty", 
             property: "next_up_visible",
             label: "Show next tasks",
             initialState: current_user.next_up_visible,
             userId: current_user.id,
+            eventName: "toggleNextUpVisible",
             networkPath: "/change_next_up_visible.json",
           ) %>
         <% end %>
