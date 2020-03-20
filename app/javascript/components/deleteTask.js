@@ -1,7 +1,5 @@
 import network from './network';
 
-// TODO: Convert to React hook
-
 export default function deleteTask() {
 	if (confirm(`Delete ${this.state.task.name}?`)) {
 		let id = this.state.task.id;
