@@ -121,13 +121,6 @@ export default class BackSideTask extends React.Component {
 		this.setState({task});
 		send(task);
 	}
-	// NextUpTasks is an array of tasks. Think of it as a pile of cards. We start out pulling one card from the top and one card from the bottom of the pile. When the user clicks "Not now" on one pile, we cycle to a different card in the pile and display that instead.
-	cycleCardPile = (pileName, cycleAmount) => {
-		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
-		var key = pileName + "CardIndex";
-		var currentValue = this.state[key];
-		this.setState({ [key]: currentValue + cycleAmount });
-	}
 	
 	// for FrontSideTasks in list of subtasks
 	subtaskCheckboxChange = task => {
@@ -326,7 +319,7 @@ export default class BackSideTask extends React.Component {
 		return (
 			<div className="back-side-task-page">
 				<div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
-					<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxChange={this.checkboxChange} />
+					<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} checkboxChange={this.checkboxChange} />
 				</div>
 				<div className="task-card-back">
 					<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>

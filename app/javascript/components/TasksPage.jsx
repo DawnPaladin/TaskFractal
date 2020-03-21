@@ -45,14 +45,6 @@ export default class TasksPage extends React.Component {
 		}
 	}
 	
-	// NextUpTasks is an array of tasks. Think of it as a pile of cards. We start out pulling one card from the top and one card from the bottom of the pile. When the user clicks "Not now" on one pile, we cycle to a different card in the pile and display that instead.
-	cycleCardPile = (pileName, cycleAmount) => {
-		if (!(pileName == "left" || pileName == "right")) throw new Error("Invalid pile name", pileName);
-		var key = pileName + "CardIndex";
-		var currentValue = this.state[key];
-		this.setState({ [key]: currentValue + cycleAmount });
-	}
-	
 	toggleNextUpVisibility = () => {
 		const newState = !this.state.NextUpVisible;
 		network.patch('/change_next_up_visible.json', { next_up_visible: newState });
@@ -75,7 +67,7 @@ export default class TasksPage extends React.Component {
 	
 	render() {
 		return <div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
-			<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} cycleCardPile={this.cycleCardPile} checkboxChange={this.checkboxChange} />
+			<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} checkboxChange={this.checkboxChange} />
 			<Outline tasks={this.props.tasks} completedTasksVisible={this.state.completedTasksVisible} checkboxChange={this.checkboxChange} />
 		</div>
 	}
