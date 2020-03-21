@@ -69,6 +69,7 @@ export default class BackSideTask extends React.Component {
 			NextUpTaskIds,
 			leftCardIndex: 0, // In NextUp, the left card starts out displaying the first task...
 			rightCardIndex: NextUpTasks.length - 1, // ...and the right card displays the last task.
+			completedTasksVisible: this.props.completed_tasks_visible,
 		};
 		
 		document.title = this.state.task.name;
@@ -267,12 +268,17 @@ export default class BackSideTask extends React.Component {
 	
 	toggleNextUpVisibility = () => {
 		const newState = !this.state.NextUpVisible;
-		network.patch('/change_next_up_visible.json', { next_up_visible: newState });
 		this.setState({ NextUpVisible : newState });
+	}
+	
+	toggleCompletedTasksVisibility = () => {
+		const newState = !this.state.completedTasksVisible;
+		this.setState({ completedTasksVisible: newState });
 	}
 	
 	componentDidMount() {
 		document.addEventListener('toggleNextUpVisible', this.toggleNextUpVisibility);
+		document.addEventListener('toggleCompletedTasksVisible', this.toggleCompletedTasksVisibility);
 	}
 	
 	render() {
@@ -407,7 +413,7 @@ export default class BackSideTask extends React.Component {
 						<div className="field">
 							<div className="field-name">subtasks</div>
 							<div className="subtasks">
-								<Outline tasks={this.props.descendants} completedTasksVisible={this.props.completed_tasks_visible} />
+								<Outline tasks={this.props.descendants} completedTasksVisible={this.state.completedTasksVisible} />
 							</div>
 						</div>
 					
