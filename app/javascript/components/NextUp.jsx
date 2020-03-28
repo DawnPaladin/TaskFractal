@@ -31,8 +31,8 @@ export default function NextUp(props) {
 			.then(response => {
 				const formattedTasks = formatTasks(response.data);
 				setTasks(formattedTasks);
-				setLeftCardIndex(0);
-				setRightCardIndex(formattedTasks.length - 1);
+				setLeftCardIndex(0); // In NextUp, the left card starts out displaying the first task...
+				setRightCardIndex(formattedTasks.length - 1); // ...and the right card displays the last task.
 				setLoadingTasks(false);
 			})
 			.catch(response => { console.warn(response) })

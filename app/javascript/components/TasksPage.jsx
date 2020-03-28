@@ -9,24 +9,9 @@ import network from './network'; // Performs network calls to the Rails backend
 export default class TasksPage extends React.Component {
 	constructor(props) {
 		super(props);
-		var NextUpTaskIds = []; // make it easy to look up tasks in NextUpTasks by their id
-		var NextUpTasks = props.next_up_tasks.map(taggedTask => {
-			var task = taggedTask.task;
-			task.score = taggedTask.score;
-			task.reasons = taggedTask.reasons;
-			task.ancestors = taggedTask.ancestors;
-			NextUpTaskIds.push(task.id);
-			return task;
-		})
 		this.state = {
 			new_task_name: '',
-			
 			NextUpVisible: this.props.next_up_visible,
-			NextUpTasks, // array of tasks to be displayed by NextUp
-			NextUpTaskIds,
-			leftCardIndex: 0, // In NextUp, the left card starts out displaying the first task...
-			rightCardIndex: NextUpTasks.length - 1, // ...and the right card displays the last task.
-			
 			completedTasksVisible: this.props.completed_tasks_visible,
 		}
 		
@@ -56,7 +41,7 @@ export default class TasksPage extends React.Component {
 	
 	render() {
 		return <div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
-			<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} />
+			<NextUp />
 			<Outline tasks={this.props.tasks} completedTasksVisible={this.state.completedTasksVisible} />
 		</div>
 	}
