@@ -1,12 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import NextUpCard from './NextUpCard';
 import PropTypes from 'prop-types';
 
+import NextUpCard from './NextUpCard';
+
+import network from './network';
+
 export default function NextUp(props) {
-	var tasks = props.tasks;
+	const [tasks, setTasks] = useState([]);
+	const [taskIds, setTaskIds] = useState([]); // make it easy to look up tasks in NextUpTasks by their id
+	
+	// Format task data for use with NextUpCards
+	const formatTasks = tasks => {
+		const taskIds = [];
+		const formattedTasks = tasks.map(taggedTask => {
+			var task = taggedTask.task;
+			task.score = taggedTask.score;
+			task.reasons = taggedTask.reasons;
+			task.ancestors = taggedTask.ancestors;
+			taskIds.push(task.id);
+			return task;
+		});
+		setTaskIds(taskIds);
+		return formattedTasks;
+	}
+	
+	const fetchTasks = () => {
+		network.get('/next_up.json')
+			.then(response => {
+				const formattedTasks = formatTasks(response.data);
+				setTasks(formattedTasks);
+				setLeftCardIndex(0);
+				setRightCardIndex(formattedTasks.length - 1);
+			})
+			.catch(response => { console.warn(response) })
+		;
+	}
+	useEffect(fetchTasks, []); // fetch tasks on mount
+	
+	const checkboxChange = task => {
+		const taskIndex = taskIds.findIndex(item => item === Number(task.id));
+		if (taskIndex !== -1) {
+			const newTasks = [...tasks];
+			newTasks[taskIndex].completed = task.completed;
+			setTasks(newTasks);
+		}
+	}
 	
 	const [leftCardIndex, setLeftCardIndex] = useState(0);
-	const [rightCardIndex, setRightCardIndex] = useState(tasks.length - 1);
+	const [rightCardIndex, setRightCardIndex] = useState(0);
 
 	const cycleBackIcon = <svg width="12" height="12" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path d="M2.11121 10.0146L1.10394 5.30332L3.77971 6.53828L6.18454 7.6482L2.11121 10.0146Z" fill="black"/>
@@ -35,7 +76,7 @@ export default function NextUp(props) {
 		<div className="next-up-cards">
 			<div className="column">
 				<div className="card-and-buttons">
-					<NextUpCard task={tasks[leftCardIndex]} checkboxChange={props.checkboxChange} />
+					<NextUpCard task={tasks[leftCardIndex]} checkboxChange={checkboxChange} />
 					<button className="reverse-cycle-card-stack-button" 
 						onClick={() => { useCycleCardPile("left", -1) }}
 						style={{ display: leftCardIndex == 0 ? "none" : "block" }}
@@ -49,7 +90,7 @@ export default function NextUp(props) {
 			<div className="or">or</div>
 			<div className="column">
 				<div className="card-and-buttons">
-					<NextUpCard task={tasks[rightCardIndex]} checkboxChange={props.checkboxChange} />
+					<NextUpCard task={tasks[rightCardIndex]} checkboxChange={checkboxChange} />
 					<button className="reverse-cycle-card-stack-button" 
 						onClick={() => { useCycleCardPile("right", 1) }}
 						style={{ display: rightCardIndex == tasks.length - 1 ? "none" : "block" }}
@@ -64,7 +105,4 @@ export default function NextUp(props) {
 	</div>
 }
 
-NextUp.propTypes = {
-	tasks: PropTypes.array.isRequired,
-	checkboxChange: PropTypes.func.isRequired,
-}
+NextUp.propTypes = {};

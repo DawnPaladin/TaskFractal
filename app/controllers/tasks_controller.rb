@@ -39,6 +39,10 @@ class TasksController < ApplicationController
 		end
 	end
 	
+	def next_up
+		render json: next_up_tasks
+	end
+	
 	def next_up_tasks(root_task = nil)
 		timer = Time.now
 		logger.info "Start next_up_tasks"
@@ -96,6 +100,7 @@ class TasksController < ApplicationController
 		end # result: { 0: { score: 120, reasons: [ "blocking \"Important Task\"" ], task: <task> }, etc.}
 		logger.info "tagged_candidates: #{tagged_candidates.count} (#{(Time.now - timer).to_s}s)"
 		@tagged_candidates = tagged_candidates.sort_by {|obj| obj["score"]}.reverse!
+		@tagged_candidates
 	end
 	
 	def attachments

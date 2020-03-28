@@ -3,6 +3,7 @@ import React from 'react';
 
 import NextUp from './NextUp';
 import Outline from './Outline';
+
 import network from './network'; // Performs network calls to the Rails backend
 
 export default class TasksPage extends React.Component {
@@ -33,18 +34,6 @@ export default class TasksPage extends React.Component {
 	
 	// METHODS (alphabetical)
 	
-	checkboxChange = task => {
-		// Update NextUp
-		const taskIndex = this.state.NextUpTaskIds.findIndex(item => item === Number(task.id));
-		if (taskIndex !== -1) {
-			const newNextUpTasks = [...this.state.NextUpTasks];
-			newNextUpTasks[taskIndex].completed = task.completed;
-			this.setState({
-				NextUpTasks: newNextUpTasks,
-			});
-		}
-	}
-	
 	toggleNextUpVisibility = () => {
 		const newState = !this.state.NextUpVisible;
 		network.patch('/change_next_up_visible.json', { next_up_visible: newState });
@@ -67,8 +56,8 @@ export default class TasksPage extends React.Component {
 	
 	render() {
 		return <div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
-			<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} checkboxChange={this.checkboxChange} />
-			<Outline tasks={this.props.tasks} completedTasksVisible={this.state.completedTasksVisible} checkboxChange={this.checkboxChange} />
+			<NextUp tasks={this.state.NextUpTasks} leftCardIndex={this.state.leftCardIndex} rightCardIndex={this.state.rightCardIndex} />
+			<Outline tasks={this.props.tasks} completedTasksVisible={this.state.completedTasksVisible} />
 		</div>
 	}
 }
