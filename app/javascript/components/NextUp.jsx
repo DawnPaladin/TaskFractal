@@ -8,6 +8,7 @@ import network from './network';
 export default function NextUp(props) {
 	const [tasks, setTasks] = useState([]);
 	const [taskIds, setTaskIds] = useState([]); // make it easy to look up tasks in NextUpTasks by their id
+	const [loadingTasks, setLoadingTasks] = useState(true);
 	
 	// Format task data for use with NextUpCards
 	const formatTasks = tasks => {
@@ -25,12 +26,14 @@ export default function NextUp(props) {
 	}
 	
 	const fetchTasks = () => {
+		setLoadingTasks(true);
 		network.get('/next_up.json')
 			.then(response => {
 				const formattedTasks = formatTasks(response.data);
 				setTasks(formattedTasks);
 				setLeftCardIndex(0);
 				setRightCardIndex(formattedTasks.length - 1);
+				setLoadingTasks(false);
 			})
 			.catch(response => { console.warn(response) })
 		;
@@ -64,10 +67,15 @@ export default function NextUp(props) {
 			throw new Error("Invalid pile name", pileName)
 		}
 	}
-
+	
+	if (loadingTasks == true) {
+		return <div className="next-up">
+			Loading...
+		</div>
+	}
+	
 	if (tasks.length == 0) {
 		return <div className="next-up">
-			<div className="next-up-label">Next Up</div>
 			No tasks
 		</div>
 	}
