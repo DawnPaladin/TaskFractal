@@ -67,24 +67,25 @@ export default function NextUp(props) {
 			throw new Error("Invalid pile name", pileName)
 		}
 	}
-	
-	if (loadingTasks == true) {
-		return <div className="next-up">
-			Loading...
-		</div>
-	}
-	
-	if (tasks.length == 0) {
+		
+	if (tasks.length == 0 && loadingTasks == false) {
 		return <div className="next-up">
 			No tasks
 		</div>
 	}
 	
+	const skeletonTask = {
+		name: "Loading...",
+		ancestors: []
+	}
+	const leftCardTask = loadingTasks ? skeletonTask : tasks[leftCardIndex]
+	const rightCardTask = loadingTasks ? skeletonTask : tasks[rightCardIndex]
+	
 	return <div className="next-up">
 		<div className="next-up-cards">
 			<div className="column">
 				<div className="card-and-buttons">
-					<NextUpCard task={tasks[leftCardIndex]} checkboxChange={checkboxChange} />
+					<NextUpCard task={leftCardTask} checkboxChange={checkboxChange} />
 					<button className="reverse-cycle-card-stack-button" 
 						onClick={() => { useCycleCardPile("left", -1) }}
 						style={{ display: leftCardIndex == 0 ? "none" : "block" }}
@@ -98,7 +99,7 @@ export default function NextUp(props) {
 			<div className="or">or</div>
 			<div className="column">
 				<div className="card-and-buttons">
-					<NextUpCard task={tasks[rightCardIndex]} checkboxChange={checkboxChange} />
+					<NextUpCard task={rightCardTask} checkboxChange={checkboxChange} />
 					<button className="reverse-cycle-card-stack-button" 
 						onClick={() => { useCycleCardPile("right", 1) }}
 						style={{ display: rightCardIndex == tasks.length - 1 ? "none" : "block" }}

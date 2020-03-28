@@ -13,6 +13,7 @@ a.task-link {
 
 .ancestors {
 	font-size: 0.8em;
+	min-height: 18px;
 }
 
 @mixin task-underline {
