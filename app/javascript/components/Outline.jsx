@@ -5,9 +5,10 @@ import update from 'immutability-helper';
 import clone from 'lodash.clonedeep';
 import * as Icon from 'react-feather';
 
+import network from './network'; // Performs network calls to the Rails backend
+import send from './send'; // Sends task updates to the Rails backend
 import sendTaskMovement from './sendTaskMovement'; // Tells the Rails backend that a task has a new parent and/or a new position in a list
-import taskUpdates from './taskUpdates';
-import send from './send';
+import taskUpdates from './taskUpdates'; // Broadcasts task changes to other components
 
 import FrontSideTask from './FrontSideTask';
 
@@ -22,6 +23,7 @@ export default class Outline extends React.Component {
 		this.state = {
 			treeData: this.props.tasks,
 			subscribedToTaskUpdates: false,
+			new_task_name: ""
 		}
 		
 		// data structure for adding new subtasks to tree items
