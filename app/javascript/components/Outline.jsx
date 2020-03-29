@@ -112,7 +112,7 @@ export default class Outline extends React.Component {
 			treeData: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
 		});
 		this.setState(newState, () => {
-			this.updateAncestors(this.getParentId(task.id), 'completed_descendant_count', task.completed ? 1 : -1, 750);
+			this.updateAncestors(this.getParentId(task.id), 'completed_descendant_count', task.completed ? 1 : -1, 250);
 		});
 		
 		// Update server
@@ -243,10 +243,12 @@ export default class Outline extends React.Component {
 		this.setState(newState);
 		
 		// Focus the Add Subtask field after showing it
-		event.persist();
-		window.setTimeout(function() {
-			event.target.closest('.tree-node').querySelector('.add-subtask').focus();
-		}, 15)
+		if (!item.data.addSubtaskHere) {
+			event.persist();
+			window.setTimeout(function() {
+				event.target.closest('.tree-node').querySelector('.add-subtask').focus();
+			}, 15)
+		}
 	}
 	
 	updateAncestors = (parentId, property, change, delay) => {
