@@ -1,6 +1,9 @@
 <div class="page-home-background">
 	<div class="page-home">
 		<h1>How do you eat an elephant? One bite at a time.</h1>
+		<% if user_signed_in? %>
+			<p class="welcome">Welcome, <%= current_user.nickname %>!</p>
+		<% end %>
 		<div class="buttons">
 			<% if user_signed_in? %>
 				<%= link_to "View my TaskFractal", tasks_path, class: 'button-link primary' %>
@@ -14,6 +17,9 @@
 				<%= link_to "<i data-feather='log-in'></i> Sign in".html_safe, new_user_session_path, class: 'button-link tertiary' %>
 			<% end %>
 		</div>
+		<% if user_signed_in? %>
+			<p class="sign-out-link"><%= link_to "Sign out", destroy_user_session_path, method: :delete %></p>
+		<% end %>
 		<div class="row">
 			<p>The best way to handle a tough project is to break it into manageable chunks. <strong>TaskFractal</strong> lets you break projects into chunks, and then break the chunks into smaller pieces, and so on as deep as you want.</p>
 			<img src="/home/outline.png" alt="Outline view">
@@ -52,9 +58,7 @@ html, body {
 	background-color: #0F296A;
 }
 
-<% unless user_signed_in? %>
-header {
+body > header {
 	display: none;
 }
-<% end %>
 </style>

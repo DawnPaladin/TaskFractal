@@ -35,14 +35,16 @@
               altKey: "c",
             ) %>
           <% end %>
-          <%= react_component("ToggleUserProperty", 
-            property: "next_up_visible",
-            label: "Show next tasks",
-            initialState: current_user.next_up_visible,
-            userId: current_user.id,
-            eventName: "toggleNextUpVisible",
-            networkPath: "/change_next_up_visible.json",
-          ) %>
+          <% if @next_up_visible == true or @next_up_visible == false %>
+            <%= react_component("ToggleUserProperty", 
+              property: "next_up_visible",
+              label: "Show next tasks",
+              initialState: current_user.next_up_visible,
+              userId: current_user.id,
+              eventName: "toggleNextUpVisible",
+              networkPath: "/change_next_up_visible.json",
+            ) %>
+          <% end %>
         <% end %>
       </div>
       <div class="user-controls">
