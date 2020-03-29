@@ -58,7 +58,8 @@ class TasksController < ApplicationController
 			child_tasks = Task.where(user: current_user).includes(:children, :blocking, :blocked_by)
 		else
 			logger.info "Root task: #{root_task.name}"
-			child_tasks = root_task.children.includes(:children, :blocking, :blocked_by)
+			root_task_relation = Task.where(id: root_task.id) # Root task should also be a candidate if it meets the other candidate criteria
+			child_tasks = root_task.descendants.or(root_task_relation).includes(:children, :blocking, :blocked_by)
 		end
 		logger.info "child_tasks: #{child_tasks.count} (#{(Time.now - timer).to_s}s)"
 		

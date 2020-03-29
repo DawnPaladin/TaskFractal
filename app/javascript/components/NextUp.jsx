@@ -87,7 +87,7 @@ export default function NextUp(props) {
 		
 	if (tasks.length == 0 && loadingTasks == false) {
 		return <div className="next-up">
-			No tasks
+			No next tasks
 		</div>
 	}
 	
