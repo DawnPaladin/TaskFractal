@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 import NextUpCard from './NextUpCard';
 
@@ -27,7 +28,8 @@ export default function NextUp(props) {
 	
 	const fetchTasks = useCallback(() => {
 		setLoadingTasks(true);
-		network.get('/next_up.json')
+		const url = props.taskId ? `/next_up/${props.taskId}.json` : '/next_up.json';
+		network.get(url)
 			.then(response => {
 				const formattedTasks = formatTasks(response.data);
 				setTasks(formattedTasks);
@@ -97,6 +99,18 @@ export default function NextUp(props) {
 	const leftCardTask = loadingTasks ? skeletonTask : tasks[leftCardIndex];
 	const rightCardTask = loadingTasks ? skeletonTask : tasks[rightCardIndex];
 	
+	if (tasks.length == 1) {
+		return <div className="next-up">
+			<div className="next-up-cards">
+				<div className="column">
+					<div className="card-and-buttons">
+						<NextUpCard task={leftCardTask} checkboxChange={checkboxChange} />
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	
 	return <div className="next-up">
 		<div className="next-up-cards">
 			<div className="column">
@@ -130,4 +144,6 @@ export default function NextUp(props) {
 	</div>
 }
 
-NextUp.propTypes = {};
+NextUp.propTypes = {
+	taskId: PropTypes.number
+};

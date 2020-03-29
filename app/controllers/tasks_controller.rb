@@ -40,7 +40,13 @@ class TasksController < ApplicationController
 	end
 	
 	def next_up
-		render json: next_up_tasks
+		task_id = params[:task_id]
+		if task_id.nil?
+			render json: next_up_tasks
+		else
+			task = Task.find(params[:task_id])
+			render json: next_up_tasks(task)
+		end
 	end
 	
 	def next_up_tasks(root_task = nil)
@@ -48,8 +54,10 @@ class TasksController < ApplicationController
 		logger.info "Start next_up_tasks"
 		
 		if root_task.nil?
+			logger.info "No root task"
 			child_tasks = Task.where(user: current_user).includes(:children, :blocking, :blocked_by)
 		else
+			logger.info "Root task: #{root_task.name}"
 			child_tasks = root_task.children.includes(:children, :blocking, :blocked_by)
 		end
 		logger.info "child_tasks: #{child_tasks.count} (#{(Time.now - timer).to_s}s)"

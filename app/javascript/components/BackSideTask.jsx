@@ -305,7 +305,7 @@ export default class BackSideTask extends React.Component {
 		return (
 			<div className="back-side-task-page">
 				<div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
-					<NextUp />
+					<NextUp taskId={this.state.task.id} />
 				</div>
 				<div className="task-card-back">
 					<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
