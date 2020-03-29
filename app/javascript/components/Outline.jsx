@@ -6,6 +6,9 @@ import clone from 'lodash.clonedeep';
 import * as Icon from 'react-feather';
 
 import sendTaskMovement from './sendTaskMovement'; // Tells the Rails backend that a task has a new parent and/or a new position in a list
+import taskUpdates from './taskUpdates';
+import send from './send';
+
 import FrontSideTask from './FrontSideTask';
 
 export default class Outline extends React.Component {
@@ -18,7 +21,7 @@ export default class Outline extends React.Component {
 		super(props);
 		this.state = {
 			treeData: this.props.tasks,
-			// completedTasksVisible: this.props.completedTasksVisible,
+			subscribedToTaskUpdates: false,
 		}
 		
 		// data structure for adding new subtasks to tree items
@@ -101,7 +104,7 @@ export default class Outline extends React.Component {
 		this.setState(newState);
 	}
 	
-	checkboxChange = task => {
+	checkboxChange = (task, broadcast = true) => {
 		// Update tree
 		const newState = update(this.state, {
 			treeData: {items: {[task.id]: {data: {completed: {$set: task.completed}}}}},
@@ -113,8 +116,8 @@ export default class Outline extends React.Component {
 		// Update server
 		send(task);
 		
-		// Fire callback
-		this.props.checkboxChange(task);
+		// Notify other components
+		if (broadcast) taskUpdates.broadcast(task, "outline");
 	}
 	
 	getIcon = (item, onExpand, onCollapse) => { // Returns a disclosure triangle if a list item has children
@@ -268,6 +271,17 @@ export default class Outline extends React.Component {
 		document.addEventListener('toggleCompletedTasksVisible', () => {
 			window.setTimeout(() => { this.setHiddenOnTasks() }, 10);
 		});
+		
+		taskUpdates.subscribe(event => {
+			if (event.detail.from != "outline") { // prevent us from receiving our own broadcasts
+				// A task has been completed elsewhere. Update it in the outline.
+				const task = event.detail.task;
+				this.checkboxChange(task, false);
+			}
+		});
+	}
+	componentWillUnmount() {
+		taskUpdates.unsubscribe();
 	}
 	
 	// RENDERING

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import NextUpCard from './NextUpCard';
 
 import network from './network';
+import taskUpdates from './taskUpdates';
 
 export default function NextUp(props) {
 	const [tasks, setTasks] = useState([]);
@@ -11,7 +11,7 @@ export default function NextUp(props) {
 	const [loadingTasks, setLoadingTasks] = useState(true);
 	
 	// Format task data for use with NextUpCards
-	const formatTasks = tasks => {
+	const formatTasks = useCallback(tasks => {
 		const taskIds = [];
 		const formattedTasks = tasks.map(taggedTask => {
 			var task = taggedTask.task;
@@ -23,9 +23,9 @@ export default function NextUp(props) {
 		});
 		setTaskIds(taskIds);
 		return formattedTasks;
-	}
+	}, [taskIds]);
 	
-	const fetchTasks = () => {
+	const fetchTasks = useCallback(() => {
 		setLoadingTasks(true);
 		network.get('/next_up.json')
 			.then(response => {
@@ -37,17 +37,32 @@ export default function NextUp(props) {
 			})
 			.catch(response => { console.warn(response) })
 		;
-	}
+	}, [tasks, leftCardIndex, rightCardIndex, loadingTasks]);
 	useEffect(fetchTasks, []); // fetch tasks on mount
 	
-	const checkboxChange = task => {
+	const checkboxChange = useCallback((task, broadcast = true) => {
+		if (tasks.length == 0) return; // Sometimes tasks is empty due to a stale closure.
 		const taskIndex = taskIds.findIndex(item => item === Number(task.id));
 		if (taskIndex !== -1) {
 			const newTasks = [...tasks];
 			newTasks[taskIndex].completed = task.completed;
 			setTasks(newTasks);
+			if (broadcast) taskUpdates.broadcast(task, "NextUp");
 		}
-	}
+	}, [tasks, taskIds]);
+	
+	useEffect(() => {
+		taskUpdates.subscribe(event => {
+			if (event.detail.from != "NextUp") { // Prevent us from broadcasting to ourselves
+				// A task has been completed elsewhere. Update it in NextUp.
+				const task = event.detail.task;
+				checkboxChange(task, false);
+			}
+		});
+		return () => {
+			taskUpdates.unsubscribe();
+		}
+	}, [tasks, taskIds]);
 	
 	const [leftCardIndex, setLeftCardIndex] = useState(0);
 	const [rightCardIndex, setRightCardIndex] = useState(0);
@@ -76,10 +91,11 @@ export default function NextUp(props) {
 	
 	const skeletonTask = {
 		name: "Loading...",
-		ancestors: []
+		ancestors: [],
+		completed: false,
 	}
-	const leftCardTask = loadingTasks ? skeletonTask : tasks[leftCardIndex]
-	const rightCardTask = loadingTasks ? skeletonTask : tasks[rightCardIndex]
+	const leftCardTask = loadingTasks ? skeletonTask : tasks[leftCardIndex];
+	const rightCardTask = loadingTasks ? skeletonTask : tasks[rightCardIndex];
 	
 	return <div className="next-up">
 		<div className="next-up-cards">
