@@ -22,13 +22,23 @@ class TasksController < ApplicationController
 	def show
 		respond_to do |format|
 			format.html {
-				@descendants = normalize_tasks_for_outline(@task)
-				@blocked_by = @task.blocked_by.order(:name)
-				@blocking = @task.blocking.order(:name)
-				@attachments = list_attachments(@task)
-				@count_descendants = @task.descendants.count
-				@count_completed_descendants = @task.completed_descendants.count
-				@ancestors = @task.ancestors.order(:name)
+				@task_lookup = Task.includes(:blocked_by, :blocking).find(@task.id)
+				@expanded_task = {
+					"id" => @task_lookup.id,
+					"name" => @task_lookup.name,
+					"completed" => @task_lookup.completed,
+					"description" => @task_lookup.description,
+					"due_date" => @task_lookup.due_date,
+					"completed_date" => @task_lookup.completed_date,
+					"parent_id" => @task_lookup.parent_id,
+					"descendants" => normalize_tasks_for_outline(@task_lookup),
+					"blocked_by" => @task_lookup.blocked_by.order(:name),
+					"blocking" => @task_lookup.blocking.order(:name),
+					"attachments" => list_attachments(@task_lookup),
+					"count_descendants" => @task_lookup.descendants.count,
+					"count_completed_descendants" => @task_lookup.completed_descendants.count,
+					"ancestors" => @task_lookup.ancestors.order(:name)
+				}
 				@completed_tasks_visible = current_user.completed_tasks_visible
 				@next_up_visible = current_user.next_up_visible
 				@next_up_tasks = next_up_tasks(@task)
