@@ -29,6 +29,13 @@ const moveItemInArray = (array, sourceIndex, destinationIndex) => {
 export default class BackSideTask extends React.Component {
 	static propTypes = {
 		task: PropTypes.object.isRequired,
+		descendants: PropTypes.object.isRequired,
+		blocked_by: PropTypes.array.isRequired,
+		blocking: PropTypes.array.isRequired,
+		attachments: PropTypes.array.isRequired,
+		count_descendants: PropTypes.number.isRequired,
+		count_completed_descendants: PropTypes.number.isRequired,
+		ancestors: PropTypes.array,
 	};
 	
 	constructor(props) {
@@ -37,13 +44,12 @@ export default class BackSideTask extends React.Component {
 		this.state = { 
 			task: this.props.task,
 			children: this.props.children,
-			blocked_by: this.props.task.blocked_by,
-			blocking: this.props.task.blocking,
+			blocked_by: this.props.blocked_by,
+			blocking: this.props.blocking,
 			allTasks: [],
-			attachments: this.props.task.attachments,
-			ancestors: this.props.task.ancestors,
-			count_descendants: this.props.task.count_descendants,
-			count_completed_descendants: this.props.task.count_completed_descendants,
+			attachments: this.props.attachments,
+			count_descendants: this.props.count_descendants,
+			count_completed_descendants: this.props.count_completed_descendants,
 			new_task_name: '',
 			editingDueDate: false,
 			editingDescription: false,
@@ -255,7 +261,7 @@ export default class BackSideTask extends React.Component {
 	}
 	
 	render() {
-		let ancestors = this.props.task.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
+		let ancestors = this.props.ancestors.map(ancestor => <a href={"/tasks/" + ancestor.id} className="task-link" key={ancestor.id} >{ancestor.name}</a>);
 		ancestors.unshift(<a href="/tasks/" className="task-link" key="0"><Icon.Home size="16" /> Home</a>);
 		
 		let blocked_by = this.state.blocked_by.map(blocked_by => (
@@ -386,7 +392,7 @@ export default class BackSideTask extends React.Component {
 						<div className="field">
 							<div className="field-name">subtasks</div>
 							<div className="subtasks">
-								<Outline tasks={this.props.task.descendants} completedTasksVisible={this.state.completedTasksVisible} />
+								<Outline tasks={this.props.descendants} completedTasksVisible={this.state.completedTasksVisible} />
 							</div>
 						</div>
 					
