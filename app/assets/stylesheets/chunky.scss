@@ -19,9 +19,11 @@ body>header {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	flex-wrap: wrap-reverse;
 	.task-controls, .user-controls {
 		display: flex;
 		flex-direction: row;
+		flex-wrap: wrap;
 		&, a {
 			color: var(--nextup-fg-color);
 		}
