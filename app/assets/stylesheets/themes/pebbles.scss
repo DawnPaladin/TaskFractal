@@ -11,9 +11,9 @@ body[data-theme="pebbles"] {
 	--bg: url(/bg/rocks.jpg);
 	
 	--card-bg-color: rgba(255, 245, 195, 0.71);
-	--header-bg-color: #3F3F3F;
+	--header-bg-color: rgba(119, 132, 160, 0.79);
 	--nextup-bg-color: rgba(119, 132, 160, 0.79);
-	--nextup-fg-color: var(--text-color);
+	--nextup-fg-color: var(--text-inverse-color);
 	--nextup-card-bg-color: #fddd86;
 	
 	--underline-incomplete-color: #fddd86;
