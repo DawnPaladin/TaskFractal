@@ -30,7 +30,6 @@ class TasksController < ApplicationController
 				@attachments = list_attachments(@task)
 				@count_descendants = @task.descendants.count
 				@count_completed_descendants = @task.completed_descendants.count
-				@ancestors = @task.ancestors.order(:name)
 				@completed_tasks_visible = current_user.completed_tasks_visible
 				@next_up_visible = current_user.next_up_visible
 				@next_up_tasks = next_up_tasks(@task)
@@ -330,11 +329,11 @@ class TasksController < ApplicationController
 		end
 		
 		def list_attachments(task)
-			logger.info "Start list_attachments ====================="
-			timer = Time.now
+			# logger.info "Start list_attachments ====================="
+			# timer = Time.now
 			list = task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
-			logger.info "list_attachments: #{(Time.now - timer).to_s}s"
-			list
+			# logger.info "list_attachments: #{(Time.now - timer).to_s}s"
+			# list
 		end
 		
 		# Use callbacks to share common setup or constraints between actions.
