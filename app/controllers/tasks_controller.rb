@@ -8,7 +8,6 @@ class TasksController < ApplicationController
 		respond_to do |format|
 			format.html { 
 				@tasks = normalize_tasks_for_outline
-				@next_up_tasks = next_up_tasks
 				@next_up_visible = current_user.next_up_visible
 				@completed_tasks_visible = current_user.completed_tasks_visible
 				render :index 
