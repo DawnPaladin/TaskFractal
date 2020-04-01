@@ -20,6 +20,8 @@ class TasksController < ApplicationController
 	# GET /tasks/1
 	# GET /tasks/1.json
 	def show
+		timer = Time.now
+		logger.info "Start show ====================="
 		respond_to do |format|
 			format.html {
 				@descendants = normalize_tasks_for_outline(@task)
@@ -32,6 +34,7 @@ class TasksController < ApplicationController
 				@completed_tasks_visible = current_user.completed_tasks_visible
 				@next_up_visible = current_user.next_up_visible
 				@next_up_tasks = next_up_tasks(@task)
+				logger.info "show: #{(Time.now - timer).to_s}s"
 			}
 			format.json {
 				render json: @task.to_json(include: [:children])
@@ -40,6 +43,7 @@ class TasksController < ApplicationController
 	end
 	
 	def next_up
+		logger.info "Start next_up ====================="
 		task_id = params[:task_id]
 		if task_id.nil?
 			render json: next_up_tasks
@@ -326,7 +330,11 @@ class TasksController < ApplicationController
 		end
 		
 		def list_attachments(task)
-			task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
+			logger.info "Start list_attachments ====================="
+			timer = Time.now
+			list = task.attachments.map{ |attachment| { name: attachment.filename, url: url_for(attachment), id: attachment.id } }
+			logger.info "list_attachments: #{(Time.now - timer).to_s}s"
+			list
 		end
 		
 		# Use callbacks to share common setup or constraints between actions.
