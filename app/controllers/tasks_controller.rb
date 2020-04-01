@@ -33,6 +33,7 @@ class TasksController < ApplicationController
 				@completed_tasks_visible = current_user.completed_tasks_visible
 				@next_up_visible = current_user.next_up_visible
 				@next_up_tasks = next_up_tasks(@task)
+				@ancestors = @task.ancestors.select([:name, :id]).order(:name)
 				logger.info "show: #{(Time.now - timer).to_s}s"
 			}
 			format.json {
