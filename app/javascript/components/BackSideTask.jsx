@@ -392,7 +392,7 @@ export default class BackSideTask extends React.Component {
 						<div className="field">
 							<div className="field-name">subtasks</div>
 							<div className="subtasks">
-								<Outline tasks={this.props.descendants} completedTasksVisible={this.state.completedTasksVisible} />
+								<Outline tasks={this.props.descendants} parentId={this.state.task.id} completedTasksVisible={this.state.completedTasksVisible} />
 							</div>
 						</div>
 					

@@ -17,6 +17,7 @@ export default class Outline extends React.Component {
 		tasks: PropTypes.object.isRequired,
 		completedTasksVisible: PropTypes.bool.isRequired,
 		checkboxChange: PropTypes.func,
+		parentId: PropTypes.number,
 	}
 	constructor(props) {
 		super(props);
@@ -45,6 +46,7 @@ export default class Outline extends React.Component {
 		var task = {
 			name: this.state.new_task_name
 		};
+		if (this.props.parentId) task.parent_id = this.props.parentId;
 		
 		network.post("/tasks", task)
 		.then(response => {
