@@ -75,7 +75,6 @@ textarea {
 .toggle-show-completed-button, .toggle-user-property-button {
 	@include doesnt-look-like-a-button();
 	font-size: inherit;
-	margin-top: .2em;
 }
 .switch-on {
 	rect {
