@@ -104,8 +104,8 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 .reverse-cycle-card-stack-button {
 	@extend .cycle-card-stack-button;
 	right: 6em;
-	height: 20px;
-	padding: 2px 7px 2px 4px;
+	height: 22px;
+	padding: 2px 4px;
 }
 
 .outline {
