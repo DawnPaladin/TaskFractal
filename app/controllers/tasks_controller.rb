@@ -292,11 +292,11 @@ class TasksController < ApplicationController
 			logger.info "Got user tasks"
 			
 			prop_tasks = {
-				"rootId" => 'root',
+				"rootId" => root_ar_task.nil? ? 'root' : root_ar_task.id,
 				"items" => {}
 			}
 			root_task = {
-				"id" => 'root',
+				"id" => root_ar_task.nil? ? 'root' : root_ar_task.id,
 				"children" => root_ar_task.nil? ? [] : root_ar_task.children.order(:position).pluck(:id)
 			}
 			ar_tasks.each do |ar_task|
@@ -323,7 +323,7 @@ class TasksController < ApplicationController
 					root_task['children'] << id
 				end
 			end
-			prop_tasks["items"]['root'] = root_task
+			prop_tasks["items"][root_task["id"]] = root_task
 			logger.info "Finished with prop_tasks"
 			return prop_tasks
 		end
