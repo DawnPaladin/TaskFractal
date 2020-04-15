@@ -62,7 +62,7 @@ export default class Outline extends React.Component {
 					data: newTask,
 				}
 				newState.treeData.items[newId] = newTask;
-				newState.treeData.items.root.children.push(newTask.id);
+				newState.treeData.items[newState.treeData.rootId].children.push(newTask.id);
 				return newState;
 			})
 		});
