@@ -14,6 +14,7 @@ import network from './network'; // Performs network calls to the Rails backend
 import send from './send'; // Sends task updates to the Rails backend
 import deleteTask from './deleteTask';
 import sendTaskMovement from './sendTaskMovement'; // Tells the Rails backend that a task has a new parent and/or a new position in a list
+import taskUpdates from './taskUpdates'; // Broadcasts task changes to other components
 
 const removeTaskFromArray = (task, array) => {
 	let taskIndex = array.findIndex(arrayTask => arrayTask.id == task.id);
@@ -43,7 +44,6 @@ export default class BackSideTask extends React.Component {
 		
 		this.state = { 
 			task: this.props.task,
-			children: this.props.children,
 			blocked_by: this.props.blocked_by,
 			blocking: this.props.blocking,
 			allTasks: [],
@@ -106,17 +106,12 @@ export default class BackSideTask extends React.Component {
 		task.completed = !task.completed;
 		this.setState({task});
 		send(task);
+		taskUpdates.broadcast(task, "BackSideTask")
 	}
 	
 	// for FrontSideTasks in list of subtasks
 	subtaskCheckboxChange = task => {
-		const childIndex = this.state.children.findIndex(object => object.id == task.id);
-		const newChildren = [...this.state.children];
-		newChildren[childIndex] = task;
-		this.setState({ children: newChildren });
-		
-		task.completed ? this.changeCompletedDescendants(1) : this.changeCompletedDescendants(-1);
-		send(task);
+		this.checkCompletedDescendants(task);
 	}
 	blockingCheckboxChange = task => {
 		const blockingIndex = this.state.blocking.findIndex(object => object.id == task.id);
@@ -124,6 +119,9 @@ export default class BackSideTask extends React.Component {
 		newBlockingTasks[blockingIndex] = task;
 		this.setState({ blocking: newBlockingTasks });
 		send(task);
+		taskUpdates.broadcast(task, "BackSideTask")
+		
+		this.checkCompletedDescendants(task);
 	}
 	blockedByCheckboxChange = task => {
 		const blockedByIndex = this.state.blocked_by.findIndex(object => object.id == task.id);
@@ -131,6 +129,19 @@ export default class BackSideTask extends React.Component {
 		newBlockedByTasks[blockedByIndex] = task;
 		this.setState({ blocked_by: newBlockedByTasks });
 		send(task);
+		taskUpdates.broadcast(task, "BackSideTask")
+		
+		this.checkCompletedDescendants(task);
+	}
+	
+	/**
+	 * Updates completedDescendants if task is one of those descendants
+	 */
+	checkCompletedDescendants = task => {
+		if (this.isTaskADescendant(task)) {
+			const amount = task.completed ? 1 : -1;
+			this.changeCompletedDescendants(amount);
+		}
 	}
 	
 	editDueDate = event => {
@@ -143,6 +154,14 @@ export default class BackSideTask extends React.Component {
 	
 	handleAddSubtaskEdit = event => {
 		this.setState({ new_task_name: event.target.value });
+	}
+	
+	/**
+	 * Checks if a task is one of the BackSideTask's descendants.
+	 */
+	isTaskADescendant = task => {
+		const descendants = this.state.task.descendants.map(descendant => descendant.id);
+		return descendants.includes(task.id);
 	}
 	
 	onDragEnd = result => {
@@ -392,7 +411,7 @@ export default class BackSideTask extends React.Component {
 						<div className="field">
 							<div className="field-name">subtasks</div>
 							<div className="subtasks">
-								<Outline tasks={this.props.descendants} parentId={this.state.task.id} completedTasksVisible={this.state.completedTasksVisible} />
+								<Outline tasks={this.props.descendants} parentId={this.state.task.id} completedTasksVisible={this.state.completedTasksVisible} checkboxChange={this.subtaskCheckboxChange} />
 							</div>
 						</div>
 					

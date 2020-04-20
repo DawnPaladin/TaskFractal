@@ -37,6 +37,20 @@ class TasksController < ApplicationController
 			}
 			format.json {
 				render json: @task.to_json(include: [:children])
+
+				# for debugging format.html
+				# render json: {
+				# 	"descendants": normalize_tasks_for_outline(@task),
+				# 	"blocked_by": @task.blocked_by.order(:name),
+				# 	"blocking": @task.blocking.order(:name),
+				# 	"attachments": list_attachments(@task),
+				# 	"count_descendants": @task.descendants.count,
+				# 	"count_completed_descendants": @task.completed_descendants.count,
+				# 	"completed_tasks_visible": current_user.completed_tasks_visible,
+				# 	"next_up_visible": current_user.next_up_visible,
+				# 	"next_up_tasks": next_up_tasks(@task),
+				# 	"ancestors": @task.ancestors.select([:name, :id]).order(:name),
+				# }
 			}
 		end
 	end
@@ -284,10 +298,11 @@ class TasksController < ApplicationController
 			#   }
 			# }
 			logger.info "Start normalize_tasks_for_outline for " + current_user.email
-			if (root_ar_task.nil?)
+			if root_ar_task.nil?
 				ar_tasks = Task.where(user: current_user).order(:position).includes(:blocking, :blocked_by) # ar = ActiveRecord
 			else
-				ar_tasks = root_ar_task.descendants.order(:position).includes(:blocking, :blocked_by) # ar = ActiveRecord
+				root_task_relation = Task.where(id: root_ar_task.id)
+				ar_tasks = root_ar_task.descendants.or(root_task_relation).order(:position).includes(:blocking, :blocked_by) # ar = ActiveRecord
 			end
 			logger.info "Got user tasks"
 			
@@ -323,7 +338,9 @@ class TasksController < ApplicationController
 					root_task['children'] << id
 				end
 			end
-			prop_tasks["items"][root_task["id"]] = root_task
+			if root_ar_task.nil?
+				prop_tasks["items"][root_task["id"]] = root_task
+			end
 			logger.info "Finished with prop_tasks"
 			return prop_tasks
 		end

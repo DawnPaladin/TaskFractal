@@ -122,6 +122,11 @@ export default class Outline extends React.Component {
 		
 		// Notify other components
 		if (broadcast) taskUpdates.broadcast(task, "outline");
+		
+		// Fire callback
+		if (this.props.checkboxChange) {
+			this.props.checkboxChange(task);
+		}
 	}
 	
 	getIcon = (item, onExpand, onCollapse) => { // Returns a disclosure triangle if a list item has children
