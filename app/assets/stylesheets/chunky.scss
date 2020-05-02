@@ -397,6 +397,9 @@ textarea {
 		@include deemphasize;
 		margin-left: 1.25em;
 		cursor: default;
+		height: 25px;
+		transition: height .25s;
+		overflow-y: hidden;
 		& > * {
 			display: inline-block;
 			margin-top: 3px;

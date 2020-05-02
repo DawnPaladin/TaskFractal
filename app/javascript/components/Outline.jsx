@@ -117,6 +117,15 @@ export default class Outline extends React.Component {
 			this.updateAncestors(this.getParentId(task.id), 'completed_descendant_count', task.completed ? 1 : -1, 250);
 		});
 		
+		// Tasks which were blocked by this one are no longer blocked
+		if (task.blocked_by_ids) task.blocked_by_ids.forEach(id => {
+			this.toggleTaskBlock(task.id, id, 'blocking_ids');
+		});
+		// Tasks which blocked this one are no longer blocking
+		if (task.blocking_ids) task.blocking_ids.forEach(id => {
+			this.toggleTaskBlock(task.id, id, 'blocked_by_ids');
+		});
+		
 		// Update server
 		send(task);
 		
@@ -259,16 +268,40 @@ export default class Outline extends React.Component {
 	}
 	
 	updateAncestors = (parentId, property, change, delay) => {
+		if (!parentId) return false;
 		var that = this;
 		window.setTimeout(function() {
-			const newState = update(that.state, {
-				treeData: {items: {[parentId]: {data: {[property]: {$apply: value => value + change}}}}}
+			that.setState(state => {
+				return update(state, {
+					treeData: {items: {[parentId]: {data: {[property]: {$apply: value => value + change}}}}}
+				})
 			})
-			that.setState(newState);
 			
 			const grandparentId = that.getParentId(parentId);
 			if (grandparentId) that.updateAncestors(grandparentId, property, change, delay);
 		}, delay)
+	}
+	
+	toggleTaskBlock = (thisTaskId, targetTaskId, relationship) => {
+		thisTaskId = Number(thisTaskId);
+		targetTaskId = Number(targetTaskId);
+		const index = this.state.treeData.items[targetTaskId].data[relationship].indexOf(thisTaskId);
+		
+		if (index > -1) { // blocking relationship found
+			// remove thisTaskId from targetTaskId's relationship array
+			this.setState(state => {
+				return update(state, {
+					treeData: {items: {[targetTaskId]: {data: {[relationship]: {$splice: [[index, 1]] }}}}}
+				})
+			})
+		} else {
+			// add thisTaskId to targetTaskId's relationship array
+			this.setState(state => {
+				return update(state, {
+					treeData: {items: {[targetTaskId]: {data: {[relationship]: {$push: [thisTaskId] }}}}}
+				})
+			})
+		}
 	}
 	
 	// EVENTS

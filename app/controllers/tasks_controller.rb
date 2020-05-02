@@ -327,8 +327,8 @@ class TasksController < ApplicationController
 						"due_date" => ar_task.due_date,
 						"description" => ar_task.description,
 						"attachment_count" => ar_task.attachment_count,
-						"blocking_count" => ar_task.blocking.count,
-						"blocked_by_count" => ar_task.blocked_by.count,
+						"blocking_ids" => ar_task.blocking.where(completed: false).pluck(:id),
+						"blocked_by_ids" => ar_task.blocked_by.where(completed: false).pluck(:id),
 						"descendant_count" => ar_task.descendants.count,
 						"completed_descendant_count" => ar_task.completed_descendants.count,
 					}

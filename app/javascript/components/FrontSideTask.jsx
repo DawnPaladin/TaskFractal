@@ -4,6 +4,7 @@ import * as Icon from 'react-feather';
 import classNames from 'classnames';
 
 import Checkbox from './Checkbox';
+import ErrorBoundary from './ErrorBoundary';
 
 // This component is placed either on a BackSideTask component, in an Outline, or in NextUp.
 // The checked/unchecked state must be controlled by the parent.
@@ -36,9 +37,23 @@ export default class FrontSideTask extends React.Component {
 	}
 	
 	render() {
-		var task = this.props.task;
-		var url = "/tasks/" + task.id;
-		var attachmentTitle = task.attachment_count > 1 ? task.attachment_count + " attachments" : "1 attachment";
+		const task = this.props.task;
+		const url = "/tasks/" + task.id;
+		const attachmentTitle = task.attachment_count > 1 ? task.attachment_count + " attachments" : "1 attachment";
+		const blockedByCount = task.blocked_by_ids?.length;
+		const blockingCount = task.blocking_ids?.length;
+		
+		// Calculate the number of details. If 0, set height of details panel to 0.
+		// We do this so we can animate the height of the details panel.
+		const numberify = data => {
+			data = Number(data);
+			if (isNaN(data)) data = 0;
+			return data;
+		}
+		var detailsCount = numberify(blockedByCount) + numberify(blockingCount) + numberify(task.attachmentCount);
+		if (task.due_date) detailsCount += 1;
+		if (task.description) detailsCount += 1;
+		if (!this.props.disableDescendantCount) detailsCount += this.getDescendantCount();
 		
 		var underlineWidth, underline = null;
 		if (this.getDescendantCount() > 0) {
@@ -53,33 +68,35 @@ export default class FrontSideTask extends React.Component {
 		}
 		
 		return (
-			<div className="task-card-front" ref={this.props.innerRef}>
-				<Checkbox checked={task.completed} handleChange={this.handleCheckbox} />
-				<a className={classNames('task-link', { "deemphasize": task.blocked_by_count > 0 })} href={url}>
-					{ task.name }
-					{ underline }
-				</a>
-				<div className="details">
-					{ task.blocked_by_count ? 
-						<div title={"Blocked by " + task.blocked_by_count}><Icon.PauseCircle size="17" /> {task.blocked_by_count} </div> : null
-					}
-					{ task.blocking_count ? 
-						<div title={"Blocking " + task.blocking_count}><Icon.AlertCircle size="16" /> {task.blocking_count}</div> : null
-					}
-					{ task.due_date ?
-						<div title={"Due " + task.due_date}><Icon.Calendar size="16" /> {task.dueDate}</div> : ""
-					}
-					{ task.description ?
-						<div title={task.description}><Icon.AlignLeft size="16" /></div> : ""
-					}
-					{ task.attachment_count ?
-						<div title={attachmentTitle}><Icon.Paperclip size="16" /> {task.attachment_count}</div> : ""
-					}
-					{ !this.props.disableDescendantCount && this.getDescendantCount() > 0 ? 
-						<div className="descendants"><Icon.CheckSquare size="16" /> {this.getCompletedDescendantCount()}/{this.getDescendantCount()}</div> : ""
-					}
+			<ErrorBoundary>
+				<div className="task-card-front" ref={this.props.innerRef}>
+					<Checkbox checked={task.completed} handleChange={this.handleCheckbox} />
+					<a className={classNames('task-link', { "deemphasize": blockedByCount > 0 })} href={url}>
+						{ task.name }
+						{ underline }
+					</a>
+					<div className="details" style={{ height: detailsCount > 0 ? 25 : 0 }}>
+						{ blockedByCount ? 
+							<div title={"Blocked by " + blockedByCount}><Icon.PauseCircle size="17" /> {blockedByCount} </div> : null
+						}
+						{ blockingCount ? 
+							<div title={"Blocking " + blockingCount}><Icon.AlertCircle size="16" /> {blockingCount}</div> : null
+						}
+						{ task.due_date ?
+							<div title={"Due " + task.due_date}><Icon.Calendar size="16" /> {task.dueDate}</div> : ""
+						}
+						{ task.description ?
+							<div title={task.description}><Icon.AlignLeft size="16" /></div> : ""
+						}
+						{ task.attachment_count ?
+							<div title={attachmentTitle}><Icon.Paperclip size="16" /> {task.attachment_count}</div> : ""
+						}
+						{ !this.props.disableDescendantCount && this.getDescendantCount() > 0 ? 
+							<div className="descendants"><Icon.CheckSquare size="16" /> {this.getCompletedDescendantCount()}/{this.getDescendantCount()}</div> : ""
+						}
+					</div>
 				</div>
-			</div>
+			</ErrorBoundary>
 		)
 	}
 }

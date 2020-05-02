@@ -95,6 +95,8 @@ export default function NextUp(props) {
 		name: "Loading...",
 		ancestors: [],
 		completed: false,
+		blocking_ids: [],
+		blocked_by_ids: [],
 	}
 	const leftCardTask = loadingTasks ? skeletonTask : tasks[leftCardIndex];
 	const rightCardTask = loadingTasks ? skeletonTask : tasks[rightCardIndex];
