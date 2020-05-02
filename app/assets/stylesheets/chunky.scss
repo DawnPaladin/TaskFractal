@@ -284,6 +284,7 @@ textarea {
 		}
 		.description {
 			// user-entered Markdown elements
+			overflow: scroll;
 			:first-child {
 				margin-top: 0;
 			}
