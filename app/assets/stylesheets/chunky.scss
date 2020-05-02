@@ -167,6 +167,11 @@ textarea {
 		font-weight: 600;
 		vertical-align: 3px;
 	}
+	
+	.markdown-formatting-help {
+		@extend .field-name;
+		float: right;
+	}
 
 	h1 {
 		font-weight: 600;

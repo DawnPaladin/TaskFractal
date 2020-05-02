@@ -358,6 +358,7 @@ export default class BackSideTask extends React.Component {
 						
 						<Icon.AlignLeft size="16" />
 						<span className="field-name"> notes</span>
+						<a className="markdown-formatting-help" style={{ display: this.state.editingDescription ? "inline" : "none" }} href="https://www.markdownguide.org/basic-syntax/" target="_blank" rel="noopener">markdown formatting help</a>
 						<div className="description-field">
 							{ this.state.editingDescription ? (
 								<div>
