@@ -108,10 +108,13 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	padding: 2px 4px;
 }
 
+.tasks-page .outline{
+	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 0.2);
+}
+
 .outline {
 	max-width: 50em;
 	background: var(--card-bg-color);
-	box-shadow: 3px 3px 10px hsla(0, 0%, 20%, 0.2);
 	padding: 10px 20px;
 	@media (min-width: 875px) {
 		margin: auto;

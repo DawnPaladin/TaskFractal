@@ -40,7 +40,7 @@ export default class TasksPage extends React.Component {
 	// RENDERING
 	
 	render() {
-		return <div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden"}>
+		return <div className={this.state.NextUpVisible ? "next-up-visible" : "next-up-hidden" + " tasks-page"}>
 			<NextUp />
 			<Outline tasks={this.props.tasks} completedTasksVisible={this.state.completedTasksVisible} />
 		</div>
