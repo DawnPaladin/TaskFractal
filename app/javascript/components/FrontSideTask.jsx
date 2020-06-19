@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import * as Icon from 'react-feather';
 import classNames from 'classnames';
+import moment from 'moment';
 
 import Checkbox from './Checkbox';
 import ErrorBoundary from './ErrorBoundary';
@@ -43,6 +44,25 @@ export default class FrontSideTask extends React.Component {
 		const blockedByCount = task.blocked_by_ids?.length;
 		const blockingCount = task.blocking_ids?.length;
 		
+		// format due date, if applicable
+		if (task.due_date) {
+			var then = moment(task.due_date);
+			var today = moment().startOf('day');
+			var inOneWeek = moment().add(7, 'days');
+			var isPast = then.isBefore(today);
+			var isToday = then.isSame(today, 'day');
+			var isWithinAWeek = then.isBetween(today, inOneWeek);
+			var isThisYear = then.isSame(today, 'year');
+			
+			if (isWithinAWeek) {
+				var formattedDate = then.format('ddd');
+			} else if (isThisYear) {
+				var formattedDate = then.format('MMM D');
+			} else {
+				var formattedDate = then.format('MMM D YYYY');
+			}
+		}
+		
 		// Calculate the number of details. If 0, set height of details panel to 0.
 		// We do this so we can animate the height of the details panel.
 		const numberify = data => {
@@ -83,7 +103,7 @@ export default class FrontSideTask extends React.Component {
 							<div title={"Blocking " + blockingCount}><Icon.AlertCircle size="16" /> {blockingCount}</div> : null
 						}
 						{ task.due_date ?
-							<div title={"Due " + task.due_date}><Icon.Calendar size="16" /> {task.due_date}</div> : ""
+							<div title={"Due " + task.due_date} className={classNames({ "due-today": isToday, "overdue": isPast })}><Icon.Calendar size="16" /> {formattedDate}</div> : ""
 						}
 						{ task.description ?
 							<div title={task.description}><Icon.AlignLeft size="16" /></div> : ""

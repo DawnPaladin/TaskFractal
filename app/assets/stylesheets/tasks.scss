@@ -38,3 +38,10 @@ a.task-link {
 // 	@include task-underline();
 // 	background: #EA428B;
 // }
+
+.due-today {
+	color: var(--due-today);
+}
+.overdue {
+	color: var(--overdue);
+}
