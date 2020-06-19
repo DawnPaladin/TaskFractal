@@ -103,7 +103,7 @@ export default class FrontSideTask extends React.Component {
 							<div title={"Blocking " + blockingCount}><Icon.AlertCircle size="16" /> {blockingCount}</div> : null
 						}
 						{ task.due_date ?
-							<div title={"Due " + task.due_date} className={classNames({ "due-today": isToday, "overdue": isPast })}><Icon.Calendar size="16" /> {formattedDate}</div> : ""
+							<div title={"Due " + task.due_date} className={classNames({ "due-today": isToday && !task.completed, "overdue": isPast && !task.completed })}><Icon.Calendar size="16" /> {formattedDate}</div> : ""
 						}
 						{ task.description ?
 							<div title={task.description}><Icon.AlignLeft size="16" /></div> : ""
