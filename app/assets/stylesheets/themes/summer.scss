@@ -19,6 +19,9 @@ body[data-theme='summer'] {
 	--nextup-card-bg-color: white;
 	.paint-icon { background-image: url('/paint-icon-black.svg'); }
 	
+	--due-today: green;
+	--overdue: #a60000;
+	
 	--underline-incomplete-color: #aeeeed;
 	--underline-complete-color: #2FB17B;
 	

@@ -21,6 +21,9 @@ body[data-theme="luna"] {
 	--underline-incomplete-color: rgb(89, 59, 129);
 	--underline-complete-color: #844FDE;
 	
+	--due-today: lime;
+	--overdue: red;
+	
 	--task-progress-gradient: linear-gradient(to left, red,orange,yellow,green,blue,indigo,violet);
 	
 	button:not(.doesnt-look-like-a-button, .tree-node-icon), input[type=submit] {
