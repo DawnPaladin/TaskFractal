@@ -71,6 +71,12 @@ textarea {
 	margin: 0 .25em;
 }
 .paint-icon { background-image: url('/paint-icon.svg'); }
+.delete-completed-subtasks-icon {
+	width: 30px;
+	height: 17px;
+	background-size: 30px;
+	background-image: url('/delete-completed-subtasks-icon.svg'); 
+}
 
 .toggle-show-completed-button, .toggle-user-property-button {
 	@include doesnt-look-like-a-button();
@@ -239,6 +245,13 @@ textarea {
 			right: 0;
 			z-index: 2;
 		}
+	}
+
+	.delete-completed-subtasks-button {
+		float: right;
+		display: inline-flex;
+		align-items: center;
+		padding: 2px 4px;
 	}
 
 	.subtasks {

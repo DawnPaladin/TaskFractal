@@ -34,4 +34,7 @@ body[data-theme="luna"] {
 			stroke: var(--text-color);
 		}
 	}
+	.delete-completed-subtasks-icon {
+		filter: invert(1);
+	}
 }

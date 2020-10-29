@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
 	before_action :authenticate_user!
-	before_action :set_task, only: [:show, :edit, :update, :move, :destroy, :attachments]
+	before_action :set_task, only: [:show, :edit, :update, :move, :destroy, :attachments, :delete_completed_subtasks]
 	
 	# GET /tasks
 	# GET /tasks.json
@@ -272,6 +272,17 @@ class TasksController < ApplicationController
 	
 	def remove_blocked_by_task
 		remove_task_block('blocked_by')
+	end
+
+	def delete_completed_subtasks
+		@task.children.where(completed: true).destroy_all
+		respond_to do |format|
+			format.html { redirect_to tasks_url, notice: 'All completed subtasks deleted.' }
+			format.json { 
+				flash[:warning] = "All completed subtasks deleted."
+				render json: { text: "All completed subtasks deleted."}
+			}
+		end
 	end
 	
 	private

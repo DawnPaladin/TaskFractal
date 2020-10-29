@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 		delete 'blocking/:id', to: 'tasks#remove_blocking_task'
 		delete 'blocked_by/:id', to: 'tasks#remove_blocked_by_task'
 	end
+	delete 'tasks/:id/completed_subtasks', to: 'tasks#delete_completed_subtasks'
 	get 'next_up/:task_id', to: 'tasks#next_up'
 	get 'next_up', to: 'tasks#next_up'
 	patch 'tasks/:id/move/position/:position', to: 'tasks#move'

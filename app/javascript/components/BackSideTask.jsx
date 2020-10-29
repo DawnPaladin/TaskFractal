@@ -143,6 +143,15 @@ export default class BackSideTask extends React.Component {
 			this.changeCompletedDescendants(amount);
 		}
 	}
+
+	deleteCompletedSubtasks = event => {
+		if (confirm(`This will delete all of this task's completed subtasks, along with all of their children, attachments, and other information. Are you sure?`)) {
+			let id = this.state.task.id;
+	
+			network.delete(`/tasks/${id}/completed_subtasks.json`)
+				.then(() => { location.reload(); })
+		}
+	}
 	
 	editDueDate = event => {
 		this.setTaskDetail('due_date', event.target.value);
@@ -328,7 +337,7 @@ export default class BackSideTask extends React.Component {
 				</div>
 				<div className="task-card-back">
 					<FileUpload task={this.state.task} refreshAttachments={this.refreshAttachments} attachments={this.state.attachments}>
-						<button className="delete-task-button" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button>
+						<button className="delete-task-button" title="Delete task" onClick={this.deleteTask}><Icon.Trash2 size="16" /></button>
 						<div className="ancestors"><WithSeparator separator=" / ">{ancestors}</WithSeparator></div>
 						<h1>
 							<Checkbox handleChange={this.checkboxChange} checked={this.state.task.completed} />
@@ -410,6 +419,9 @@ export default class BackSideTask extends React.Component {
 						</div>
 						
 						<div className="field">
+							{ this.state.count_completed_descendants > 0 && <button className="delete-completed-subtasks-button doesnt-look-like-a-button" title="Delete completed subtasks" onClick={this.deleteCompletedSubtasks}>
+								<div className="icon delete-completed-subtasks-icon"></div>
+							</button> }
 							<div className="field-name">subtasks</div>
 							<div className="subtasks">
 								<Outline tasks={this.props.descendants} parentId={this.state.task.id} completedTasksVisible={this.state.completedTasksVisible} checkboxChange={this.subtaskCheckboxChange} />
