@@ -151,20 +151,23 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	position: relative;
 }
 
-.tree-node .add-subtask-button {
-	@include doesnt-look-like-a-button;
+.tree-node .outline-task-actions {
 	position: absolute;
 	top: 0;
 	margin-top: 5px;
 	margin-left: 2px;
 	transition: opacity 0.25s;
 	opacity: 0;
-	color: var(--text-color);
+	button {
+		@include doesnt-look-like-a-button;
+		color: var(--text-color);
+	}
 }
-.tree-node:hover .add-subtask-button, .tree-node:focus .add-subtask-button {
+
+.tree-node:hover .outline-task-actions, .tree-node:focus .outline-task-actions {
 	opacity: 0.5;
 }
-.tree-node:hover .add-subtask-button:hover, .tree-node .add-subtask-button:focus {
+.tree-node:hover .outline-task-actions:hover, .tree-node .outline-task-actions:focus {
 	opacity: 1;
 }
 
