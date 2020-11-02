@@ -152,6 +152,7 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 }
 
 .tree-node .outline-task-actions {
+	display: inline-block;
 	position: absolute;
 	top: 0;
 	margin-top: 5px;
@@ -161,13 +162,18 @@ body[data-theme] button:not(.doesnt-look-like-a-button) {
 	button {
 		@include doesnt-look-like-a-button;
 		color: var(--text-color);
+		opacity: 0.5;
+		transition: opacity 0.25s;
 	}
 }
 
 .tree-node:hover .outline-task-actions, .tree-node:focus .outline-task-actions {
-	opacity: 0.5;
+	opacity: 1;
 }
 .tree-node:hover .outline-task-actions:hover, .tree-node .outline-task-actions:focus {
+	opacity: 1;
+}
+.outline-task-actions button:hover, .outline-task-actions button:focus {
 	opacity: 1;
 }
 

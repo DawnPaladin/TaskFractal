@@ -35,7 +35,6 @@ export default class Outline extends React.Component {
 				item.hidden = false;
 			}
 		});
-		
 	}
 	
 	// METHODS (alphabetical)
@@ -137,6 +136,14 @@ export default class Outline extends React.Component {
 			this.props.checkboxChange(task);
 		}
 	}
+
+	deleteTask = (task) => {
+		if (confirm(`Delete ${task.name}?`)) {
+			let id = task.id;
+			network.delete(`/tasks/${id}.json`);
+			window.location.reload();
+		}
+	}
 	
 	getIcon = (item, onExpand, onCollapse) => { // Returns a disclosure triangle if a list item has children
 		if (item.children && item.children.length > 0) {
@@ -149,7 +156,7 @@ export default class Outline extends React.Component {
 			return <span className="tree-node-icon"></span>;
 		}
 	}
-	
+
 	getParentId = taskId => {
 		const parentId = Object.keys(this.state.treeData.items).find(id => {
 			return (this.state.treeData.items[id].children.includes(Number(taskId)) || this.state.treeData.items[id].children.includes(String(taskId)));
@@ -344,6 +351,7 @@ export default class Outline extends React.Component {
 			<FrontSideTask task={item.data} disableDescendantCount={true} checkboxChange={this.checkboxChange} />
 			<div className="outline-task-actions">
 				<button title="Add subtask" className="add-subtask-button" onClick={event => {this.showAddSubtask(item, event)}}><Icon.Plus size="16"/></button>
+				<button title="Delete" className="delete-task-button" onClick={event => {this.deleteTask(item.data)}}><Icon.Trash2 size="16"/></button>
 			</div>
 			{ addSubtaskIsHere ? addSubtaskField : null}
 		</div>
