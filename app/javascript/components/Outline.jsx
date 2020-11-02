@@ -140,8 +140,9 @@ export default class Outline extends React.Component {
 	deleteTask = (task) => {
 		if (confirm(`Delete ${task.name}?`)) {
 			let id = task.id;
-			network.delete(`/tasks/${id}.json`);
-			window.location.reload();
+			network.delete(`/tasks/${id}.json`).then(() => {
+				window.location.reload();
+			});
 		}
 	}
 	
