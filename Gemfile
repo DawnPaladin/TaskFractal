@@ -37,7 +37,7 @@ gem 'toastr-rails'
 # Better logging and error-catching than Heroku
 gem 'rollbar'
 # Monitor performance
-gem 'newrelic_rpm'
+# gem 'newrelic_rpm'
 # Serializer
 gem 'active_model_serializers', '~> 0.10.0'
 # Store attachments in Azure
