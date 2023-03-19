@@ -261,6 +261,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-19
+  x86_64-darwin-21
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
@@ -288,7 +289,7 @@ DEPENDENCIES
   webpacker (~> 4.0)
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 3.1.2p20
 
 BUNDLED WITH
-   2.2.15
+   2.3.7
